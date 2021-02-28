@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'file:///C:/Users/Ilius/AndroidStudioProjects/my_life/lib/cubits/password_auth_gield/password_auth_field_cubit.dart';
+import 'package:my_life/cubits/password_auth_field/password_auth_field_cubit.dart';
 import 'package:my_life/models/user.dart';
 import 'package:meta/meta.dart';
 
