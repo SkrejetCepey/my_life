@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class NotificationDialog {
-  static showNotificationDialog(BuildContext context, String content) {
+  static showNotificationDialog(BuildContext context, String content, Function callback) {
 
     Widget cancelButton = FlatButton(
       child: Text("Cancel"),
@@ -13,9 +13,7 @@ class NotificationDialog {
     Widget okButton = FlatButton(
       child: Text("OK!"),
       onPressed: () {
-        Navigator.pop(context);
-        Navigator.pop(context);
-        Navigator.pushNamed(context, '/main');
+        callback(context);
       },
     );
 

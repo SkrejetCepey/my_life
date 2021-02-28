@@ -3,7 +3,7 @@ import 'package:my_life/consts/const_strings.dart';
 import 'package:my_life/custom_widgets/summary_button.dart';
 import 'package:my_life/custom_widgets/password_form_field.dart';
 import 'package:my_life/custom_widgets/username_form_field.dart';
-import 'package:my_life/exception_handlers/notification_dialog.dart';
+import 'package:my_life/handlers/notification_dialog.dart';
 import 'package:my_life/models/user.dart';
 
 class AuthPage extends StatelessWidget {
@@ -61,13 +61,17 @@ class FooterContent extends StatelessWidget {
             padding: EdgeInsets.symmetric(vertical: 2.0, horizontal: 0.0),
             child: Text('Continue as guest'),
             onPressed: () {
-              NotificationDialog.showNotificationDialog(context, ConstStrings.termsUsingGuest);
-              // Navigator.pop(context);
-              // Navigator.pushNamed(context, '/main');
+              NotificationDialog.showNotificationDialog(context, ConstStrings.termsUsingGuest, mainPageLoader);
             },
           ),
         )
       ],
     );
   }
+}
+
+mainPageLoader(BuildContext context) {
+  Navigator.pop(context);
+  Navigator.pop(context);
+  Navigator.pushNamed(context, '/main');
 }

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'file:///C:/Users/Ilius/AndroidStudioProjects/my_life/lib/cubits/summary_button_connection/summary_button_connection_cubit.dart';
-import 'package:my_life/exception_handlers/alert_exception.dart';
+import 'package:my_life/cubits/summary_button_connection/summary_button_connection_cubit.dart';
+import 'package:my_life/handlers/alert_exception.dart';
 import 'package:my_life/models/user.dart';
 import 'package:meta/meta.dart';
 
