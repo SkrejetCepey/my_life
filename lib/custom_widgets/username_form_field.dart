@@ -11,7 +11,7 @@ class UsernameFormField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
-      onSaved: (String s) => user.username = s,
+      onSaved: (String s) => user.add('username', s),
       decoration: InputDecoration(
         icon: Icon(Icons.person),
         fillColor: Colors.white60,

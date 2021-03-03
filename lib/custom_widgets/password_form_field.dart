@@ -19,7 +19,7 @@ class PasswordFormField extends StatelessWidget {
         builder: (BuildContext context, bool state) {
           return TextFormField(
             obscureText: state,
-            onSaved: (String s) => user.password = s,
+            onSaved: (String s) => user.add('password', s),
             decoration: InputDecoration(
               icon: Icon(Icons.lock),
               suffixIcon: IconButton(

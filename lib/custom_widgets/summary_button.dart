@@ -28,12 +28,7 @@ class SummaryButton extends StatelessWidget {
                 if (_formKey.currentState.validate()) {
                   _formKey.currentState.save();
                   Scaffold.of(context).showSnackBar(SnackBar(content: Text(user.toString())));
-                  try {
-                    await _summaryButtonConnectionCubit.tryConnection();
-                  } on Exception catch (exception) {
-                    print('handled!');
-                    AlertException.showAlertDialog(context, exception.toString());
-                  }
+                  _tryToConnect(context);
                 }
               },
             ),
@@ -43,4 +38,11 @@ class SummaryButton extends StatelessWidget {
     );
   }
 
+  Future<void> _tryToConnect(BuildContext context) async {
+    try {
+      await _summaryButtonConnectionCubit.tryConnection();
+    } on Exception catch (exception) {
+      AlertException.showAlertDialog(context, exception.toString());
+    }
+  }
 }

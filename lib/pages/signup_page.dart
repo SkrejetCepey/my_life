@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:my_life/custom_widgets/email_form_field.dart';
-import 'package:my_life/custom_widgets/first_name_form_field.dart';
-import 'package:my_life/custom_widgets/last_name_form_field.dart';
+import 'package:my_life/custom_widgets/simple_abstract_form_field.dart';
 import 'package:my_life/custom_widgets/summary_button.dart';
 import 'package:my_life/custom_widgets/password_form_field.dart';
 import 'package:my_life/custom_widgets/username_form_field.dart';
@@ -39,12 +38,12 @@ class SignUpPage extends StatelessWidget {
                       children: [
                         Spacer(),
                         Flexible(
-                          child: FirstNameFormField(user: user),
+                          child: SimpleAbstractFormField(model: user, iconData: Icons.android, property: 'firstName'),
                           flex: 9,
                         ),
                         Spacer(),
                         Flexible(
-                          child: LastNameFormField(user: user),
+                          child: SimpleAbstractFormField(model: user, iconData: Icons.android, property: 'lastName'),
                           flex: 9,
                         ),
                       ],

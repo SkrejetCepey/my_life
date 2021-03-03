@@ -34,7 +34,7 @@ class EmailFormField extends StatelessWidget {
         else
           return null;
       },
-      onSaved: (String s) => user.email = s,
+      onSaved: (String s) => user.add('email', s),
     );
   }
 }

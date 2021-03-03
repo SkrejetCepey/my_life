@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:my_life/observer/global_observer.dart';
+import 'package:my_life/pages/add_desire_page.dart';
 import 'package:my_life/pages/auth_page.dart';
 import 'package:my_life/pages/main_page.dart';
 import 'package:my_life/pages/signup_page.dart';
@@ -17,7 +18,8 @@ class App extends StatelessWidget {
     return MaterialApp(
       routes: {
         '/sign_up': (BuildContext context) => SignUpPage(),
-        '/main': (BuildContext context) => MainPage()
+        '/main': (BuildContext context) => MainPage(),
+        '/add_desire': (BuildContext context) => AddDesirePage()
       },
       home: Scaffold(
         appBar: AppBar(

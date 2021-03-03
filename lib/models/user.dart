@@ -1,25 +1,16 @@
 import 'dart:convert';
+import 'package:my_life/models/abstract_model.dart';
 
-class User {
+class User extends AbstractModel {
 
-  String username;
-  String firstName;
-  String lastName;
-  String email;
-  String password;
+  Map<String, String> _properties = Map<String, String>();
 
-  String get fullName => '$firstName $lastName';
+  void add(String key, String value) => _properties[key] = value;
 
-  String getJson() {
-    return json.encode(<String, String>{
-      'username': username,
-      'firstName': firstName,
-      'lastName': lastName,
-      'email': email,
-      'password': password
-    });
+  String getJsonFromProperties() {
+    return json.encode(_properties);
   }
 
   @override
-  String toString() => getJson();
+  String toString() => getJsonFromProperties();
 }

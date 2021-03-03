@@ -61,7 +61,7 @@ class FooterContent extends StatelessWidget {
             padding: EdgeInsets.symmetric(vertical: 2.0, horizontal: 0.0),
             child: Text('Continue as guest'),
             onPressed: () {
-              NotificationDialog.showNotificationDialog(context, ConstStrings.termsUsingGuest, mainPageLoader);
+              NotificationDialog.showNotificationDialog(context, ConstStrings.termsUsingGuest, _mainPageLoader);
             },
           ),
         )
@@ -70,7 +70,7 @@ class FooterContent extends StatelessWidget {
   }
 }
 
-mainPageLoader(BuildContext context) {
+void _mainPageLoader(BuildContext context) {
   Navigator.pop(context);
   Navigator.pop(context);
   Navigator.pushNamed(context, '/main');
