@@ -65,7 +65,7 @@ class DBDriver {
     return noteFromMap(n.single);
   }
 
-  Future<List> getAll() async {
+  Future<List<Desire>> getAll() async {
     Database db = await database;
 
     List desires = await db.rawQuery('SELECT * FROM desires');

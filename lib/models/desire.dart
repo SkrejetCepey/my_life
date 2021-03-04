@@ -5,9 +5,11 @@ class Desire extends AbstractModel {
   int id;
   String title;
 
+  Desire({this.id, this.title});
+
   void setTitle(String s) => title = s;
 
-  Desire({this.id, this.title});
+  bool isEmpty() => (id == null && title == null);
 
   @override
   String toString() {

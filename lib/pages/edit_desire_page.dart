@@ -1,28 +1,29 @@
 import 'package:flutter/material.dart';
 import 'package:my_life/cubits/main_page/desires_list_cubit.dart';
 import 'package:my_life/custom_widgets/simple_abstract_form_field.dart';
+import 'package:my_life/handlers/notification_dialog.dart';
 import 'package:my_life/models/desire.dart';
 
-class AddDesirePage extends StatelessWidget{
+class EditDesirePage extends StatelessWidget{
 
-  final Desire _desire = Desire();
+  final Desire desire;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  final DesiresListCubit cubit;
+
+  EditDesirePage({Key key, @required this.desire, @required this.cubit}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-
-    final DesiresListCubit cubit = ModalRoute.of(context).settings.arguments;
-
     return Scaffold(
       appBar: AppBar(
-        title: Text('AddDesirePage'),
+        title: Text('EditDesirePage'),
       ),
       body: Form(
         key: _formKey,
         child: ListView(
           children: [
             ListTile(
-              title: SimpleAbstractFormField(model: _desire, iconData: Icons.title, property: 'title'),
+              title: SimpleAbstractFormField(model: desire, iconData: Icons.title, property: 'title'),
             )
           ],
         ),
@@ -37,11 +38,19 @@ class AddDesirePage extends StatelessWidget{
             ),
             Spacer(),
             FlatButton(
-              child: Text('Save'),
+              child: Text('Delete'),
+              color: Colors.red,
+              onPressed: () async {
+                await NotificationDialog.showNotificationDialog(context, 'Are you sure about deleting ${desire.title} ?', _deleteDesire);
+              },
+            ),
+            Spacer(),
+            FlatButton(
+              child: Text('Update'),
               onPressed: () async {
                 if (_formKey.currentState.validate()) {
                   _formKey.currentState.save();
-                  await cubit.add(_desire);
+                  await cubit.update(desire);
                   Navigator.pop(context);
                 }
               },
@@ -51,4 +60,11 @@ class AddDesirePage extends StatelessWidget{
       ),
     );
   }
+
+  Future<void> _deleteDesire(BuildContext context) async {
+    await cubit.delete(desire);
+    Navigator.pop(context);
+    Navigator.pop(context);
+  }
+
 }

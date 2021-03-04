@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class NotificationDialog {
-  static showNotificationDialog(BuildContext context, String content, Function callback) {
+  static showNotificationDialog(BuildContext context, String content, Function callback) async {
 
     Widget cancelButton = FlatButton(
       child: Text("Cancel"),
@@ -26,7 +26,7 @@ class NotificationDialog {
       ],
     );
 
-    showDialog(
+    await showDialog(
       context: context,
       builder: (BuildContext context) {
         return alert;

@@ -9,12 +9,19 @@ class SimpleAbstractFormField extends StatelessWidget {
   final AbstractModel model;
   final IconData iconData;
   final String property;
+  final TextEditingController _titleTextEditingController = TextEditingController();
 
-  SimpleAbstractFormField({Key key, @required this.model, @required this.iconData, @required this.property}) : super(key: key);
+  SimpleAbstractFormField({Key key, @required this.model, @required this.iconData, @required this.property}) : super(key: key) {
+    if (model is Desire)
+      if (!(model as Desire).isEmpty()) {
+        _titleTextEditingController.text = (model as Desire).title;
+      }
+  }
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      controller: _titleTextEditingController,
       decoration: InputDecoration(
         prefixIcon: Icon(iconData),
         fillColor: Colors.white60,
