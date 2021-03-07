@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 class AlertException {
 
-  static showAlertDialog(BuildContext context, String errMessage) {
+  static showAlertDialog(BuildContext context, String errMessage) async {
 
     Widget okButton = FlatButton(
       child: Text("OK"),
@@ -19,7 +19,7 @@ class AlertException {
       ],
     );
 
-    showDialog(
+    await showDialog<String>(
       context: context,
       builder: (BuildContext context) {
         return alert;

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:my_life/cubits/main_page/desires_list_cubit.dart';
 import 'package:my_life/models/desire.dart';
-import 'package:my_life/pages/edit_desire_page.dart';
+import 'package:my_life/pages/desire_page.dart';
 
 class DesiresList extends StatelessWidget {
 
@@ -21,8 +21,8 @@ class DesiresList extends StatelessWidget {
             elevation: 8.0,
             child: ListTile(
               onTap: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context) =>
-                    EditDesirePage(desire: desire, cubit: cubit)));
+                Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) =>
+                    DesirePage.edit(desire: desire, cubit: cubit)));
               },
               title: Container(
                   child: Row(

@@ -7,14 +7,13 @@ import 'package:meta/meta.dart';
 class PasswordFormField extends StatelessWidget {
 
   final User user;
-  final PasswordAuthFieldCubit _passwordAuthFieldCubit = PasswordAuthFieldCubit();
 
   PasswordFormField({Key key, @required this.user}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (_) => _passwordAuthFieldCubit,
+    return BlocProvider<PasswordAuthFieldCubit>(
+      create: (_) => PasswordAuthFieldCubit(),
       child: BlocBuilder<PasswordAuthFieldCubit, bool>(
         builder: (BuildContext context, bool state) {
           return TextFormField(
@@ -25,7 +24,7 @@ class PasswordFormField extends StatelessWidget {
               suffixIcon: IconButton(
                 icon: state ? Icon(Icons.visibility) : Icon(Icons.visibility_off),
                 onPressed: () {
-                  return _passwordAuthFieldCubit.switchAbilityCheckPasswordState();
+                  BlocProvider.of<PasswordAuthFieldCubit>(context).switchAbilityCheckPasswordState();
                 },
               ),
               fillColor: Colors.white60,

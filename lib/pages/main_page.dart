@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:my_life/cubits/main_page/desires_list_cubit.dart';
 import 'package:my_life/models/desires_list.dart';
+import 'desire_page.dart';
 
 class MainPage extends StatelessWidget {
 
@@ -29,7 +30,8 @@ class MainPage extends StatelessWidget {
         floatingActionButton: FloatingActionButton(
           child: Icon(Icons.add),
           onPressed: () {
-            Navigator.pushNamed(context, '/add_desire', arguments: _mainPageCubit);
+            Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) =>
+                DesirePage.add(cubit: _mainPageCubit)));
           },
         ),
       )

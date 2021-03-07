@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:my_life/consts/const_strings.dart';
+import 'package:my_life/cubits/connection/connection_page_cubit.dart';
 import 'package:my_life/custom_widgets/summary_button.dart';
 import 'package:my_life/custom_widgets/password_form_field.dart';
 import 'package:my_life/custom_widgets/username_form_field.dart';
@@ -9,27 +11,39 @@ import 'package:my_life/models/user.dart';
 class AuthPage extends StatelessWidget {
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  final ConnectionPageCubit _connectionPageCubit = ConnectionPageCubit();
   final User user = User();
 
   @override
   Widget build(BuildContext context) {
-    return Form(
-      key: _formKey,
-      child: ListView(
-        children: <Widget>[
-          SizedBox(
-            width: 0.0,
-            height: 250.0,
-          ),
-          ListTile(
-            title: UsernameFormField(user: user),
-          ),
-          ListTile(
-            title: PasswordFormField(user: user),
-          ),
-          SummaryButton(formKey: _formKey, user: user, title: 'Sign In!'),
-          FooterContent()
-        ],
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider<ConnectionPageCubit>(
+          create: (BuildContext context) => _connectionPageCubit,
+        )
+      ],
+      child: BlocBuilder<ConnectionPageCubit, ConnectionPageState>(
+        builder: (BuildContext context, ConnectionPageState state) {
+          return Form(
+            key: _formKey,
+            child: ListView(
+              children: <Widget>[
+                SizedBox(
+                  width: 0.0,
+                  height: 250.0,
+                ),
+                ListTile(
+                  title: UsernameFormField(user: user),
+                ),
+                ListTile(
+                  title: PasswordFormField(user: user),
+                ),
+                SummaryButton(formKey: _formKey, user: user, title: 'Sign In!', connectionCubit: _connectionPageCubit),
+                FooterContent(state: state)
+              ],
+            ),
+          );
+        },
       ),
     );
   }
@@ -39,29 +53,45 @@ class AuthPage extends StatelessWidget {
 class FooterContent extends StatelessWidget {
   // TODO: fix padding
 
+  final ConnectionPageState state;
+
+  final ButtonStyle disabledStyle = ButtonStyle(foregroundColor: MaterialStateProperty.resolveWith((_) => Colors.black26));
+  final ButtonStyle enabledStyle = ButtonStyle(foregroundColor: MaterialStateProperty.resolveWith((_) => Colors.blue));
+
+  FooterContent({Key key, this.state}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
+
     return Column(
       children: <Widget>[
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             Text("You don't have an account?", style: TextStyle(fontWeight:FontWeight.w300)),
-            FlatButton(
-              padding: EdgeInsets.symmetric(vertical: 2.0, horizontal: 0.0),
+            TextButton(
+              style: (state is TryingPageConnect) ? disabledStyle : enabledStyle,
               child: Text('Sign up!'),
               onPressed: () {
-                Navigator.pushNamed(context, '/sign_up');
+                if (state is TryingPageConnect)
+                  return null;
+                else {
+                  Navigator.pushNamed(context, '/sign_up');
+                }
               },
             )
           ],
         ),
         Container(
-          child: FlatButton(
-            padding: EdgeInsets.symmetric(vertical: 2.0, horizontal: 0.0),
+          child: TextButton(
+            style: (state is TryingPageConnect) ? disabledStyle : enabledStyle,
             child: Text('Continue as guest'),
             onPressed: () {
-              NotificationDialog.showNotificationDialog(context, ConstStrings.termsUsingGuest, _mainPageLoader);
+              if (state is TryingPageConnect)
+                return null;
+              else {
+                NotificationDialog.showNotificationDialog(context, ConstStrings.termsUsingGuest, _mainPageLoader);
+              }
             },
           ),
         )

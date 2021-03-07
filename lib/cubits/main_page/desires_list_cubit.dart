@@ -18,14 +18,6 @@ class DesiresListCubit extends Cubit<DesiresListState> {
     _init();
   }
 
-  Future<void> _init() async {
-    desireList = await DBDriver.db.getAll();
-    if (desireList.isEmpty)
-      emit(DesiresListInitialisedEmpty());
-    else
-      emit(DesiresListInitialised());
-  }
-
   Future<void> add(Desire desire) async {
     await DBDriver.db.create(desire);
     emit(DesiresListAddedNewItem());
@@ -44,4 +36,11 @@ class DesiresListCubit extends Cubit<DesiresListState> {
     _init();
   }
 
+  Future<void> _init() async {
+    desireList = await DBDriver.db.getAll();
+    if (desireList.isEmpty)
+      emit(DesiresListInitialisedEmpty());
+    else
+      emit(DesiresListInitialised());
+  }
 }

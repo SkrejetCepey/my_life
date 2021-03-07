@@ -1,1 +1,1 @@
-class AbstractModel {}
+abstract class AbstractModel {}
