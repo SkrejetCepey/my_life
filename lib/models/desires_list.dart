@@ -27,8 +27,6 @@ class DesiresList extends StatelessWidget {
               title: Container(
                   child: Row(
                     children: [
-                      Text('${desire.id}'),
-                      Spacer(),
                       Text('${desire.title}')
                     ],
                   )

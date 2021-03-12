@@ -46,7 +46,7 @@ class DesirePage extends StatelessWidget{
         padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 0.0),
         child: Row(
           children: [
-            FlatButton(
+            TextButton(
               child: Text('Cancel'),
               onPressed: () => Navigator.pop(context),
             ),
@@ -73,7 +73,7 @@ class DesirePage extends StatelessWidget{
       child: Row(
         children: [
           Spacer(),
-          FlatButton(
+          TextButton(
             child: Text('Save'),
             onPressed: () async {
               if (_formKey.currentState.validate()) {
@@ -88,20 +88,21 @@ class DesirePage extends StatelessWidget{
   }
 
   Widget _editUniqueBottomStaff(BuildContext context) {
+    final ButtonStyle enabledStyle = ButtonStyle(foregroundColor: MaterialStateProperty.resolveWith((_) => Colors.redAccent));
     return Expanded(
       flex: 1,
       child: Row(
         children: [
           Spacer(),
-          FlatButton(
+          TextButton(
             child: Text('Delete'),
-            color: Colors.red,
+            style: enabledStyle,
             onPressed: () async {
               await NotificationDialog.showNotificationDialog(context, 'Are you sure about deleting ${desire.title} ?', _deleteDesire);
             },
           ),
           Spacer(),
-          FlatButton(
+          TextButton(
             child: Text('Update'),
             onPressed: () async {
               if (_formKey.currentState.validate()) {

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:my_life/cubits/connection/connection_page_cubit.dart';
-import 'package:my_life/handlers/alert_exception.dart';
 import 'package:my_life/models/user.dart';
 import 'package:meta/meta.dart';
 
@@ -19,9 +18,6 @@ class SummaryButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<ConnectionPageCubit, ConnectionPageState>(
       builder: (BuildContext context, ConnectionPageState state) {
-        if (state is FailedPageConnect) {
-          Future.microtask(() => AlertException.showAlertDialog(context, state.exception.toString()));
-        }
         return Container(
           padding: EdgeInsets.symmetric(horizontal: 100.0, vertical: 10.0),
           child: ElevatedButton(
@@ -30,8 +26,9 @@ class SummaryButton extends StatelessWidget {
               if (!(state is TryingPageConnect)) {
                 if (_formKey.currentState.validate()) {
                   _formKey.currentState.save();
-                  Scaffold.of(context).showSnackBar(SnackBar(content: Text(user.toString())));
+                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(user.toString())));
                   _tryToConnect(context, state);
+                  FocusScope.of(context).unfocus();
                 }
               }
             },
@@ -42,6 +39,6 @@ class SummaryButton extends StatelessWidget {
   }
 
   Future<void> _tryToConnect(BuildContext context, ConnectionPageState state) async {
-      await connectionCubit.tryConnection();
+      await connectionCubit.tryConnection(context);
   }
 }

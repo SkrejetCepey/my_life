@@ -37,8 +37,10 @@ class SimpleAbstractFormField extends StatelessWidget {
       onSaved: (String s) {
         if (model is User)
           return (model as User).add(property, s);
-        else if (model is Desire)
-          return (model as Desire).setTitle(s);
+        else if (model is Desire) {
+          (model as Desire).title = s;
+          return;
+        }
       },
     );
   }

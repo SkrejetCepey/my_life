@@ -11,7 +11,6 @@ import 'package:my_life/models/user.dart';
 class AuthPage extends StatelessWidget {
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  final ConnectionPageCubit _connectionPageCubit = ConnectionPageCubit();
   final User user = User();
 
   @override
@@ -19,7 +18,7 @@ class AuthPage extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider<ConnectionPageCubit>(
-          create: (BuildContext context) => _connectionPageCubit,
+          create: (BuildContext context) => ConnectionPageCubit(),
         )
       ],
       child: BlocBuilder<ConnectionPageCubit, ConnectionPageState>(
@@ -38,7 +37,8 @@ class AuthPage extends StatelessWidget {
                 ListTile(
                   title: PasswordFormField(user: user),
                 ),
-                SummaryButton(formKey: _formKey, user: user, title: 'Sign In!', connectionCubit: _connectionPageCubit),
+                SummaryButton(formKey: _formKey, user: user, title: 'Sign In!',
+                    connectionCubit: BlocProvider.of<ConnectionPageCubit>(context)),
                 FooterContent(state: state)
               ],
             ),

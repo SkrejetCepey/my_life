@@ -4,7 +4,7 @@ class AlertException {
 
   static showAlertDialog(BuildContext context, String errMessage) async {
 
-    Widget okButton = FlatButton(
+    Widget okButton = TextButton(
       child: Text("OK"),
       onPressed: () {
         Navigator.pop(context);

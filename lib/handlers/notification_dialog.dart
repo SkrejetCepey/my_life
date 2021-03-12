@@ -3,14 +3,14 @@ import 'package:flutter/material.dart';
 class NotificationDialog {
   static showNotificationDialog(BuildContext context, String content, Function callback) async {
 
-    Widget cancelButton = FlatButton(
+    Widget cancelButton = TextButton(
       child: Text("Cancel"),
       onPressed: () {
         Navigator.pop(context);
       },
     );
 
-    Widget okButton = FlatButton(
+    Widget okButton = TextButton(
       child: Text("OK!"),
       onPressed: () {
         callback(context);
