@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:my_life/cubits/main_page/desires_list_cubit.dart';
-import 'package:my_life/models/desire.dart';
 import 'package:my_life/pages/desire_page.dart';
+import 'desire/desire.dart';
 
 class DesiresList extends StatelessWidget {
 

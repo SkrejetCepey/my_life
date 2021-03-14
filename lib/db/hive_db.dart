@@ -1,7 +1,9 @@
 import 'package:hive/hive.dart';
-import 'package:my_life/models/desire.dart';
+import 'package:my_life/db/db_interface.dart';
+import 'package:my_life/models/desire/desire.dart';
 
-class HiveDB {
+
+class HiveDB implements Database<Desire> {
 
   HiveDB._();
   static final HiveDB db = HiveDB._();
@@ -19,20 +21,24 @@ class HiveDB {
 
   Future<Box<Desire>> _init() async => await Hive.openBox("desires");
 
+  @override
   Future<void> create(Desire desire) async {
     return await database..add(desire);
   }
 
+  @override
+  Future<void> update(Desire desire) async {
+    return await desire.save();
+  }
+
+  @override
   Future<List<Desire>> getAll() async {
     return (await database).values.toList();
   }
 
+  @override
   Future<void> delete(Desire desire) async {
-    desire.delete();
-  }
-
-  Future<void> update(Desire desire) async {
-    desire.save();
+    return await desire.delete();
   }
 
 }

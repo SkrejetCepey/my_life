@@ -1,29 +1,12 @@
-import 'package:hive/hive.dart';
 
-class Database {
+abstract class Database<T> {
 
-  Future create<T extends HiveObject>(T createEntry) {
-    // TODO: implement build
-    throw UnimplementedError();
-  }
+  Future<void> create(T createEntry);
 
-  Future get() {
-    // TODO: implement build
-    throw UnimplementedError();
-  }
+  Future<void> update(T updateEntry);
 
-  Future getAll() {
-    // TODO: implement build
-    throw UnimplementedError();
-  }
+  Future<List<T>> getAll();
 
-  Future update() {
-    // TODO: implement build
-    throw UnimplementedError();
-  }
+  Future<void> delete(T desire);
 
-  Future delete() {
-    // TODO: implement build
-    throw UnimplementedError();
-  }
 }

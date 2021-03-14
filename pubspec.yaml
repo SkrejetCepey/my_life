@@ -24,7 +24,6 @@ dependencies:
   flutter:
     sdk: flutter
   flutter_bloc: ^6.1.2
-  sqflite: ^2.0.0+2
   path_provider: ^2.0.1
   hive: ^2.0.0
   hive_flutter: ^1.0.0

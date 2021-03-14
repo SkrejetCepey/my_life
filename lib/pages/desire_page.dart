@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:my_life/cubits/main_page/desires_list_cubit.dart';
 import 'package:my_life/custom_widgets/simple_abstract_form_field.dart';
 import 'package:my_life/handlers/notification_dialog.dart';
-import 'package:my_life/models/desire.dart';
+import 'package:my_life/models/desire/desire.dart';
+import 'package:my_life/models/desire_particle_model.dart';
+import 'package:my_life/pages/particles_desire_page.dart';
 
 enum _variantsDesirePage {
   add,
@@ -38,6 +40,28 @@ class DesirePage extends StatelessWidget{
           children: [
             ListTile(
               title: SimpleAbstractFormField(model: desire, iconData: Icons.title, property: 'title'),
+            ),
+            Column(
+              children: <Widget>[
+                for (DesireParticleModel entry in desire.particleModels) Column(
+                  children: [
+                    Divider(),
+                    entry.build(context)
+                  ],
+                ),
+              ],
+            ),
+            ListTile(
+              title: ElevatedButton(
+                child: Text('+'),
+                onPressed: () {
+                  // print('${BlocProvider.of<DesirePageCubit>(context)}');
+                  Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) =>
+                      ParticlesDesirePage(desire: desire)
+                  )
+                  );
+                }
+              ),
             )
           ],
         ),

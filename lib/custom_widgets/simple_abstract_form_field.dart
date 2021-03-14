@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:meta/meta.dart';
 import 'package:my_life/models/abstract_model.dart';
-import 'package:my_life/models/desire.dart';
+import 'package:my_life/models/desire/desire.dart';
 import 'package:my_life/models/user.dart';
 
 class SimpleAbstractFormField extends StatelessWidget {
@@ -41,6 +41,10 @@ class SimpleAbstractFormField extends StatelessWidget {
           (model as Desire).title = s;
           return;
         }
+        // else if (model is ParticleCheckboxModel) {
+        //   (model as ParticleCheckboxModel).title = s;
+        //   return;
+        // }
       },
     );
   }

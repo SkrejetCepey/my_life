@@ -1,28 +1,26 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'desire.dart';
+part of 'particle_checkbox.dart';
 
 // **************************************************************************
 // TypeAdapterGenerator
 // **************************************************************************
 
-class DesireAdapter extends TypeAdapter<Desire> {
+class ParticleCheckboxAdapter extends TypeAdapter<ParticleCheckbox> {
   @override
-  final int typeId = 0;
+  final int typeId = 1;
 
   @override
-  Desire read(BinaryReader reader) {
+  ParticleCheckbox read(BinaryReader reader) {
     final numOfFields = reader.readByte();
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return Desire(
-      title: fields[0] as String,
-    );
+    return ParticleCheckbox()..title = fields[0] as String;
   }
 
   @override
-  void write(BinaryWriter writer, Desire obj) {
+  void write(BinaryWriter writer, ParticleCheckbox obj) {
     writer
       ..writeByte(1)
       ..writeByte(0)
@@ -35,7 +33,7 @@ class DesireAdapter extends TypeAdapter<Desire> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is DesireAdapter &&
+      other is ParticleCheckboxAdapter &&
           runtimeType == other.runtimeType &&
           typeId == other.typeId;
 }

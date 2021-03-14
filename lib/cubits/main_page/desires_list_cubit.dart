@@ -1,7 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
 import 'package:my_life/db/hive_db.dart';
-import 'package:my_life/models/desire.dart';
+import 'package:my_life/models/desire/desire.dart';
 
 part 'desires_list_state.dart';
 
