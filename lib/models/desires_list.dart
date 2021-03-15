@@ -1,16 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:my_life/cubits/main_page/desires_list_cubit.dart';
 import 'package:my_life/pages/desire_page.dart';
 import 'desire/desire.dart';
 
 class DesiresList extends StatelessWidget {
 
-  final DesiresListCubit cubit;
-
-  DesiresList({Key key, this.cubit}) : super(key: key);
+  DesiresList({Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+
+    final DesiresListCubit cubit = BlocProvider.of<DesiresListCubit>(context);
+
     return ListView.builder(
       itemCount: cubit.desireList.length,
       itemBuilder: (BuildContext context, int index) {
@@ -22,7 +24,7 @@ class DesiresList extends StatelessWidget {
             child: ListTile(
               onTap: () {
                 Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) =>
-                    DesirePage.edit(desire: desire, cubit: cubit)));
+                    DesirePage.edit(desire: desire)));
               },
               title: Container(
                   child: Row(

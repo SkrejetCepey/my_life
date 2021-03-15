@@ -1,4 +1,5 @@
 import 'package:bloc/bloc.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:meta/meta.dart';
 import 'package:my_life/models/desire/desire.dart';
 import 'package:my_life/models/desire_particle_model.dart';
@@ -7,14 +8,33 @@ part 'desire_page_state.dart';
 
 class DesirePageCubit extends Cubit<DesirePageState> {
 
-  final Desire desire;
+  Desire desire;
 
-  DesirePageCubit({this.desire}) : super(DesirePageInitial());
+  DesirePageCubit() : super(DesirePageInitial());
 
   Future<void> add(DesireParticleModel val) async {
     emit(DesirePageAddedNewParticleDesire());
-    desire.particleModels.add(val);
-    emit(DesirePageInitial());
+    desire.particleModels = List.from(desire.particleModels)..add(val);
+    _init();
+  }
+
+  Future<void> update(DesireParticleModel val) async {
+    emit(DesirePageUpdateParticlesDesire());
+    desire.particleModels[desire.particleModels.indexOf(val)] = val;
+    _init();
+  }
+
+  Future<void> delete(DesireParticleModel val) async {
+    emit(DesirePageDeleteParticlesDesire());
+    desire.particleModels = List.from(desire.particleModels)..remove(val);
+    _init();
+  }
+
+  Future<void> _init() async {
+    if (desire.particleModels.isEmpty)
+      emit(DesirePageParticlesDesireEmpty());
+    else
+      emit(DesirePageListParticlesDesire());
   }
 }
 

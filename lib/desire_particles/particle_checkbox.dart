@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive/hive.dart';
+import 'package:my_life/cubits/desire_page/desire_page_cubit.dart';
 import 'package:my_life/cubits/particle_checkbox/particle_checkbox_cubit.dart';
+import 'package:my_life/custom_widgets/simple_abstract_form_field.dart';
+import 'package:my_life/handlers/notification_dialog.dart';
 import 'package:my_life/models/abstract_model.dart';
-import 'package:my_life/models/desire/desire.dart';
 import 'package:my_life/models/desire_particle_model.dart';
 
 part 'particle_checkbox.g.dart';
@@ -13,11 +15,15 @@ class ParticleCheckbox extends HiveObject implements DesireParticleModel, Abstra
 
   @HiveField(0)
   String title;
+  @HiveField(1)
+  bool serialisedState;
 
-  final Desire desire;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
-  ParticleCheckbox({this.desire});
+  ParticleCheckbox({this.title, this.serialisedState}) {
+    if (serialisedState == null)
+      serialisedState = false;
+  }
 
   @override
   Widget skinView(BuildContext context) {
@@ -41,7 +47,61 @@ class ParticleCheckbox extends HiveObject implements DesireParticleModel, Abstra
         child: ListView(
           children: [
             ListTile(
+              title: SimpleAbstractFormField(model: this, iconData: Icons.title, property: 'title'),
+            ),
+          ],
+        ),
+      ),
+      bottomNavigationBar: Padding(
+        padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 0.0),
+        child: Row(
+          children: <Widget>[
+            TextButton(
+              child: Text('Cancel'),
+              onPressed: () => Navigator.pop(context),
+            ),
+            Spacer(),
+            TextButton(
+              child: Text('Save'),
+              onPressed: () async {
+                if (_formKey.currentState.validate()) {
+                  _formKey.currentState.save();
+                  BlocProvider.of<DesirePageCubit>(context).add(this);
+                  Navigator.pop(context);
+                  Navigator.pop(context);
+                }
+              },
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  @override
+  Scaffold editPage(BuildContext context) {
+
+    final TextEditingController _titleTextEditingController = TextEditingController();
+    _titleTextEditingController.text = title;
+
+    Future<void> _deleteDesireParticle(BuildContext context) async {
+      BlocProvider.of<DesirePageCubit>(context).delete(this);
+      Navigator.pop(context);
+    }
+
+    final ButtonStyle deleteButtonStyle = ButtonStyle(foregroundColor: MaterialStateProperty.resolveWith((_) => Colors.redAccent));
+
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('ParticleCheckBoxEditing'),
+      ),
+      body: Form(
+        key: _formKey,
+        child: ListView(
+          children: [
+            ListTile(
               title: TextFormField(
+                controller: _titleTextEditingController,
                 decoration: InputDecoration(
                   prefixIcon: Icon(Icons.title),
                   fillColor: Colors.white60,
@@ -72,14 +132,23 @@ class ParticleCheckbox extends HiveObject implements DesireParticleModel, Abstra
             ),
             Spacer(),
             TextButton(
-              child: Text('Save'),
+              style: deleteButtonStyle,
+              child: Text('Delete'),
               onPressed: () async {
+                await NotificationDialog.showNotificationDialog(context,
+                    'Are you sure about deleting ${this.title} ?',
+                    _deleteDesireParticle);
+                // desirePageCubit.delete(this);
+                Navigator.pop(context);
+              },
+            ),
+            Spacer(),
+            TextButton(
+              child: Text('Update'),
+              onPressed: () {
                 if (_formKey.currentState.validate()) {
                   _formKey.currentState.save();
-
-                  // desirePageCubit.add(this);
-                  desire.particleModels.add(this);
-                  Navigator.pop(context);
+                  BlocProvider.of<DesirePageCubit>(context).update(this);
                   Navigator.pop(context);
                 }
               },
@@ -92,11 +161,16 @@ class ParticleCheckbox extends HiveObject implements DesireParticleModel, Abstra
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (_) => ParticleCheckboxCubit(),
+    return BlocProvider<ParticleCheckboxCubit>(
+      create: (_) => ParticleCheckboxCubit(serialisedState),
       child: BlocBuilder<ParticleCheckboxCubit, bool>(
         builder: (BuildContext context, bool state) {
+          serialisedState = state;
           return ListTile(
+            onTap: () {
+              Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) =>
+                  editPage(context)));
+            },
             title: Row(
               children: [
                 Checkbox(

@@ -1,7 +1,7 @@
 import 'package:bloc/bloc.dart';
 
 class ParticleCheckboxCubit extends Cubit<bool> {
-  ParticleCheckboxCubit() : super(false);
+  ParticleCheckboxCubit(bool initState) : super(initState);
 
   void switchParticleCheckBoxState() => emit(!state);
 }

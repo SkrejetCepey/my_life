@@ -6,35 +6,30 @@ import 'desire_page.dart';
 
 class MainPage extends StatelessWidget {
 
-  final DesiresListCubit _mainPageCubit = DesiresListCubit();
-
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (_) => _mainPageCubit,
-      child: Scaffold(
-        appBar: AppBar(
-          title: Text('MainPage'),
-        ),
-        body: BlocBuilder<DesiresListCubit, DesiresListState>(
-          builder: (BuildContext context, DesiresListState state) {
-            if (state is DesiresListInitialisedEmpty)
-              return HelloNewbiePage();
-            else if (state is DesiresListInitialised)
-              return InitialisedDesiresListPage();
-            else {
-              return ConnectToDatabaseLoadingBar();
-            }
-          },
-        ),
-        floatingActionButton: FloatingActionButton(
-          child: Icon(Icons.add),
-          onPressed: () {
-            Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) =>
-                DesirePage.add(cubit: _mainPageCubit)));
-          },
-        ),
-      )
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('MainPage'),
+      ),
+      body: BlocBuilder<DesiresListCubit, DesiresListState>(
+        builder: (BuildContext context, DesiresListState state) {
+          if (state is DesiresListInitialisedEmpty)
+            return HelloNewbiePage();
+          else if (state is DesiresListInitialised)
+            return InitialisedDesiresListPage();
+          else {
+            return ConnectToDatabaseLoadingBar();
+          }
+        },
+      ),
+      floatingActionButton: FloatingActionButton(
+        child: Icon(Icons.add),
+        onPressed: () {
+          Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) =>
+              DesirePage.add()));
+        },
+      ),
     );
   }
 }
@@ -50,7 +45,7 @@ class InitialisedDesiresListPage extends StatelessWidget {
     return RefreshIndicator(
       key: _refreshKey,
       onRefresh: _cubit.refresh,
-      child: DesiresList(cubit: _cubit),
+      child: DesiresList(),
     );
   }
 

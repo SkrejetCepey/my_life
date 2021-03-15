@@ -1,16 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:my_life/desire_particles/particle_checkbox.dart';
-import 'package:my_life/models/desire/desire.dart';
 import 'package:my_life/models/desire_particle_model.dart';
 
 class ParticlesDesirePage extends StatelessWidget {
 
-  final Desire desire;
   final List<DesireParticleModel> _generationList;
 
-  ParticlesDesirePage({@required this.desire}) :
+  ParticlesDesirePage() :
     _generationList = [
-      ParticleCheckbox(desire: desire),
+      ParticleCheckbox(),
     ];
 
   @override

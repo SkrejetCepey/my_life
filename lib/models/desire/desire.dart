@@ -10,9 +10,9 @@ class Desire extends HiveObject with AbstractModel {
   @HiveField(0)
   String title;
   @HiveField(1)
-  List<DesireParticleModel> particleModels = <DesireParticleModel>[];
+  List<DesireParticleModel> particleModels = List.empty(growable: true);
 
-  Desire({this.title});
+  Desire({this.title, this.particleModels});
 
   bool isEmpty() => (title == null);
 

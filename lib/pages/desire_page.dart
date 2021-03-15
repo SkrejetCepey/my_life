@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:my_life/cubits/desire_page/desire_page_cubit.dart';
 import 'package:my_life/cubits/main_page/desires_list_cubit.dart';
 import 'package:my_life/custom_widgets/simple_abstract_form_field.dart';
 import 'package:my_life/handlers/notification_dialog.dart';
@@ -14,57 +16,64 @@ enum _variantsDesirePage {
 class DesirePage extends StatelessWidget{
 
   final Desire desire;
-  final DesiresListCubit cubit;
+
   final String pageTitle;
   final _variantsDesirePage selectedPage;
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
-  DesirePage.add({Key key, @required this.cubit}) :
+  DesirePage.add({Key key}) :
         desire = Desire(), pageTitle = 'AddDesirePage',
         selectedPage = _variantsDesirePage.add, super(key: key);
 
-  DesirePage.edit({Key key, @required this.cubit, this.desire}) :
+  DesirePage.edit({Key key, this.desire}) :
         pageTitle = 'EditDesirePage',
         selectedPage = _variantsDesirePage.edit, super(key: key);
 
   @override
   Widget build(BuildContext context) {
+
+    BlocProvider.of<DesirePageCubit>(context).desire = desire;
+
     return Scaffold(
       appBar: AppBar(
         title: Text(pageTitle),
       ),
-      body: Form(
-        key: _formKey,
-        child: ListView(
-          children: [
-            ListTile(
-              title: SimpleAbstractFormField(model: desire, iconData: Icons.title, property: 'title'),
-            ),
-            Column(
-              children: <Widget>[
-                for (DesireParticleModel entry in desire.particleModels) Column(
-                  children: [
-                    Divider(),
-                    entry.build(context)
+      body: BlocBuilder<DesirePageCubit, DesirePageState>(
+        builder: (BuildContext context, DesirePageState state) {
+          return Form(
+            key: _formKey,
+            child: ListView(
+              children: [
+                ListTile(
+                  title: SimpleAbstractFormField(model: desire, iconData: Icons.title, property: 'title'),
+                ),
+                Column(
+                  children: <Widget>[
+                    for (DesireParticleModel entry in desire.particleModels) Column(
+                      children: [
+                        Divider(),
+                        entry.build(context)
+                      ],
+                    ),
                   ],
                 ),
+                ListTile(
+                  title: ElevatedButton(
+                      child: Text('+'),
+                      onPressed: () {
+                        BlocProvider.of<DesirePageCubit>(context).desire = desire;
+                        Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) =>
+                            ParticlesDesirePage()
+                        )
+                        );
+                      }
+                  ),
+                )
               ],
             ),
-            ListTile(
-              title: ElevatedButton(
-                child: Text('+'),
-                onPressed: () {
-                  // print('${BlocProvider.of<DesirePageCubit>(context)}');
-                  Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) =>
-                      ParticlesDesirePage(desire: desire)
-                  )
-                  );
-                }
-              ),
-            )
-          ],
-        ),
+          );
+        },
       ),
       bottomNavigationBar: Padding(
         padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 0.0),
@@ -112,7 +121,7 @@ class DesirePage extends StatelessWidget{
   }
 
   Widget _editUniqueBottomStaff(BuildContext context) {
-    final ButtonStyle enabledStyle = ButtonStyle(foregroundColor: MaterialStateProperty.resolveWith((_) => Colors.redAccent));
+    final ButtonStyle deleteButtonStyle = ButtonStyle(foregroundColor: MaterialStateProperty.resolveWith((_) => Colors.redAccent));
     return Expanded(
       flex: 1,
       child: Row(
@@ -120,7 +129,7 @@ class DesirePage extends StatelessWidget{
           Spacer(),
           TextButton(
             child: Text('Delete'),
-            style: enabledStyle,
+            style: deleteButtonStyle,
             onPressed: () async {
               await NotificationDialog.showNotificationDialog(context, 'Are you sure about deleting ${desire.title} ?', _deleteDesire);
             },
@@ -141,16 +150,19 @@ class DesirePage extends StatelessWidget{
   }
 
   Future<void> _addDesire(BuildContext context) async {
+    final DesiresListCubit cubit = BlocProvider.of<DesiresListCubit>(context);
     await cubit.add(desire);
     Navigator.pop(context);
   }
 
   Future<void> _updateDesire(BuildContext context) async {
+    final DesiresListCubit cubit = BlocProvider.of<DesiresListCubit>(context);
     await cubit.update(desire);
     Navigator.pop(context);
   }
 
   Future<void> _deleteDesire(BuildContext context) async {
+    final DesiresListCubit cubit = BlocProvider.of<DesiresListCubit>(context);
     await cubit.delete(desire);
     Navigator.pop(context);
     Navigator.pop(context);

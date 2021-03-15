@@ -8,3 +8,9 @@ class DesirePageInitial extends DesirePageState {}
 class DesirePageAddedNewParticleDesire extends DesirePageState {}
 
 class DesirePageParticlesDesireEmpty extends DesirePageState {}
+
+class DesirePageListParticlesDesire extends DesirePageState {}
+
+class DesirePageUpdateParticlesDesire extends DesirePageState {}
+
+class DesirePageDeleteParticlesDesire extends DesirePageState {}
