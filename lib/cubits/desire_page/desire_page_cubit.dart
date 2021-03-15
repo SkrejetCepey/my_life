@@ -12,6 +12,10 @@ class DesirePageCubit extends Cubit<DesirePageState> {
 
   DesirePageCubit() : super(DesirePageInitial());
 
+  Future<void> addDesire(Desire desire) async {
+    this.desire = desire;
+  }
+
   Future<void> add(DesireParticleModel val) async {
     emit(DesirePageAddedNewParticleDesire());
     desire.particleModels = List.from(desire.particleModels)..add(val);

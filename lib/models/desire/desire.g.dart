@@ -18,8 +18,7 @@ class DesireAdapter extends TypeAdapter<Desire> {
     };
     return Desire(
       title: fields[0] as String,
-      particleModels: (fields[1] as List)?.cast<DesireParticleModel>(),
-    );
+    )..particleModels = (fields[1] as List)?.cast<DesireParticleModel>();
   }
 
   @override

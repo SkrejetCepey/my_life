@@ -16,24 +16,22 @@ enum _variantsDesirePage {
 class DesirePage extends StatelessWidget{
 
   final Desire desire;
-
   final String pageTitle;
   final _variantsDesirePage selectedPage;
-
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   DesirePage.add({Key key}) :
         desire = Desire(), pageTitle = 'AddDesirePage',
         selectedPage = _variantsDesirePage.add, super(key: key);
 
-  DesirePage.edit({Key key, this.desire}) :
+  DesirePage.edit({Key key, @required this.desire}) :
         pageTitle = 'EditDesirePage',
         selectedPage = _variantsDesirePage.edit, super(key: key);
 
   @override
   Widget build(BuildContext context) {
 
-    BlocProvider.of<DesirePageCubit>(context).desire = desire;
+    BlocProvider.of<DesirePageCubit>(context).addDesire(desire);
 
     return Scaffold(
       appBar: AppBar(
