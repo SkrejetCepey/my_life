@@ -24,7 +24,9 @@ class DesirePageCubit extends Cubit<DesirePageState> {
 
   Future<void> update(DesireParticleModel val) async {
     emit(DesirePageUpdateParticlesDesire());
-    desire.particleModels[desire.particleModels.indexOf(val)] = val;
+    //TODO fix this
+    desire.particleModels = List.from(desire.particleModels)..insert(desire.particleModels.indexOf(val), val);
+    desire.particleModels..removeLast();
     _init();
   }
 
