@@ -177,7 +177,9 @@ class ParticleCheckbox extends HiveObject implements DesireParticleModel, Abstra
                   value: state,
                   onChanged: (_) => BlocProvider.of<ParticleCheckboxCubit>(context).switchParticleCheckBoxState(),
                 ),
-                Text(title),
+                Flexible(
+                    child: Text(title)
+                ),
               ],
             ),
           );

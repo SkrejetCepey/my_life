@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:meta/meta.dart';
-import 'package:my_life/desire_particles/particle_checkbox.dart';
+import 'package:my_life/desire_particles/particle_checkbox/particle_checkbox.dart';
 import 'package:my_life/models/abstract_model.dart';
 import 'package:my_life/models/desire/desire.dart';
 import 'package:my_life/models/user.dart';
@@ -21,6 +21,7 @@ class SimpleAbstractFormField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
     return TextFormField(
       controller: _titleTextEditingController,
       decoration: InputDecoration(

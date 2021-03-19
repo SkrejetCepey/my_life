@@ -9,7 +9,7 @@ import 'package:my_life/observer/global_observer.dart';
 import 'package:my_life/pages/auth_page.dart';
 import 'package:my_life/pages/main_page.dart';
 import 'package:my_life/pages/signup_page.dart';
-import 'desire_particles/particle_checkbox.dart';
+import 'desire_particles/particle_checkbox/particle_checkbox.dart';
 import 'models/desire/desire.dart';
 
 

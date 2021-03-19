@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:my_life/desire_particles/particle_checkbox.dart';
+import 'package:my_life/desire_particles/particle_checkbox/particle_checkbox.dart';
 import 'package:my_life/models/desire_particle_model.dart';
 
 class ParticlesDesirePage extends StatelessWidget {
