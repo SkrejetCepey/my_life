@@ -28,17 +28,37 @@ class AuthPage extends StatelessWidget {
             child: ListView(
               children: <Widget>[
                 SizedBox(
+                  child: Image.asset('assets/logo/logo.png'),
                   width: 0.0,
                   height: 250.0,
                 ),
-                ListTile(
-                  title: UsernameFormField(user: user),
+                Container(
+                  margin: EdgeInsets.all(20.0),
+                  padding: EdgeInsets.all(20.0),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.all(Radius.circular(25.0)),
+                    color: Colors.grey[400]
+                  ),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text('AUTHORISATION', style: TextStyle(fontSize: 30.0)),
+                      SizedBox(
+                        height: 15.0,
+                      ),
+                      ListTile(
+                        contentPadding: EdgeInsets.symmetric(horizontal: 50.0),
+                        title: UsernameFormField(user: user),
+                      ),
+                      ListTile(
+                        contentPadding: EdgeInsets.symmetric(horizontal: 50.0),
+                        title: PasswordFormField(user: user),
+                      ),
+                      SummaryButton(formKey: _formKey, user: user, title: 'Sign In!',
+                          connectionCubit: BlocProvider.of<ConnectionPageCubit>(context)),
+                    ],
+                  ),
                 ),
-                ListTile(
-                  title: PasswordFormField(user: user),
-                ),
-                SummaryButton(formKey: _formKey, user: user, title: 'Sign In!',
-                    connectionCubit: BlocProvider.of<ConnectionPageCubit>(context)),
                 FooterContent(state: state)
               ],
             ),
@@ -68,10 +88,9 @@ class FooterContent extends StatelessWidget {
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Text("You don't have an account?", style: TextStyle(fontWeight:FontWeight.w300)),
-            TextButton(
+            ElevatedButton(
               style: (state is TryingPageConnect) ? disabledStyle : enabledStyle,
-              child: Text('Sign up!'),
+              child: Text('Sign up!', style: TextStyle(color: Colors.brown)),
               onPressed: () {
                 if (state is TryingPageConnect)
                   return null;
@@ -85,7 +104,7 @@ class FooterContent extends StatelessWidget {
         Container(
           child: TextButton(
             style: (state is TryingPageConnect) ? disabledStyle : enabledStyle,
-            child: Text('Continue as guest'),
+            child: Text('Continue as guest', style: TextStyle(color: Colors.brown)),
             onPressed: () {
               if (state is TryingPageConnect)
                 return null;

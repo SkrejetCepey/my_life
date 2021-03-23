@@ -20,7 +20,6 @@ class PasswordFormField extends StatelessWidget {
             obscureText: state,
             onSaved: (String s) => user.add('password', s),
             decoration: InputDecoration(
-              icon: Icon(Icons.lock),
               suffixIcon: IconButton(
                 icon: state ? Icon(Icons.visibility) : Icon(Icons.visibility_off),
                 onPressed: () {
@@ -30,7 +29,6 @@ class PasswordFormField extends StatelessWidget {
               fillColor: Colors.white60,
               hintText: 'password',
               border: OutlineInputBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(25.0)),
                   borderSide: BorderSide(color: Colors.blue)
               ),
               filled: true,

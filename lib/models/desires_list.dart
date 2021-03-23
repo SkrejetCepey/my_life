@@ -18,9 +18,8 @@ class DesiresList extends StatelessWidget {
       itemBuilder: (BuildContext context, int index) {
         Desire desire = cubit.desireList[index];
         return Container(
-          padding: EdgeInsets.fromLTRB(20.0, 20.0, 20.0, 0.0),
           child: Card(
-            elevation: 8.0,
+            elevation: 2.0,
             child: DesireUnit(desire: desire),
           ),
         );

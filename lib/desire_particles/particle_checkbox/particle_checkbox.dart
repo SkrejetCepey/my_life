@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:hive/hive.dart';
 import 'package:my_life/cubits/desire_page/desire_page_cubit.dart';
 import 'package:my_life/cubits/particle_checkbox/particle_checkbox_cubit.dart';
@@ -173,10 +174,7 @@ class ParticleCheckbox extends HiveObject implements DesireParticleModel, Abstra
             },
             title: Row(
               children: [
-                Checkbox(
-                  value: state,
-                  onChanged: (_) => BlocProvider.of<ParticleCheckboxCubit>(context).switchParticleCheckBoxState(),
-                ),
+                RoundedCheckbox(state: state),
                 Flexible(
                     child: Text(title)
                 ),
@@ -188,4 +186,26 @@ class ParticleCheckbox extends HiveObject implements DesireParticleModel, Abstra
     );
   }
 
+}
+
+class RoundedCheckbox extends StatelessWidget {
+
+  final bool state;
+
+  RoundedCheckbox({this.state});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: BoxDecoration(
+        shape: BoxShape.circle,
+      ),
+      child: IconButton(
+        icon: state ? Icon(Icons.check_circle_outline) : Icon(FontAwesomeIcons.circle),
+        onPressed: () {
+          BlocProvider.of<ParticleCheckboxCubit>(context).switchParticleCheckBoxState();
+        },
+      )
+    );
+  }
 }

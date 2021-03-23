@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:intl/date_symbol_data_local.dart';
 import 'package:my_life/cubits/desire_page/desire_page_cubit.dart';
 import 'package:my_life/cubits/main_page/desires_list_cubit.dart';
 import 'package:my_life/db/hive_db.dart';
@@ -18,6 +19,7 @@ void main() async {
 
   await Hive.initFlutter();
   HiveDB.db.database;
+  initializeDateFormatting();
   Hive.registerAdapter(DesireAdapter());
   Hive.registerAdapter(ParticleCheckboxAdapter());
   runApp(App());
@@ -37,14 +39,24 @@ class App extends StatelessWidget {
         )
       ],
       child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        theme: ThemeData(
+          elevatedButtonTheme: ElevatedButtonThemeData(
+            style: ButtonStyle(
+              backgroundColor: MaterialStateProperty.resolveWith<Color>(
+                      (states) => Colors.limeAccent[400]),
+            )
+          ),
+          buttonTheme: ButtonThemeData(
+            buttonColor: Colors.lime,
+          ),
+          primaryColor: Colors.limeAccent[400],
+        ),
         routes: {
           '/sign_up': (BuildContext context) => SignUpPage(),
           '/main': (BuildContext context) => MainPage()
         },
         home: Scaffold(
-          appBar: AppBar(
-            title: Text('My life prototype'),
-          ),
           body: AuthPage()
         ),
       ),

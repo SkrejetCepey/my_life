@@ -21,7 +21,8 @@ class SummaryButton extends StatelessWidget {
         return Container(
           padding: EdgeInsets.symmetric(horizontal: 100.0, vertical: 10.0),
           child: ElevatedButton(
-            child: (state is TryingPageConnect) ? CircularProgressIndicator(valueColor: AlwaysStoppedAnimation<Color>(Colors.deepOrangeAccent)) : Text(title),
+            child: (state is TryingPageConnect) ? CircularProgressIndicator(valueColor: AlwaysStoppedAnimation<Color>(Colors.deepOrangeAccent)) : Text(title,
+            style: TextStyle(color: Colors.brown)),
             onPressed: () async {
               if (!(state is TryingPageConnect)) {
                 if (_formKey.currentState.validate()) {

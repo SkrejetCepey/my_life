@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:my_life/cubits/drop_down_list_arrow/drop_down_list_arrow_cubit.dart';
 import 'package:my_life/models/desire/desire.dart';
 import 'package:meta/meta.dart';
@@ -27,10 +28,12 @@ class DesireUnit extends StatelessWidget {
             title: Container(
                 child: Row(
                   children: <Widget>[
-                    Text('${desire.title}'),
+                    Text('${desire.title}', style: TextStyle(
+                        color: Colors.brown[700]
+                    )),
                     Spacer(),
                     IconButton(
-                      icon: Icon(Icons.arrow_downward_outlined),
+                      icon: Icon(FontAwesomeIcons.cog),
                       onPressed: () {
                         BlocProvider.of<DropDownListArrowCubit>(context).switchDropDownListState();
                       },

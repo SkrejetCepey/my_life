@@ -3,6 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:my_life/cubits/main_page/desires_list_cubit.dart';
 import 'package:my_life/models/desires_list.dart';
 import 'desire_page.dart';
+import 'package:table_calendar/table_calendar.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class MainPage extends StatelessWidget {
 
@@ -10,7 +12,29 @@ class MainPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('MainPage'),
+        leading: IconButton(
+          color: Colors.white,
+          iconSize: 40.0,
+          icon: Icon(FontAwesomeIcons.userCircle),
+          onPressed: () {
+            print('tapped on user!');
+          },
+        ),
+        actions: [
+          IconButton(
+            color: Colors.white,
+            iconSize: 40.0,
+              icon: Icon(FontAwesomeIcons.plus),
+              onPressed: () {
+                Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) =>
+                    DesirePage.add()));
+              }
+          ),
+        ],
+        title: Text('MY DESIRES',
+            style: TextStyle(
+              color: Colors.brown[600]
+            )),
       ),
       body: BlocBuilder<DesiresListCubit, DesiresListState>(
         builder: (BuildContext context, DesiresListState state) {
@@ -21,13 +45,6 @@ class MainPage extends StatelessWidget {
           else {
             return ConnectToDatabaseLoadingBar();
           }
-        },
-      ),
-      floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.add),
-        onPressed: () {
-          Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) =>
-              DesirePage.add()));
         },
       ),
     );
@@ -43,9 +60,21 @@ class InitialisedDesiresListPage extends StatelessWidget {
     final GlobalKey<RefreshIndicatorState> _refreshKey = GlobalKey<RefreshIndicatorState>();
 
     return RefreshIndicator(
-      key: _refreshKey,
-      onRefresh: _cubit.refresh,
-      child: DesiresList(),
+        key: _refreshKey,
+        onRefresh: _cubit.refresh,
+        child: Column(
+            children: [
+              TableCalendar(
+                locale: 'ru_RU',
+                initialCalendarFormat: CalendarFormat.week,
+                  calendarController: CalendarController(),
+                availableCalendarFormats: {CalendarFormat.week : 'Weeks'},
+              ),
+              Expanded(
+                  child: DesiresList()
+              )
+            ]
+        )
     );
   }
 

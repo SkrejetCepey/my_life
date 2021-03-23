@@ -13,11 +13,9 @@ class UsernameFormField extends StatelessWidget {
     return TextFormField(
       onSaved: (String s) => user.add('username', s),
       decoration: InputDecoration(
-        icon: Icon(Icons.person),
         fillColor: Colors.white60,
         hintText: 'username/login',
         border: OutlineInputBorder(
-            borderRadius: BorderRadius.all(Radius.circular(25.0)),
             borderSide: BorderSide(color: Colors.blue)
         ),
         filled: true,
