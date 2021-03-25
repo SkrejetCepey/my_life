@@ -6,6 +6,7 @@ import 'package:intl/date_symbol_data_local.dart';
 import 'package:my_life/cubits/desire_page/desire_page_cubit.dart';
 import 'package:my_life/cubits/main_page/desires_list_cubit.dart';
 import 'package:my_life/db/hive_db.dart';
+import 'package:my_life/models/icon_data_structure/icon_data_structure.dart';
 import 'package:my_life/observer/global_observer.dart';
 import 'package:my_life/pages/auth_page.dart';
 import 'package:my_life/pages/main_page.dart';
@@ -22,6 +23,7 @@ void main() async {
   initializeDateFormatting();
   Hive.registerAdapter(DesireAdapter());
   Hive.registerAdapter(ParticleCheckboxAdapter());
+  Hive.registerAdapter(IconDataStructureAdapter());
   runApp(App());
 }
 

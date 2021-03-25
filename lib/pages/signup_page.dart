@@ -17,9 +17,9 @@ class SignUpPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('SignUpPage'),
-      ),
+      // appBar: AppBar(
+      //   title: Text('SignUpPage'),
+      // ),
       body: BlocProvider(
         create: (_) => _connectionPageCubit,
         child: Form(
@@ -27,41 +27,53 @@ class SignUpPage extends StatelessWidget {
           child: ListView(
             children: <Widget>[
               SizedBox(
+                child: Image.asset('assets/logo/logo.png'),
                 width: 0.0,
-                height: 200.0,
+                height: 250.0,
               ),
-              ListTile(
-                title: UsernameFormField(user: user),
-              ),
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: 15.0, vertical: 3.0),
-                child: Row(
-                  children: [
-                    Icon(Icons.android),
-                    Expanded(
+              Container(
+                margin: EdgeInsets.all(20.0),
+                padding: EdgeInsets.all(20.0),
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.all(Radius.circular(25.0)),
+                    color: Colors.grey[400]
+                ),
+                child: Column(
+                  children: <Widget>[
+                    Text('REGISTRATION', style: TextStyle(fontSize: 30.0)),
+                    ListTile(
+                      title: UsernameFormField(user: user),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 15.0, vertical: 3.0),
                       child: Row(
                         children: [
-                          Spacer(),
-                          Flexible(
-                            child: SimpleAbstractFormField(model: user, iconData: Icons.android, property: 'firstName'),
-                            flex: 9,
-                          ),
-                          Spacer(),
-                          Flexible(
-                            child: SimpleAbstractFormField(model: user, iconData: Icons.android, property: 'lastName'),
-                            flex: 9,
-                          ),
+                          Expanded(
+                            child: Row(
+                              children: [
+                                Flexible(
+                                  child: SimpleAbstractFormField(model: user, property: 'firstName'),
+                                  flex: 9,
+                                ),
+                                Spacer(),
+                                Flexible(
+                                  child: SimpleAbstractFormField(model: user, property: 'lastName'),
+                                  flex: 9,
+                                ),
+                              ],
+                            ),
+                          )
                         ],
                       ),
-                    )
+                    ),
+                    ListTile(
+                      title: EmailFormField(user: user),
+                    ),
+                    ListTile(
+                        title: PasswordFormField(user: user)
+                    ),
                   ],
                 ),
-              ),
-              ListTile(
-                title: EmailFormField(user: user),
-              ),
-              ListTile(
-                title: PasswordFormField(user: user)
               ),
               SummaryButton(formKey: _formKey, user: user, title: 'Sign Up!', connectionCubit: _connectionPageCubit),
             ],

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:my_life/cubits/desire_page/desire_page_cubit.dart';
 import 'package:my_life/cubits/main_page/desires_list_cubit.dart';
+import 'package:my_life/custom_widgets/icon_picker.dart';
 import 'package:my_life/custom_widgets/simple_abstract_form_field.dart';
 import 'package:my_life/handlers/notification_dialog.dart';
 import 'package:my_life/models/desire/desire.dart';
@@ -42,9 +43,23 @@ class DesirePage extends StatelessWidget{
           return Form(
             key: _formKey,
             child: ListView(
+              padding: EdgeInsets.symmetric(vertical: 25.0),
               children: [
+                Row(
+                  children: <Widget>[
+                    Expanded(
+                        child: IconPicker(model: desire)
+                    ),
+                    Expanded(
+                      flex: 4,
+                      child: ListTile(
+                        title: SimpleAbstractFormField(model: desire, property: 'title'),
+                      ),
+                    ),
+                  ],
+                ),
                 ListTile(
-                  title: SimpleAbstractFormField(model: desire, iconData: Icons.title, property: 'title'),
+                  title: SimpleAbstractFormField(model: desire, property: 'description', maxLines: 5, validate: false),
                 ),
                 Column(
                   children: <Widget>[
@@ -58,6 +73,7 @@ class DesirePage extends StatelessWidget{
                 ),
                 ListTile(
                   title: ElevatedButton(
+                      style: ElevatedButton.styleFrom(onPrimary: Colors.brown),
                       child: Text('+'),
                       onPressed: () {
                         BlocProvider.of<DesirePageCubit>(context).desire = desire;
@@ -76,7 +92,7 @@ class DesirePage extends StatelessWidget{
       bottomNavigationBar: Padding(
         padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 0.0),
         child: Row(
-          children: [
+          children: <Widget>[
             TextButton(
               child: Text('Cancel'),
               onPressed: () => Navigator.pop(context),
@@ -102,7 +118,7 @@ class DesirePage extends StatelessWidget{
     return Expanded(
       flex: 1,
       child: Row(
-        children: [
+        children: <Widget>[
           Spacer(),
           TextButton(
             child: Text('Save'),

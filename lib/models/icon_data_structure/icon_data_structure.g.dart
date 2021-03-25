@@ -1,41 +1,32 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'desire.dart';
+part of 'icon_data_structure.dart';
 
 // **************************************************************************
 // TypeAdapterGenerator
 // **************************************************************************
 
-class DesireAdapter extends TypeAdapter<Desire> {
+class IconDataStructureAdapter extends TypeAdapter<IconDataStructure> {
   @override
-  final int typeId = 0;
+  final int typeId = 2;
 
   @override
-  Desire read(BinaryReader reader) {
+  IconDataStructure read(BinaryReader reader) {
     final numOfFields = reader.readByte();
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return Desire(
-      title: fields[0] as String,
-    )
-      ..iconDataStructure = fields[1] as IconDataStructure
-      ..description = fields[2] as String
-      ..particleModels = (fields[3] as List)?.cast<DesireParticleModel>();
+    return IconDataStructure(fields[0] as int, fields[1] as String);
   }
 
   @override
-  void write(BinaryWriter writer, Desire obj) {
+  void write(BinaryWriter writer, IconDataStructure obj) {
     writer
-      ..writeByte(4)
-      ..writeByte(0)
-      ..write(obj.title)
-      ..writeByte(1)
-      ..write(obj.iconDataStructure)
       ..writeByte(2)
-      ..write(obj.description)
-      ..writeByte(3)
-      ..write(obj.particleModels);
+      ..writeByte(0)
+      ..write(obj._unicode)
+      ..writeByte(1)
+      ..write(obj._fontFamily);
   }
 
   @override
@@ -44,7 +35,7 @@ class DesireAdapter extends TypeAdapter<Desire> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is DesireAdapter &&
+      other is IconDataStructureAdapter &&
           runtimeType == other.runtimeType &&
           typeId == other.typeId;
 }

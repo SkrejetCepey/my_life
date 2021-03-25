@@ -8,14 +8,22 @@ import 'package:my_life/models/user.dart';
 class SimpleAbstractFormField extends StatelessWidget {
 
   final AbstractModel model;
-  final IconData iconData;
   final String property;
+  final int maxLines;
+  final bool validate;
   final TextEditingController _titleTextEditingController = TextEditingController();
 
-  SimpleAbstractFormField({Key key, @required this.model, @required this.iconData, @required this.property}) : super(key: key) {
+  SimpleAbstractFormField({Key key,
+    @required this.model,
+    @required this.property,
+    this.maxLines = 1,
+    this.validate = true}) : super(key: key) {
     if (model is Desire)
       if (!(model as Desire).isEmpty()) {
-        _titleTextEditingController.text = (model as Desire).title;
+        if (property == 'title')
+          _titleTextEditingController.text = (model as Desire).title;
+        else if (property == 'description')
+          _titleTextEditingController.text = (model as Desire).description;
       }
   }
 
@@ -23,24 +31,26 @@ class SimpleAbstractFormField extends StatelessWidget {
   Widget build(BuildContext context) {
 
     return TextFormField(
+      maxLines: maxLines,
       controller: _titleTextEditingController,
       decoration: InputDecoration(
-        prefixIcon: Icon(iconData),
         fillColor: Colors.white60,
         hintText: property,
         border: OutlineInputBorder(
-            borderRadius: BorderRadius.all(Radius.circular(25.0)),
             borderSide: BorderSide(color: Colors.blue)
         ),
         filled: true,
         contentPadding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 3.0),
       ),
-      validator: (String s) => s.isEmpty ? "$property can't be empty!" : null,
+      validator: validate ? (String s) => s.isEmpty ? "$property can't be empty!" : null : null,
       onSaved: (String s) {
         if (model is User)
           return (model as User).add(property, s);
         else if (model is Desire) {
-          (model as Desire).title = s;
+          if (property == 'title')
+            (model as Desire).title = s;
+          else if (property == 'description')
+            (model as Desire).description = s;
         } else if (model is ParticleCheckbox) {
           (model as ParticleCheckbox).title = s;
         }

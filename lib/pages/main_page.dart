@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:my_life/cubits/main_page/desires_list_cubit.dart';
+import 'package:my_life/custom_widgets/shadow_icon.dart';
 import 'package:my_life/models/desires_list.dart';
+import 'package:my_life/pages/profile_page.dart';
 import 'desire_page.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -15,16 +17,21 @@ class MainPage extends StatelessWidget {
         leading: IconButton(
           color: Colors.white,
           iconSize: 40.0,
-          icon: Icon(FontAwesomeIcons.userCircle),
+          icon: ShadowIcon(
+            iconData: FontAwesomeIcons.userCircle,
+          ),
           onPressed: () {
-            print('tapped on user!');
+            Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) =>
+                ProfilePage()));
           },
         ),
         actions: [
           IconButton(
             color: Colors.white,
             iconSize: 40.0,
-              icon: Icon(FontAwesomeIcons.plus),
+              icon: ShadowIcon(
+                iconData: FontAwesomeIcons.plus,
+              ),
               onPressed: () {
                 Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) =>
                     DesirePage.add()));

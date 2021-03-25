@@ -13,11 +13,9 @@ class EmailFormField extends StatelessWidget {
     return TextFormField(
       keyboardType: TextInputType.emailAddress,
       decoration: InputDecoration(
-        icon: Icon(Icons.email),
         fillColor: Colors.white60,
         hintText: 'youremailhere@gmail.com',
         border: OutlineInputBorder(
-            borderRadius: BorderRadius.all(Radius.circular(25.0)),
             borderSide: BorderSide(color: Colors.blue)
         ),
         filled: true,

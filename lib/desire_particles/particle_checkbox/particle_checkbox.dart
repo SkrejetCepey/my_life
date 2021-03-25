@@ -47,8 +47,11 @@ class ParticleCheckbox extends HiveObject implements DesireParticleModel, Abstra
         key: _formKey,
         child: ListView(
           children: [
+            SizedBox(
+              height: 10.0,
+            ),
             ListTile(
-              title: SimpleAbstractFormField(model: this, iconData: Icons.title, property: 'title'),
+              title: SimpleAbstractFormField(model: this, property: 'title'),
             ),
           ],
         ),
