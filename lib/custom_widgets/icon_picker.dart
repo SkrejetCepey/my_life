@@ -41,7 +41,7 @@ class IconPicker extends StatelessWidget {
             child: IconButton(
               iconSize: 50,
               icon: cubit.model.iconDataStructure == null ?
-              Icon(Icons.circle) :
+              Icon(Icons.add_photo_alternate_outlined) :
               Icon(cubit.model.iconDataStructure.iconData),
               onPressed: () {
                 _pickIcon(cubit);

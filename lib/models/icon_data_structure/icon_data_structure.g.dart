@@ -16,7 +16,10 @@ class IconDataStructureAdapter extends TypeAdapter<IconDataStructure> {
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return IconDataStructure(fields[0] as int, fields[1] as String);
+    return IconDataStructure(
+      fields[0] as int,
+      fields[1] as String,
+    );
   }
 
   @override
@@ -24,9 +27,9 @@ class IconDataStructureAdapter extends TypeAdapter<IconDataStructure> {
     writer
       ..writeByte(2)
       ..writeByte(0)
-      ..write(obj._unicode)
+      ..write(obj.unicode)
       ..writeByte(1)
-      ..write(obj._fontFamily);
+      ..write(obj.fontFamily);
   }
 
   @override

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:my_life/cubits/password_auth_field/password_auth_field_cubit.dart';
-import 'package:my_life/models/user.dart';
 import 'package:meta/meta.dart';
+import 'package:my_life/models/user/user.dart';
 
 class PasswordFormField extends StatelessWidget {
 
@@ -18,7 +18,7 @@ class PasswordFormField extends StatelessWidget {
         builder: (BuildContext context, bool state) {
           return TextFormField(
             obscureText: state,
-            onSaved: (String s) => user.add('password', s),
+            onSaved: (String s) => user.password = s,
             decoration: InputDecoration(
               suffixIcon: IconButton(
                 icon: state ? Icon(Icons.visibility) : Icon(Icons.visibility_off),

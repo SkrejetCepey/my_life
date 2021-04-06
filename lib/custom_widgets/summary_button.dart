@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:my_life/cubits/connection/connection_page_cubit.dart';
-import 'package:my_life/models/user.dart';
 import 'package:meta/meta.dart';
+import 'package:my_life/models/user/user.dart';
 
 class SummaryButton extends StatelessWidget {
 

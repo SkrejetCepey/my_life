@@ -7,14 +7,11 @@ part 'icon_data_structure.g.dart';
 class IconDataStructure extends HiveObject {
 
   @HiveField(0)
-  int _unicode;
+  int unicode;
   @HiveField(1)
-  String _fontFamily;
+  String fontFamily;
 
-  IconDataStructure(unicode, fontFamily) {
-    this._unicode = unicode;
-    this._fontFamily = fontFamily;
-  }
+  IconDataStructure(this.unicode, this.fontFamily);
 
-  IconData get iconData => IconData(_unicode, fontFamily: _fontFamily);
+  IconData get iconData => IconData(this.unicode, fontFamily: this.fontFamily);
 }

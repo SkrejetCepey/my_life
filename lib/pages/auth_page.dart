@@ -5,8 +5,9 @@ import 'package:my_life/cubits/connection/connection_page_cubit.dart';
 import 'package:my_life/custom_widgets/summary_button.dart';
 import 'package:my_life/custom_widgets/password_form_field.dart';
 import 'package:my_life/custom_widgets/username_form_field.dart';
+import 'package:my_life/db/user_hive_repository.dart';
 import 'package:my_life/handlers/notification_dialog.dart';
-import 'package:my_life/models/user.dart';
+import 'package:my_life/models/user/user.dart';
 
 class AuthPage extends StatelessWidget {
 
@@ -110,6 +111,7 @@ class FooterContent extends StatelessWidget {
                 return null;
               else {
                 NotificationDialog.showNotificationDialog(context, ConstStrings.termsUsingGuest, _mainPageLoader);
+
               }
             },
           ),
@@ -123,4 +125,5 @@ void _mainPageLoader(BuildContext context) {
   Navigator.pop(context);
   Navigator.pop(context);
   Navigator.pushNamed(context, '/main');
+  UserHiveRepository.db.create(User(login: 'Guest', password: ''));
 }

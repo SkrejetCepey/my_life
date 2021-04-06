@@ -27,7 +27,7 @@ class DesireUnit extends StatelessWidget {
             title: Container(
                 child: Row(
                   children: <Widget>[
-                    Icon(desire.iconDataStructure?.iconData, size: 50.0),
+                    Icon(desire.iconDataStructure?.iconData),
                     SizedBox(
                       width: 25.0,
                     ),

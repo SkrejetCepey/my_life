@@ -6,7 +6,7 @@ import '../desire_particle_model.dart';
 part 'desire.g.dart';
 
 @HiveType(typeId: 0)
-class Desire extends HiveObject with AbstractModel {
+class Desire extends HiveObject implements AbstractModel {
 
   @HiveField(0)
   String title;
@@ -20,6 +20,20 @@ class Desire extends HiveObject with AbstractModel {
   Desire({this.title});
 
   bool isEmpty() => (title == null);
+
+  @override
+  Map<String, String> get properties => {
+    'title': title,
+    'description': description
+  };
+
+  @override
+  set properties(Map<String, String> s) {
+    if (s['title'] != null)
+      title = s['title'];
+    if (s['description'] != null)
+      description = s['description'];
+  }
 
   @override
   String toString() {

@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:meta/meta.dart';
-import 'package:my_life/desire_particles/particle_checkbox/particle_checkbox.dart';
 import 'package:my_life/models/abstract_model.dart';
 import 'package:my_life/models/desire/desire.dart';
-import 'package:my_life/models/user.dart';
 
 class SimpleAbstractFormField extends StatelessWidget {
 
@@ -44,16 +42,7 @@ class SimpleAbstractFormField extends StatelessWidget {
       ),
       validator: validate ? (String s) => s.isEmpty ? "$property can't be empty!" : null : null,
       onSaved: (String s) {
-        if (model is User)
-          return (model as User).add(property, s);
-        else if (model is Desire) {
-          if (property == 'title')
-            (model as Desire).title = s;
-          else if (property == 'description')
-            (model as Desire).description = s;
-        } else if (model is ParticleCheckbox) {
-          (model as ParticleCheckbox).title = s;
-        }
+        return model.properties = <String, String>{property: s};
       },
     );
   }

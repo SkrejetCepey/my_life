@@ -1,5 +1,5 @@
 
-abstract class Database<T> {
+abstract class Repository<T> {
 
   Future<void> create(T createEntry);
 

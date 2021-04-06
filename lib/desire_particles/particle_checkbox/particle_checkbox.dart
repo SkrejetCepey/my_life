@@ -27,6 +27,17 @@ class ParticleCheckbox extends HiveObject implements DesireParticleModel, Abstra
   }
 
   @override
+  Map<String, String> get properties => {
+    'title': title
+  };
+
+  @override
+  set properties(Map<String, String> s) {
+    if (s['title'] != null)
+      title = s['title'];
+  }
+
+  @override
   Widget skinView(BuildContext context) {
     return ListTile(
       onTap: () {

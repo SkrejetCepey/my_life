@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:my_life/models/user.dart';
 import 'package:meta/meta.dart';
+import 'package:my_life/models/user/user.dart';
 
 class UsernameFormField extends StatelessWidget {
 
@@ -11,7 +11,7 @@ class UsernameFormField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
-      onSaved: (String s) => user.add('username', s),
+      onSaved: (String s) => user.login = s,
       decoration: InputDecoration(
         fillColor: Colors.white60,
         hintText: 'username/login',

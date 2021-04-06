@@ -30,6 +30,7 @@ dependencies:
   intl: ^0.17.0
   font_awesome_flutter: ^9.0.0
   flutter_iconpicker: ^3.0.0
+  decorated_icon: ^1.1.0
 
   table_calendar: ^2.3.3
 

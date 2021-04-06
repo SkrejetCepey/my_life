@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:my_life/models/user.dart';
 import 'package:meta/meta.dart';
+import 'package:my_life/models/user/user.dart';
 
 class EmailFormField extends StatelessWidget {
 
@@ -32,7 +32,7 @@ class EmailFormField extends StatelessWidget {
         else
           return null;
       },
-      onSaved: (String s) => user.add('email', s),
+      onSaved: (String s) => user.email = s,
     );
   }
 }

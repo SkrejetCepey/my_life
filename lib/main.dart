@@ -5,8 +5,10 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:my_life/cubits/desire_page/desire_page_cubit.dart';
 import 'package:my_life/cubits/main_page/desires_list_cubit.dart';
-import 'package:my_life/db/hive_db.dart';
+import 'package:my_life/db/desires_hive_repository.dart';
+import 'package:my_life/db/user_hive_repository.dart';
 import 'package:my_life/models/icon_data_structure/icon_data_structure.dart';
+import 'package:my_life/models/user/user.dart';
 import 'package:my_life/observer/global_observer.dart';
 import 'package:my_life/pages/auth_page.dart';
 import 'package:my_life/pages/main_page.dart';
@@ -19,9 +21,11 @@ void main() async {
   Bloc.observer = GlobalObserver();
 
   await Hive.initFlutter();
-  HiveDB.db.database;
+  DesiresHiveRepository.db.database;
+  UserHiveRepository.db.database;
   initializeDateFormatting();
   Hive.registerAdapter(DesireAdapter());
+  Hive.registerAdapter(UserAdapter());
   Hive.registerAdapter(ParticleCheckboxAdapter());
   Hive.registerAdapter(IconDataStructureAdapter());
   runApp(App());
@@ -46,23 +50,44 @@ class App extends StatelessWidget {
           elevatedButtonTheme: ElevatedButtonThemeData(
             style: ButtonStyle(
               backgroundColor: MaterialStateProperty.resolveWith<Color>(
-                      (states) => Colors.limeAccent[400]),
+                      (states) => const Color(0xffd5f111)),
             )
           ),
           buttonTheme: ButtonThemeData(
-            buttonColor: Colors.lime,
+            buttonColor: const Color(0xffd5f111),
           ),
-          primaryColor: Colors.limeAccent[400],
+          primaryColor: const Color(0xffd5f111),
         ),
         routes: {
           '/sign_up': (BuildContext context) => SignUpPage(),
-          '/main': (BuildContext context) => MainPage()
+          '/main': (BuildContext context) => MainPage(),
+          '/auth': (BuildContext context) => HomePage(),
         },
-        home: Scaffold(
-          body: AuthPage()
-        ),
+        home: HomePage(),
       ),
     );
   }
 
+}
+
+class HomePage extends StatelessWidget {
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+        body: FutureBuilder(
+          future: UserHiveRepository.db.getAll(),
+          builder: (BuildContext context, AsyncSnapshot<List> snapshot) {
+            if (snapshot.hasData) {
+              if (snapshot.data.isEmpty) {
+                return AuthPage();
+              } else {
+                return MainPage();
+              }
+            }
+            return Center(child: CircularProgressIndicator());
+          },
+        )
+    );
+  }
 }

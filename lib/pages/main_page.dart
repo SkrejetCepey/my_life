@@ -1,7 +1,7 @@
+import 'package:decorated_icon/decorated_icon.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:my_life/cubits/main_page/desires_list_cubit.dart';
-import 'package:my_life/custom_widgets/shadow_icon.dart';
 import 'package:my_life/models/desires_list.dart';
 import 'package:my_life/pages/profile_page.dart';
 import 'desire_page.dart';
@@ -17,8 +17,15 @@ class MainPage extends StatelessWidget {
         leading: IconButton(
           color: Colors.white,
           iconSize: 40.0,
-          icon: ShadowIcon(
-            iconData: FontAwesomeIcons.userCircle,
+          icon: DecoratedIcon(
+            FontAwesomeIcons.userAlt,
+            size: 30.0,
+            shadows: [
+              BoxShadow(
+                  color: Colors.black45,
+                  offset: Offset(3.0, 3.0)
+              )
+            ],
           ),
           onPressed: () {
             Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) =>
@@ -29,8 +36,15 @@ class MainPage extends StatelessWidget {
           IconButton(
             color: Colors.white,
             iconSize: 40.0,
-              icon: ShadowIcon(
-                iconData: FontAwesomeIcons.plus,
+              icon: DecoratedIcon(
+                FontAwesomeIcons.plus,
+                size: 30.0,
+                shadows: [
+                  BoxShadow(
+                    color: Colors.black45,
+                    offset: Offset(3.0, 3.0)
+                  )
+                ],
               ),
               onPressed: () {
                 Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) =>
@@ -38,10 +52,13 @@ class MainPage extends StatelessWidget {
               }
           ),
         ],
-        title: Text('MY DESIRES',
-            style: TextStyle(
-              color: Colors.brown[600]
-            )),
+        title: Align(
+          alignment: Alignment.center,
+          child: Text('MY DESIRES',
+              style: TextStyle(
+                color: Colors.brown[600]
+              )),
+        ),
       ),
       body: BlocBuilder<DesiresListCubit, DesiresListState>(
         builder: (BuildContext context, DesiresListState state) {
@@ -73,6 +90,9 @@ class InitialisedDesiresListPage extends StatelessWidget {
             children: [
               TableCalendar(
                 locale: 'ru_RU',
+                calendarStyle: CalendarStyle(
+                  selectedColor: Color(0xffb4baba)
+                ),
                 initialCalendarFormat: CalendarFormat.week,
                   calendarController: CalendarController(),
                 availableCalendarFormats: {CalendarFormat.week : 'Weeks'},
@@ -116,7 +136,7 @@ class HelloNewbiePage extends StatelessWidget {
         Container(
           padding: EdgeInsets.all(25.0),
           alignment: Alignment.topCenter,
-          child: Text('Hello,\nguest!', style: _textStyle),
+          child: Text('Hello,\n${BlocProvider.of<DesiresListCubit>(context).user.login}!', style: _textStyle),
         ),
         Container(
           padding: EdgeInsets.all(25.0),
@@ -126,7 +146,7 @@ class HelloNewbiePage extends StatelessWidget {
         Container(
           padding: EdgeInsets.all(25.0),
           alignment: Alignment.topCenter,
-          child: Text('Start by adding a new target at the bottom right!', style: _textStyle),
+          child: Text('Start by adding a new desire at the top right!', style: _textStyle),
         )
       ],
     );

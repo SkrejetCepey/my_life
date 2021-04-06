@@ -6,7 +6,7 @@ import 'package:my_life/custom_widgets/simple_abstract_form_field.dart';
 import 'package:my_life/custom_widgets/summary_button.dart';
 import 'package:my_life/custom_widgets/password_form_field.dart';
 import 'package:my_life/custom_widgets/username_form_field.dart';
-import 'package:my_life/models/user.dart';
+import 'package:my_life/models/user/user.dart';
 
 class SignUpPage extends StatelessWidget {
 
