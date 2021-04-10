@@ -2,17 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:my_life/cubits/connection/connection_page_cubit.dart';
 import 'package:meta/meta.dart';
+import 'package:my_life/db/user_hive_repository.dart';
 import 'package:my_life/models/user/user.dart';
 
 class SummaryButton extends StatelessWidget {
 
   final GlobalKey<FormState> _formKey;
-  final User user;
   final String title;
-  final ConnectionPageCubit connectionCubit;
 
-  SummaryButton({Key key, @required formKey, @required this.user,
-    @required this.title, @required this.connectionCubit}) : _formKey = formKey, super(key: key);
+  SummaryButton({Key key, @required formKey,
+    @required this.title}) : _formKey = formKey, super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +29,6 @@ class SummaryButton extends StatelessWidget {
               if (!(state is TryingPageConnect)) {
                 if (_formKey.currentState.validate()) {
                   _formKey.currentState.save();
-                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(user.toString())));
                   _tryToConnect(context, state);
                   FocusScope.of(context).unfocus();
                 }
@@ -43,6 +41,20 @@ class SummaryButton extends StatelessWidget {
   }
 
   Future<void> _tryToConnect(BuildContext context, ConnectionPageState state) async {
-      await connectionCubit.tryConnection(context);
+
+    final ConnectionPageCubit connectionCubit = BlocProvider.of<ConnectionPageCubit>(context);
+
+    String userData = await connectionCubit.tryConnection(context);
+
+    if (userData != null) {
+      Navigator.of(context).pop();
+
+      User user = BlocProvider.of<ConnectionPageCubit>(context).user;
+      UserHiveRepository.db.create(user);
+      Navigator.pushNamed(context, '/auth');
+      // Future.microtask(() => ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(user.toString()))));
+    }
+
+
   }
 }

@@ -12,6 +12,7 @@ class MainPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
@@ -97,9 +98,7 @@ class InitialisedDesiresListPage extends StatelessWidget {
                   calendarController: CalendarController(),
                 availableCalendarFormats: {CalendarFormat.week : 'Weeks'},
               ),
-              Expanded(
-                  child: DesiresList()
-              )
+              Expanded(child: DesiresList())
             ]
         )
     );

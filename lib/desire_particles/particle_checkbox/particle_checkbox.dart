@@ -3,10 +3,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:hive/hive.dart';
 import 'package:my_life/cubits/desire_page/desire_page_cubit.dart';
+import 'package:my_life/cubits/main_page/desires_list_cubit.dart';
 import 'package:my_life/cubits/particle_checkbox/particle_checkbox_cubit.dart';
 import 'package:my_life/custom_widgets/simple_abstract_form_field.dart';
 import 'package:my_life/handlers/notification_dialog.dart';
 import 'package:my_life/models/abstract_model.dart';
+import 'package:my_life/models/desire/desire.dart';
 import 'package:my_life/models/desire_particle_model.dart';
 
 part 'particle_checkbox.g.dart';
@@ -17,13 +19,13 @@ class ParticleCheckbox extends HiveObject implements DesireParticleModel, Abstra
   @HiveField(0)
   String title;
   @HiveField(1)
-  bool serialisedState;
+  bool state;
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
-  ParticleCheckbox({this.title, this.serialisedState}) {
-    if (serialisedState == null)
-      serialisedState = false;
+  ParticleCheckbox({this.title, this.state}) {
+    if (state == null)
+      state = false;
   }
 
   @override
@@ -94,13 +96,17 @@ class ParticleCheckbox extends HiveObject implements DesireParticleModel, Abstra
   }
 
   @override
-  Scaffold editPage(BuildContext context) {
+  Scaffold editPage(BuildContext context, Desire desire) {
 
     final TextEditingController _titleTextEditingController = TextEditingController();
     _titleTextEditingController.text = title;
 
     Future<void> _deleteDesireParticle(BuildContext context) async {
-      BlocProvider.of<DesirePageCubit>(context).delete(this);
+      DesirePageCubit cubit = BlocProvider.of<DesirePageCubit>(context);
+      if (cubit.desire.particleModels.length == 1) {
+        cubit.desire.isExpanded = false;
+      }
+      cubit.delete(this);
       Navigator.pop(context);
     }
 
@@ -153,7 +159,6 @@ class ParticleCheckbox extends HiveObject implements DesireParticleModel, Abstra
                 await NotificationDialog.showNotificationDialog(context,
                     'Are you sure about deleting ${this.title} ?',
                     _deleteDesireParticle);
-                // desirePageCubit.delete(this);
                 Navigator.pop(context);
               },
             ),
@@ -175,20 +180,19 @@ class ParticleCheckbox extends HiveObject implements DesireParticleModel, Abstra
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, Desire desire) {
     return BlocProvider<ParticleCheckboxCubit>(
-      create: (_) => ParticleCheckboxCubit(serialisedState),
-      child: BlocBuilder<ParticleCheckboxCubit, bool>(
-        builder: (BuildContext context, bool state) {
-          serialisedState = state;
+      create: (_) => ParticleCheckboxCubit(this),
+      child: BlocBuilder<ParticleCheckboxCubit, ParticleCheckboxState>(
+        builder: (BuildContext context, ParticleCheckboxState state) {
           return ListTile(
             onTap: () {
               Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) =>
-                  editPage(context)));
+                  editPage(context, desire)));
             },
             title: Row(
               children: [
-                RoundedCheckbox(state: state),
+                RoundedCheckbox(state: this.state, desire: desire),
                 Flexible(
                     child: Text(title)
                 ),
@@ -205,8 +209,9 @@ class ParticleCheckbox extends HiveObject implements DesireParticleModel, Abstra
 class RoundedCheckbox extends StatelessWidget {
 
   final bool state;
+  final Desire desire;
 
-  RoundedCheckbox({this.state});
+  RoundedCheckbox({this.state, this.desire});
 
   @override
   Widget build(BuildContext context) {
@@ -218,6 +223,7 @@ class RoundedCheckbox extends StatelessWidget {
         icon: state ? Icon(Icons.check_circle_outline) : Icon(FontAwesomeIcons.circle),
         onPressed: () {
           BlocProvider.of<ParticleCheckboxCubit>(context).switchParticleCheckBoxState();
+          BlocProvider.of<DesiresListCubit>(context).update(desire);
         },
       )
     );

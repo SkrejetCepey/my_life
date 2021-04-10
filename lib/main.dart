@@ -41,7 +41,7 @@ class App extends StatelessWidget {
           create: (_) => DesirePageCubit(),
         ),
         BlocProvider<DesiresListCubit>(
-          create: (_) => DesiresListCubit(),
+          create: (context) => DesiresListCubit(BlocProvider.of<DesirePageCubit>(context)),
         )
       ],
       child: MaterialApp(
@@ -74,6 +74,7 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // TODO create bloc instead FutureBuilder class
     return Scaffold(
         body: FutureBuilder(
           future: UserHiveRepository.db.getAll(),
@@ -82,6 +83,7 @@ class HomePage extends StatelessWidget {
               if (snapshot.data.isEmpty) {
                 return AuthPage();
               } else {
+                BlocProvider.of<DesiresListCubit>(context).user = snapshot.data.single;
                 return MainPage();
               }
             }

@@ -66,7 +66,7 @@ class DesirePage extends StatelessWidget{
                     for (DesireParticleModel entry in desire.particleModels) Column(
                       children: [
                         Divider(),
-                        entry.build(context)
+                        entry.build(context, desire)
                       ],
                     ),
                   ],
@@ -79,8 +79,7 @@ class DesirePage extends StatelessWidget{
                         BlocProvider.of<DesirePageCubit>(context).desire = desire;
                         Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) =>
                             ParticlesDesirePage()
-                        )
-                        );
+                        ));
                       }
                   ),
                 )

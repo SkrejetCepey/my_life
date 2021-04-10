@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:meta/meta.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:my_life/cubits/connection/connection_page_cubit.dart';
 import 'package:my_life/models/user/user.dart';
 
 class UsernameFormField extends StatelessWidget {
 
-  final User user;
-
-  UsernameFormField({Key key, @required this.user}) : super(key: key);
+  UsernameFormField({Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    User user = BlocProvider.of<ConnectionPageCubit>(context).user;
     return TextFormField(
       onSaved: (String s) => user.login = s,
       decoration: InputDecoration(

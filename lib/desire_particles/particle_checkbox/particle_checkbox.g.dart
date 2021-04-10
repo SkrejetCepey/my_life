@@ -18,7 +18,7 @@ class ParticleCheckboxAdapter extends TypeAdapter<ParticleCheckbox> {
     };
     return ParticleCheckbox(
       title: fields[0] as String,
-      serialisedState: fields[1] as bool,
+      state: fields[1] as bool,
     );
   }
 
@@ -29,7 +29,7 @@ class ParticleCheckboxAdapter extends TypeAdapter<ParticleCheckbox> {
       ..writeByte(0)
       ..write(obj.title)
       ..writeByte(1)
-      ..write(obj.serialisedState);
+      ..write(obj.state);
   }
 
   @override

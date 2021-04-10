@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_iconpicker/flutter_iconpicker.dart';
 import 'package:my_life/cubits/icon_picker/icon_picker_cubit.dart';
+import 'package:my_life/cubits/main_page/desires_list_cubit.dart';
 import 'package:my_life/models/desire/desire.dart';
 
 class IconPicker extends StatelessWidget {
@@ -15,19 +16,22 @@ class IconPicker extends StatelessWidget {
 
     _pickIcon(IconPickerCubit cubit) async {
       IconData icon = await FlutterIconPicker.showIconPicker(context,
-          iconSize: 50,
-          iconPickerShape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
-          title: Text('Pick an icon',
-              style: TextStyle(fontWeight: FontWeight.bold)),
-          closeChild: Text(
-            'Close',
-            textScaleFactor: 1.25,
-          ),
-          searchHintText: 'Search icon...',
-          noResultsText: 'No results for:',
+        iconSize: 50,
+        iconPickerShape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+        title: Text('Pick an icon',
+            style: TextStyle(fontWeight: FontWeight.bold)),
+        closeChild: Text(
+          'Close',
+          textScaleFactor: 1.25,
+        ),
+        searchHintText: 'Search icon...',
+        noResultsText: 'No results for:',
       );
 
       cubit.addIcon(icon == null ? Icons.circle : icon);
+
+      if (model.isInBox)
+        BlocProvider.of<DesiresListCubit>(context).update(model);
     }
 
     return BlocProvider<IconPickerCubit>(

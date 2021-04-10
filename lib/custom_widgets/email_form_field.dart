@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:meta/meta.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:my_life/cubits/connection/connection_page_cubit.dart';
 import 'package:my_life/models/user/user.dart';
 
 class EmailFormField extends StatelessWidget {
 
-  final User user;
-
-  EmailFormField({Key key, @required this.user}) : super(key: key);
+  EmailFormField({Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    User user = BlocProvider.of<ConnectionPageCubit>(context).user;
     return TextFormField(
       keyboardType: TextInputType.emailAddress,
       decoration: InputDecoration(

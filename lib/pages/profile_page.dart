@@ -113,8 +113,8 @@ class ProfilePage extends StatelessWidget {
   }
 }
 
-void _signUpLoader(BuildContext context) {
-  UserHiveRepository.db.delete(BlocProvider.of<DesiresListCubit>(context).user);
+void _signUpLoader(BuildContext context) async {
+  await UserHiveRepository.db.delete(BlocProvider.of<DesiresListCubit>(context).user);
   Navigator.pop(context);
   Navigator.pop(context);
   Navigator.pushNamed(context, '/auth');

@@ -1,17 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:my_life/cubits/connection/connection_page_cubit.dart';
 import 'package:my_life/cubits/password_auth_field/password_auth_field_cubit.dart';
-import 'package:meta/meta.dart';
 import 'package:my_life/models/user/user.dart';
 
 class PasswordFormField extends StatelessWidget {
 
-  final User user;
-
-  PasswordFormField({Key key, @required this.user}) : super(key: key);
+  PasswordFormField({Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    User user = BlocProvider.of<ConnectionPageCubit>(context).user;
     return BlocProvider<PasswordAuthFieldCubit>(
       create: (_) => PasswordAuthFieldCubit(),
       child: BlocBuilder<PasswordAuthFieldCubit, bool>(

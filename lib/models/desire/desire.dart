@@ -17,6 +17,8 @@ class Desire extends HiveObject implements AbstractModel {
   @HiveField(3)
   List<DesireParticleModel> particleModels = List<DesireParticleModel>.empty(growable: true);
 
+  bool isExpanded = false;
+
   Desire({this.title});
 
   bool isEmpty() => (title == null);
@@ -33,6 +35,16 @@ class Desire extends HiveObject implements AbstractModel {
       title = s['title'];
     if (s['description'] != null)
       description = s['description'];
+  }
+
+  double getValueCompleteParticles() {
+
+    if (particleModels.isEmpty)
+      return 0;
+
+    return particleModels
+        .where((element) => element.state != false)
+        .length / particleModels.length;
   }
 
   @override

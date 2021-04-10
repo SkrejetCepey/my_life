@@ -1,5 +1,8 @@
+import 'dart:async';
+
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
+import 'package:my_life/cubits/desire_page/desire_page_cubit.dart';
 import 'package:my_life/db/desires_hive_repository.dart';
 import 'package:my_life/db/user_hive_repository.dart';
 import 'package:my_life/models/desire/desire.dart';
@@ -11,10 +14,15 @@ class DesiresListCubit extends Cubit<DesiresListState> {
 
   List<Desire> desireList;
   User user;
+  final DesirePageCubit desiresListCubit;
+  StreamSubscription desiresListCubitSubscription;
 
-  DesiresListCubit() : super(DesiresListInitial()) {
+  DesiresListCubit(this.desiresListCubit) : super(DesiresListInitial()) {
     _init();
     _getUser();
+    desiresListCubitSubscription = desiresListCubit.listen((DesirePageState state) {
+      refresh();
+    });
   }
 
   Future<void> _getUser() async {
@@ -52,9 +60,16 @@ class DesiresListCubit extends Cubit<DesiresListState> {
   Future<void> _init() async {
 
     desireList = await DesiresHiveRepository.db.getAll();
+
     if (desireList.isEmpty)
       emit(DesiresListInitialisedEmpty());
     else
       emit(DesiresListInitialised());
+  }
+
+  @override
+  Future<void> close() {
+    desiresListCubitSubscription.cancel();
+    return super.close();
   }
 }

@@ -6,20 +6,16 @@ import 'package:my_life/custom_widgets/simple_abstract_form_field.dart';
 import 'package:my_life/custom_widgets/summary_button.dart';
 import 'package:my_life/custom_widgets/password_form_field.dart';
 import 'package:my_life/custom_widgets/username_form_field.dart';
-import 'package:my_life/models/user/user.dart';
 
 class SignUpPage extends StatelessWidget {
 
-  final User user = User();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+
   final ConnectionPageCubit _connectionPageCubit = ConnectionPageCubit();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // appBar: AppBar(
-      //   title: Text('SignUpPage'),
-      // ),
       body: BlocProvider(
         create: (_) => _connectionPageCubit,
         child: Form(
@@ -42,7 +38,7 @@ class SignUpPage extends StatelessWidget {
                   children: <Widget>[
                     Text('REGISTRATION', style: TextStyle(fontSize: 30.0)),
                     ListTile(
-                      title: UsernameFormField(user: user),
+                      title: UsernameFormField(),
                     ),
                     Padding(
                       padding: EdgeInsets.symmetric(horizontal: 15.0, vertical: 3.0),
@@ -52,12 +48,12 @@ class SignUpPage extends StatelessWidget {
                             child: Row(
                               children: [
                                 Flexible(
-                                  child: SimpleAbstractFormField(model: user, property: 'firstName'),
+                                  child: SimpleAbstractFormField(model: _connectionPageCubit.user, property: 'firstName'),
                                   flex: 9,
                                 ),
                                 Spacer(),
                                 Flexible(
-                                  child: SimpleAbstractFormField(model: user, property: 'lastName'),
+                                  child: SimpleAbstractFormField(model: _connectionPageCubit.user, property: 'lastName'),
                                   flex: 9,
                                 ),
                               ],
@@ -67,15 +63,15 @@ class SignUpPage extends StatelessWidget {
                       ),
                     ),
                     ListTile(
-                      title: EmailFormField(user: user),
+                      title: EmailFormField(),
                     ),
                     ListTile(
-                        title: PasswordFormField(user: user)
+                        title: PasswordFormField()
                     ),
                   ],
                 ),
               ),
-              SummaryButton(formKey: _formKey, user: user, title: 'Sign Up!', connectionCubit: _connectionPageCubit),
+              SummaryButton(formKey: _formKey, title: 'Sign Up!'),
             ],
           ),
         ),

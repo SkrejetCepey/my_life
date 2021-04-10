@@ -12,16 +12,11 @@ import 'package:my_life/models/user/user.dart';
 class AuthPage extends StatelessWidget {
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  final User user = User();
 
   @override
   Widget build(BuildContext context) {
-    return MultiBlocProvider(
-      providers: [
-        BlocProvider<ConnectionPageCubit>(
-          create: (BuildContext context) => ConnectionPageCubit(),
-        )
-      ],
+    return BlocProvider(
+      create: (_) => ConnectionPageCubit(),
       child: BlocBuilder<ConnectionPageCubit, ConnectionPageState>(
         builder: (BuildContext context, ConnectionPageState state) {
           return Form(
@@ -49,14 +44,13 @@ class AuthPage extends StatelessWidget {
                       ),
                       ListTile(
                         contentPadding: EdgeInsets.symmetric(horizontal: 50.0),
-                        title: UsernameFormField(user: user),
+                        title: UsernameFormField(),
                       ),
                       ListTile(
                         contentPadding: EdgeInsets.symmetric(horizontal: 50.0),
-                        title: PasswordFormField(user: user),
+                        title: PasswordFormField(),
                       ),
-                      SummaryButton(formKey: _formKey, user: user, title: 'Sign In!',
-                          connectionCubit: BlocProvider.of<ConnectionPageCubit>(context)),
+                      SummaryButton(formKey: _formKey, title: 'Sign In!'),
                     ],
                   ),
                 ),
@@ -111,7 +105,6 @@ class FooterContent extends StatelessWidget {
                 return null;
               else {
                 NotificationDialog.showNotificationDialog(context, ConstStrings.termsUsingGuest, _mainPageLoader);
-
               }
             },
           ),
@@ -124,6 +117,6 @@ class FooterContent extends StatelessWidget {
 void _mainPageLoader(BuildContext context) {
   Navigator.pop(context);
   Navigator.pop(context);
-  Navigator.pushNamed(context, '/main');
+  Navigator.pushNamed(context, '/auth');
   UserHiveRepository.db.create(User(login: 'Guest', password: ''));
 }
