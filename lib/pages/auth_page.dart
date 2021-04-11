@@ -117,6 +117,6 @@ class FooterContent extends StatelessWidget {
 void _mainPageLoader(BuildContext context) {
   Navigator.pop(context);
   Navigator.pop(context);
-  Navigator.pushNamed(context, '/auth');
-  UserHiveRepository.db.create(User(login: 'Guest', password: ''));
+  Navigator.pushNamed(context, '/home');
+  UserHiveRepository.db.createIfNotExist(User(login: 'Guest', password: ''));
 }

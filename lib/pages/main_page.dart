@@ -92,15 +92,16 @@ class InitialisedDesiresListPage extends StatelessWidget {
               TableCalendar(
                 locale: 'ru_RU',
                 calendarStyle: CalendarStyle(
-                  selectedColor: Color(0xffb4baba)
+                    selectedColor: Color(0xffb4baba)
                 ),
+                startingDayOfWeek: StartingDayOfWeek.monday,
                 initialCalendarFormat: CalendarFormat.week,
-                  calendarController: CalendarController(),
+                calendarController: CalendarController(),
                 availableCalendarFormats: {CalendarFormat.week : 'Weeks'},
               ),
               Expanded(child: DesiresList())
             ]
-        )
+        ),
     );
   }
 

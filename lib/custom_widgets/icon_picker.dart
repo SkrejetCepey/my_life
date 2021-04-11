@@ -28,9 +28,11 @@ class IconPicker extends StatelessWidget {
         noResultsText: 'No results for:',
       );
 
-      cubit.addIcon(icon == null ? Icons.circle : icon);
 
-      if (model.isInBox)
+      if (icon != null)
+        cubit.addIcon(icon);
+
+      if (BlocProvider.of<DesiresListCubit>(context).user.desiresList.where((element) => element == model).isNotEmpty)
         BlocProvider.of<DesiresListCubit>(context).update(model);
     }
 

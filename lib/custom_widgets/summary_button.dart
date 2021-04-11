@@ -51,7 +51,7 @@ class SummaryButton extends StatelessWidget {
 
       User user = BlocProvider.of<ConnectionPageCubit>(context).user;
       UserHiveRepository.db.create(user);
-      Navigator.pushNamed(context, '/auth');
+      Navigator.pushNamed(context, '/home');
       // Future.microtask(() => ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(user.toString()))));
     }
 

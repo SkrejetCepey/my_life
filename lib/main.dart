@@ -5,7 +5,6 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:my_life/cubits/desire_page/desire_page_cubit.dart';
 import 'package:my_life/cubits/main_page/desires_list_cubit.dart';
-import 'package:my_life/db/desires_hive_repository.dart';
 import 'package:my_life/db/user_hive_repository.dart';
 import 'package:my_life/models/icon_data_structure/icon_data_structure.dart';
 import 'package:my_life/models/user/user.dart';
@@ -21,13 +20,15 @@ void main() async {
   Bloc.observer = GlobalObserver();
 
   await Hive.initFlutter();
-  DesiresHiveRepository.db.database;
+
   UserHiveRepository.db.database;
+
   initializeDateFormatting();
   Hive.registerAdapter(DesireAdapter());
   Hive.registerAdapter(UserAdapter());
   Hive.registerAdapter(ParticleCheckboxAdapter());
   Hive.registerAdapter(IconDataStructureAdapter());
+
   runApp(App());
 }
 
@@ -42,7 +43,7 @@ class App extends StatelessWidget {
         ),
         BlocProvider<DesiresListCubit>(
           create: (context) => DesiresListCubit(BlocProvider.of<DesirePageCubit>(context)),
-        )
+        ),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
@@ -61,7 +62,7 @@ class App extends StatelessWidget {
         routes: {
           '/sign_up': (BuildContext context) => SignUpPage(),
           '/main': (BuildContext context) => MainPage(),
-          '/auth': (BuildContext context) => HomePage(),
+          '/home': (BuildContext context) => HomePage(),
         },
         home: HomePage(),
       ),
@@ -74,6 +75,7 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
     // TODO create bloc instead FutureBuilder class
     return Scaffold(
         body: FutureBuilder(
@@ -83,7 +85,7 @@ class HomePage extends StatelessWidget {
               if (snapshot.data.isEmpty) {
                 return AuthPage();
               } else {
-                BlocProvider.of<DesiresListCubit>(context).user = snapshot.data.single;
+                BlocProvider.of<DesiresListCubit>(context).user = snapshot.data.last;
                 return MainPage();
               }
             }

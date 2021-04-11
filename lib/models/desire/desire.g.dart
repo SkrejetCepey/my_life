@@ -21,13 +21,14 @@ class DesireAdapter extends TypeAdapter<Desire> {
     )
       ..iconDataStructure = fields[1] as IconDataStructure
       ..description = fields[2] as String
-      ..particleModels = (fields[3] as List)?.cast<DesireParticleModel>();
+      ..particleModels = (fields[3] as List)?.cast<DesireParticleModel>()
+      ..dateTime = fields[4] as DateTime;
   }
 
   @override
   void write(BinaryWriter writer, Desire obj) {
     writer
-      ..writeByte(4)
+      ..writeByte(5)
       ..writeByte(0)
       ..write(obj.title)
       ..writeByte(1)
@@ -35,7 +36,9 @@ class DesireAdapter extends TypeAdapter<Desire> {
       ..writeByte(2)
       ..write(obj.description)
       ..writeByte(3)
-      ..write(obj.particleModels);
+      ..write(obj.particleModels)
+      ..writeByte(4)
+      ..write(obj.dateTime);
   }
 
   @override

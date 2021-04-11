@@ -16,6 +16,8 @@ class Desire extends HiveObject implements AbstractModel {
   String description;
   @HiveField(3)
   List<DesireParticleModel> particleModels = List<DesireParticleModel>.empty(growable: true);
+  @HiveField(4)
+  DateTime dateTime;
 
   bool isExpanded = false;
 

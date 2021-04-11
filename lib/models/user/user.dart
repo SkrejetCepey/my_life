@@ -2,13 +2,14 @@ import 'dart:convert';
 
 import 'package:hive/hive.dart';
 import 'package:my_life/models/abstract_model.dart';
+import 'package:my_life/models/desire/desire.dart';
 
 part 'user.g.dart';
 
 @HiveType(typeId: 3)
 class User extends HiveObject implements AbstractModel {
 
-  // List<Achievement>;ыукs
+  // List<Achievement>;
   // List<Desire>;
 
   // Picture profilePic;
@@ -27,6 +28,9 @@ class User extends HiveObject implements AbstractModel {
   String city;
   @HiveField(6)
   String email;
+
+  @HiveField(7)
+  List<Desire> desiresList = List<Desire>.empty(growable: true);
 
   User({this.nickname, this.login, this.password,
     this.firstName, this.lastName, this.city, this.email});
