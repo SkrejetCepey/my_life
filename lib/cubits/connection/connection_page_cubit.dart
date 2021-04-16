@@ -16,7 +16,7 @@ class ConnectionPageCubit extends Cubit<ConnectionPageState> {
   Future<String> tryConnection(BuildContext context) async {
     emit(TryingPageConnect());
     try {
-      return await Connection(user).tryConnect();
+      return await Connection.login(user);
     } on Exception catch (exception) {
       Future.microtask(() => AlertException.showAlertDialog(context, exception.toString()));
     } finally {

@@ -2,7 +2,9 @@ import 'package:decorated_icon/decorated_icon.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:my_life/cubits/main_page/desires_list_cubit.dart';
+import 'package:my_life/cubits/user/user_cubit.dart';
 import 'package:my_life/models/desires_list.dart';
+import 'package:my_life/pages/find_friends_page.dart';
 import 'package:my_life/pages/profile_page.dart';
 import 'desire_page.dart';
 import 'package:table_calendar/table_calendar.dart';
@@ -14,6 +16,7 @@ class MainPage extends StatelessWidget {
   Widget build(BuildContext context) {
 
     return Scaffold(
+      drawerEdgeDragWidth: MediaQuery.of(context).size.width / 5,
       appBar: AppBar(
         leading: IconButton(
           color: Colors.white,
@@ -72,6 +75,26 @@ class MainPage extends StatelessWidget {
           }
         },
       ),
+      drawer: Drawer(
+        child: ListView(
+          padding: EdgeInsets.zero,
+          children: <Widget>[
+            DrawerHeader(
+              child: Text('DrawerHeader'),
+              decoration: BoxDecoration(
+                color: const Color(0xffd5f111),
+              ),
+            ),
+            ListTile(
+              title: Text('Find friends'),
+              onTap: () {
+                Navigator.pop(context);
+                Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => FindFriendPage()));
+              },
+            )
+          ],
+        ),
+      ),
     );
   }
 }
@@ -114,6 +137,10 @@ class ConnectToDatabaseLoadingBar extends StatelessWidget {
     return Center(
       child: Column(
         children: [
+          Text('DesiresListCubit(User): ${BlocProvider.of<DesiresListCubit>(context).user}'),
+          Text('UserCubit(User): ${BlocProvider.of<UserCubit>(context).user}'),
+          Text('UserCubit(state): ${BlocProvider.of<UserCubit>(context).state}'),
+          Text('DesiresListCubit(state): ${BlocProvider.of<DesiresListCubit>(context).state}'),
           Text('Connecting to local database...'),
           CircularProgressIndicator(),
         ],

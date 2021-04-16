@@ -32,6 +32,12 @@ class DesiresListCubit extends Cubit<DesiresListState> {
     await _init();
   }
 
+  void updateUser(User user) {
+    this.user = user;
+    emit(DesiresListUpdateUser());
+    _init();
+  }
+
   Future<void> refresh() async {
 
     emit(DesiresListRefresh());

@@ -16,3 +16,11 @@ class DesiresListRefresh extends DesiresListState {}
 class DesiresListUpdatedItem extends DesiresListState {}
 
 class DesiresListDeletedItem extends DesiresListState {}
+
+class DesiresListDeleteUser extends DesiresListState {}
+
+class DesiresListCreateUser extends DesiresListState {}
+
+class DesiresListInitUser extends DesiresListState {}
+
+class DesiresListUpdateUser extends DesiresListState {}

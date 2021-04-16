@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:my_life/consts/const_strings.dart';
 import 'package:my_life/cubits/main_page/desires_list_cubit.dart';
+import 'package:my_life/cubits/user/user_cubit.dart';
 import 'package:my_life/db/user_hive_repository.dart';
 import 'package:my_life/handlers/notification_dialog.dart';
 
@@ -103,8 +104,8 @@ class ProfilePage extends StatelessWidget {
           ),
           ElevatedButton(
             child: Text('Logout!'),
-            onPressed: () {
-              NotificationDialog.showNotificationDialog(context, ConstStrings.logoutWarning, _signUpLoader);
+            onPressed: () async {
+              await NotificationDialog.showNotificationDialog(context, ConstStrings.logoutWarning, _signUpLoader);
             },
           ),
         ],
@@ -114,7 +115,10 @@ class ProfilePage extends StatelessWidget {
 }
 
 void _signUpLoader(BuildContext context) async {
-  await UserHiveRepository.db.delete(BlocProvider.of<DesiresListCubit>(context).user);
+  BlocProvider.of<UserCubit>(context).deleteUser();
+
+  print(await UserHiveRepository.db.getAll());
+  Navigator.pop(context);
   Navigator.pop(context);
   Navigator.pop(context);
   Navigator.pushNamed(context, '/home');

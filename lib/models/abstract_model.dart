@@ -1,7 +1,7 @@
 abstract class AbstractModel {
 
-  Map<String, String> get properties => throw UnimplementedError();
+  Map<String, dynamic> get properties => throw UnimplementedError();
 
-  set properties(Map<String, String> s) => throw UnimplementedError();
+  set properties(Map<String, dynamic> s) => throw UnimplementedError();
 
 }

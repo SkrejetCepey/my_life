@@ -32,7 +32,7 @@ class Desire extends HiveObject implements AbstractModel {
   };
 
   @override
-  set properties(Map<String, String> s) {
+  set properties(Map<String, dynamic> s) {
     if (s['title'] != null)
       title = s['title'];
     if (s['description'] != null)

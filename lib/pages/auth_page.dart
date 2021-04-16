@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:my_life/consts/const_strings.dart';
 import 'package:my_life/cubits/connection/connection_page_cubit.dart';
+import 'package:my_life/cubits/user/user_cubit.dart';
 import 'package:my_life/custom_widgets/summary_button.dart';
 import 'package:my_life/custom_widgets/password_form_field.dart';
 import 'package:my_life/custom_widgets/username_form_field.dart';
-import 'package:my_life/db/user_hive_repository.dart';
 import 'package:my_life/handlers/notification_dialog.dart';
 import 'package:my_life/models/user/user.dart';
 
@@ -118,5 +118,5 @@ void _mainPageLoader(BuildContext context) {
   Navigator.pop(context);
   Navigator.pop(context);
   Navigator.pushNamed(context, '/home');
-  UserHiveRepository.db.createIfNotExist(User(login: 'Guest', password: ''));
+  BlocProvider.of<UserCubit>(context).addUser(User(login: 'Guest', password: ''));
 }

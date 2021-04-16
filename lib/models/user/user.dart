@@ -14,30 +14,36 @@ class User extends HiveObject implements AbstractModel {
 
   // Picture profilePic;
   @HiveField(0)
-  String nickname;
+  String id;
   @HiveField(1)
-  String login;
+  String username;
   @HiveField(2)
+  String login;
+  @HiveField(3)
   String password;
 
-  @HiveField(3)
-  String firstName;
   @HiveField(4)
-  String lastName;
+  String firstName;
   @HiveField(5)
-  String city;
+  String lastName;
   @HiveField(6)
+  String city;
+  @HiveField(7)
   String email;
 
-  @HiveField(7)
+  @HiveField(8)
   List<Desire> desiresList = List<Desire>.empty(growable: true);
 
-  User({this.nickname, this.login, this.password,
+  User({this.username, this.login, this.password,
     this.firstName, this.lastName, this.city, this.email});
+
+  User.fromMap(Map<String, dynamic> map) {
+    properties = map;
+  }
 
   @override
   Map<String, String> get properties => {
-    'nickname': nickname,
+    'username': username,
     'login': login,
     'password': password,
     'firstName': firstName,
@@ -47,9 +53,11 @@ class User extends HiveObject implements AbstractModel {
   };
 
   @override
-  set properties(Map<String, String> s) {
-    if (s['nickname'] != null)
-      nickname = s['nickname'];
+  set properties(Map<String, dynamic> s) {
+    if (s['id'] != null)
+      id = s['id'];
+    if (s['username'] != null)
+      username = s['username'];
     if (s['login'] != null)
       login = s['login'];
     if (s['password'] != null)
@@ -64,6 +72,10 @@ class User extends HiveObject implements AbstractModel {
       email = s['email'];
   }
 
+  Map<String, dynamic> getNotNullProperties() {
+    return properties..removeWhere((key, value) => value == null);
+  }
+
   String getJsonFromProperties() {
 
     Map<String, String> map = properties;
@@ -74,6 +86,15 @@ class User extends HiveObject implements AbstractModel {
     });
 
     return json.encode(map);
+  }
+
+  String getLoginModelJson() {
+
+    return json.encode(<String, String>{
+      "login": this.login,
+      "password": this.password
+    });
+
   }
 
   @override

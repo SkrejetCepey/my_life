@@ -2,8 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:my_life/cubits/connection/connection_page_cubit.dart';
 import 'package:meta/meta.dart';
-import 'package:my_life/db/user_hive_repository.dart';
-import 'package:my_life/models/user/user.dart';
+import 'package:my_life/cubits/user/user_cubit.dart';
 
 class SummaryButton extends StatelessWidget {
 
@@ -49,8 +48,9 @@ class SummaryButton extends StatelessWidget {
     if (userData != null) {
       Navigator.of(context).pop();
 
-      User user = BlocProvider.of<ConnectionPageCubit>(context).user;
-      UserHiveRepository.db.create(user);
+      print('userData: $userData');
+      BlocProvider.of<UserCubit>(context).addUser(BlocProvider.of<ConnectionPageCubit>(context).user);
+
       Navigator.pushNamed(context, '/home');
       // Future.microtask(() => ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(user.toString()))));
     }

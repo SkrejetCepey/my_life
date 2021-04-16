@@ -5,6 +5,7 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:my_life/cubits/desire_page/desire_page_cubit.dart';
 import 'package:my_life/cubits/main_page/desires_list_cubit.dart';
+import 'package:my_life/cubits/user/user_cubit.dart';
 import 'package:my_life/db/user_hive_repository.dart';
 import 'package:my_life/models/icon_data_structure/icon_data_structure.dart';
 import 'package:my_life/models/user/user.dart';
@@ -21,13 +22,14 @@ void main() async {
 
   await Hive.initFlutter();
 
-  UserHiveRepository.db.database;
+  await initializeDateFormatting();
 
-  initializeDateFormatting();
   Hive.registerAdapter(DesireAdapter());
   Hive.registerAdapter(UserAdapter());
   Hive.registerAdapter(ParticleCheckboxAdapter());
   Hive.registerAdapter(IconDataStructureAdapter());
+
+  await UserHiveRepository.db.database;
 
   runApp(App());
 }
@@ -44,6 +46,9 @@ class App extends StatelessWidget {
         BlocProvider<DesiresListCubit>(
           create: (context) => DesiresListCubit(BlocProvider.of<DesirePageCubit>(context)),
         ),
+        BlocProvider<UserCubit>(
+          create: (_) => UserCubit(),
+        )
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
@@ -78,20 +83,21 @@ class HomePage extends StatelessWidget {
 
     // TODO create bloc instead FutureBuilder class
     return Scaffold(
-        body: FutureBuilder(
-          future: UserHiveRepository.db.getAll(),
-          builder: (BuildContext context, AsyncSnapshot<List> snapshot) {
-            if (snapshot.hasData) {
-              if (snapshot.data.isEmpty) {
-                return AuthPage();
-              } else {
-                BlocProvider.of<DesiresListCubit>(context).user = snapshot.data.last;
-                return MainPage();
-              }
-            }
-            return Center(child: CircularProgressIndicator());
-          },
-        )
+      body: BlocBuilder<UserCubit, UserState>(
+        builder: (BuildContext context, UserState state) {
+          if (state is UserInitEmpty)
+            return AuthPage();
+          else if (state is UserInit) {
+            BlocProvider.of<DesiresListCubit>(context).updateUser(BlocProvider.of<UserCubit>(context).user);
+            return MainPage();
+          }
+          else {
+            return Center(
+                child: CircularProgressIndicator()
+            );
+          }
+        },
+      ),
     );
   }
 }

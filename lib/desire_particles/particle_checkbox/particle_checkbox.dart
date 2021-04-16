@@ -34,7 +34,7 @@ class ParticleCheckbox extends HiveObject implements DesireParticleModel, Abstra
   };
 
   @override
-  set properties(Map<String, String> s) {
+  set properties(Map<String, dynamic> s) {
     if (s['title'] != null)
       title = s['title'];
   }

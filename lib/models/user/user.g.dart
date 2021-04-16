@@ -17,35 +17,39 @@ class UserAdapter extends TypeAdapter<User> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return User(
-      nickname: fields[0] as String,
-      login: fields[1] as String,
-      password: fields[2] as String,
-      firstName: fields[3] as String,
-      lastName: fields[4] as String,
-      city: fields[5] as String,
-      email: fields[6] as String,
-    )..desiresList = (fields[7] as List)?.cast<Desire>();
+      username: fields[1] as String,
+      login: fields[2] as String,
+      password: fields[3] as String,
+      firstName: fields[4] as String,
+      lastName: fields[5] as String,
+      city: fields[6] as String,
+      email: fields[7] as String,
+    )
+      ..id = fields[0] as String
+      ..desiresList = (fields[8] as List)?.cast<Desire>();
   }
 
   @override
   void write(BinaryWriter writer, User obj) {
     writer
-      ..writeByte(8)
+      ..writeByte(9)
       ..writeByte(0)
-      ..write(obj.nickname)
+      ..write(obj.id)
       ..writeByte(1)
-      ..write(obj.login)
+      ..write(obj.username)
       ..writeByte(2)
-      ..write(obj.password)
+      ..write(obj.login)
       ..writeByte(3)
-      ..write(obj.firstName)
+      ..write(obj.password)
       ..writeByte(4)
-      ..write(obj.lastName)
+      ..write(obj.firstName)
       ..writeByte(5)
-      ..write(obj.city)
+      ..write(obj.lastName)
       ..writeByte(6)
-      ..write(obj.email)
+      ..write(obj.city)
       ..writeByte(7)
+      ..write(obj.email)
+      ..writeByte(8)
       ..write(obj.desiresList);
   }
 
