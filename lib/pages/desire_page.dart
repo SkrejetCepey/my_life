@@ -60,17 +60,17 @@ class DesirePage extends StatelessWidget{
                   ],
                 ),
                 ListTile(
-                  title: DateTimePicker(model: desire, title: 'Select Date',),
+                  title: (selectedPage == _variantsDesirePage.edit) ? DateTimePicker(model: desire, title: 'Select Date', mode: false) : DateTimePicker(model: desire, title: 'Select Date'),
                 ),
                 ListTile(
                   title: SimpleAbstractFormField(model: desire, property: 'description', maxLines: 5, validate: false),
                 ),
                 Column(
                   children: <Widget>[
-                    for (DesireParticleModel entry in desire.particleModels) Column(
+                    for (DesireParticleModel entry in desire.particleModels.toSet()) Column(
                       children: [
                         Divider(),
-                        entry.build(context, desire)
+                        entry.buildUnique(context, desire)
                       ],
                     ),
                   ],
@@ -80,6 +80,9 @@ class DesirePage extends StatelessWidget{
                       style: ElevatedButton.styleFrom(onPrimary: Colors.brown),
                       child: Text('+'),
                       onPressed: () {
+                        if (selectedPage == _variantsDesirePage.edit) {
+                          return null;
+                        }
                         BlocProvider.of<DesirePageCubit>(context).desire = desire;
                         Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) =>
                             ParticlesDesirePage()
@@ -126,7 +129,12 @@ class DesirePage extends StatelessWidget{
           TextButton(
             child: Text('Save'),
             onPressed: () async {
-              if (_formKey.currentState.validate()) {
+              if (desire.dateTime == null) {
+                Future.microtask(() =>
+                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('The date cannot be null!'))));
+                return null;
+              }
+              if (_formKey.currentState.validate() && desire.dateTime != null) {
                 _formKey.currentState.save();
                 _addDesire(context);
               }
@@ -168,12 +176,46 @@ class DesirePage extends StatelessWidget{
 
   Future<void> _addDesire(BuildContext context) async {
     final DesiresListCubit cubit = BlocProvider.of<DesiresListCubit>(context);
+
+    int lengthParticleModelsList = desire.particleModels.length;
+
+    for (int i = 0; i < lengthParticleModelsList; i++) {
+      for (int j = 0; j < 3; j++) {
+
+        DesireParticleModel clone = desire.particleModels[0].clone();
+        clone.dateTime = this.desire.dateTime;
+        clone.dateTime = clone.dateTime.add(Duration(days: j));
+        desire.particleModels.add(clone);
+      }
+      desire.particleModels.remove(desire.particleModels[0]);
+    }
+
     await cubit.add(desire);
     Navigator.pop(context);
   }
 
   Future<void> _updateDesire(BuildContext context) async {
     final DesiresListCubit cubit = BlocProvider.of<DesiresListCubit>(context);
+
+    var er = desire.particleModels.toSet().toList();
+
+    for (int i = 0; i < er.length; i++) {
+      for (int j = 0; j < 3; j++) {
+
+        desire.particleModels.map((e) {
+          if (er[i].id == e.id) {
+            if (er[i] == e){
+              return e;
+            }
+            } else {
+              return er[i].clone(e.dateTime, e.state);
+            }
+        });
+
+      }
+
+    }
+
     await cubit.update(desire);
     Navigator.pop(context);
   }

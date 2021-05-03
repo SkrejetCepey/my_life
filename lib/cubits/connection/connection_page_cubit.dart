@@ -13,10 +13,23 @@ class ConnectionPageCubit extends Cubit<ConnectionPageState> {
 
   ConnectionPageCubit() : super(ConnectionPageInitial());
 
-  Future<String> tryConnection(BuildContext context) async {
-    emit(TryingPageConnect());
+  Future<String> tryLogin(BuildContext context) async {
+    emit(ConnectionPageTryingConnect());
     try {
       return await Connection.login(user);
+    } on Exception catch (exception) {
+      Future.microtask(() => AlertException.showAlertDialog(context, exception.toString()));
+    } finally {
+      emit(ConnectionPageInitial());
+    }
+    return null;
+  }
+
+  Future<String> trySignUp(BuildContext context) async {
+    emit(ConnectionPageTryingConnect());
+    print(user);
+    try {
+      return await Connection.register(user);
     } on Exception catch (exception) {
       Future.microtask(() => AlertException.showAlertDialog(context, exception.toString()));
     } finally {

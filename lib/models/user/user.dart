@@ -34,8 +34,13 @@ class User extends HiveObject implements AbstractModel {
   @HiveField(8)
   List<Desire> desiresList = List<Desire>.empty(growable: true);
 
+  @HiveField(9)
+  String accessToken;
+  @HiveField(10)
+  String refreshToken;
+
   User({this.username, this.login, this.password,
-    this.firstName, this.lastName, this.city, this.email});
+    this.firstName, this.lastName, this.city, this.email, this.accessToken, this.refreshToken});
 
   User.fromMap(Map<String, dynamic> map) {
     properties = map;
@@ -74,6 +79,10 @@ class User extends HiveObject implements AbstractModel {
 
   Map<String, dynamic> getNotNullProperties() {
     return properties..removeWhere((key, value) => value == null);
+  }
+
+  String getNullJsonFromProperties() {
+    return json.encode(properties);
   }
 
   String getJsonFromProperties() {

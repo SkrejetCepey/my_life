@@ -15,14 +15,28 @@ class DesiresListCubit extends Cubit<DesiresListState> {
   User user;
 
   final DesirePageCubit desiresListCubit;
-  StreamSubscription desiresListCubitSubscription;
+  StreamSubscription _desiresListCubitSubscription;
 
   DesiresListCubit(this.desiresListCubit) : super(DesiresListInitial()) {
     _getUserAndInit();
 
-    desiresListCubitSubscription = desiresListCubit.listen((DesirePageState state) {
-      refresh();
+    _desiresListCubitSubscription = desiresListCubit.listen((DesirePageState state) {
+      if (desiresListCubit.desire.isInBox)
+        update(desiresListCubit.desire);
     });
+  }
+
+  List<Desire> actualDesires(DateTime dateTime) {
+
+    return this.desireList.where((element) =>
+      element.particleModels.where((element) {
+       if (element.dateTime.day == dateTime.day &&
+       element.dateTime.month == dateTime.month &&
+       element.dateTime.year == dateTime.year) {
+         return true;
+      } else {
+        return false;
+      }}).length > 0).toList();
   }
 
   Future<void> _getUserAndInit() async {
@@ -35,6 +49,13 @@ class DesiresListCubit extends Cubit<DesiresListState> {
   void updateUser(User user) {
     this.user = user;
     emit(DesiresListUpdateUser());
+    _init();
+  }
+
+  Future<void> deleteCurrentUser() async {
+    await UserHiveRepository.db.delete(this.user);
+    this.user = null;
+    emit(DesiresListDeleteCurrentUser());
     _init();
   }
 
@@ -89,7 +110,7 @@ class DesiresListCubit extends Cubit<DesiresListState> {
 
   @override
   Future<void> close() {
-    desiresListCubitSubscription.cancel();
+    _desiresListCubitSubscription.cancel();
     return super.close();
   }
 }

@@ -17,19 +17,25 @@ class ParticleCheckboxAdapter extends TypeAdapter<ParticleCheckbox> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return ParticleCheckbox(
-      title: fields[0] as String,
-      state: fields[1] as bool,
+      title: fields[1] as String,
+      state: fields[2] as bool,
+      dateTime: fields[3] as DateTime,
+      id: fields[0] as int,
     );
   }
 
   @override
   void write(BinaryWriter writer, ParticleCheckbox obj) {
     writer
-      ..writeByte(2)
+      ..writeByte(4)
       ..writeByte(0)
-      ..write(obj.title)
+      ..write(obj.id)
       ..writeByte(1)
-      ..write(obj.state);
+      ..write(obj.title)
+      ..writeByte(2)
+      ..write(obj.state)
+      ..writeByte(3)
+      ..write(obj.dateTime);
   }
 
   @override

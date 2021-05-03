@@ -3,8 +3,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:intl/date_symbol_data_local.dart';
+import 'package:my_life/cubits/appbar_builder/appbar_builder_cubit.dart';
 import 'package:my_life/cubits/desire_page/desire_page_cubit.dart';
 import 'package:my_life/cubits/main_page/desires_list_cubit.dart';
+import 'package:my_life/cubits/table_calendar/table_calendar_cubit.dart';
 import 'package:my_life/cubits/user/user_cubit.dart';
 import 'package:my_life/db/user_hive_repository.dart';
 import 'package:my_life/models/icon_data_structure/icon_data_structure.dart';
@@ -15,7 +17,6 @@ import 'package:my_life/pages/main_page.dart';
 import 'package:my_life/pages/signup_page.dart';
 import 'desire_particles/particle_checkbox/particle_checkbox.dart';
 import 'models/desire/desire.dart';
-
 
 void main() async {
   Bloc.observer = GlobalObserver();
@@ -48,6 +49,12 @@ class App extends StatelessWidget {
         ),
         BlocProvider<UserCubit>(
           create: (_) => UserCubit(),
+        ),
+        BlocProvider<TableCalendarCubit>(
+          create: (_) => TableCalendarCubit(),
+        ),
+        BlocProvider<AppBarBuilderCubit>(
+          create: (_) => AppBarBuilderCubit(),
         )
       ],
       child: MaterialApp(
@@ -67,37 +74,37 @@ class App extends StatelessWidget {
         routes: {
           '/sign_up': (BuildContext context) => SignUpPage(),
           '/main': (BuildContext context) => MainPage(),
-          '/home': (BuildContext context) => HomePage(),
+          '/home': (BuildContext context) => HomePageFactory(),
         },
-        home: HomePage(),
+        home: HomePageFactory(),
       ),
     );
   }
 
 }
 
-class HomePage extends StatelessWidget {
+class HomePageFactory extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
-    // TODO create bloc instead FutureBuilder class
-    return Scaffold(
-      body: BlocBuilder<UserCubit, UserState>(
-        builder: (BuildContext context, UserState state) {
-          if (state is UserInitEmpty)
-            return AuthPage();
-          else if (state is UserInit) {
-            BlocProvider.of<DesiresListCubit>(context).updateUser(BlocProvider.of<UserCubit>(context).user);
-            return MainPage();
-          }
-          else {
-            return Center(
-                child: CircularProgressIndicator()
-            );
-          }
-        },
-      ),
+    return BlocBuilder<UserCubit, UserState>(
+      builder: (BuildContext context, UserState state) {
+        return Builder(
+          builder: (BuildContext context) {
+            if (state is UserInitEmpty)
+              return AuthPage();
+            else if (state is UserInit) {
+              BlocProvider.of<DesiresListCubit>(context).updateUser(BlocProvider.of<UserCubit>(context).user);
+              return MainPage();
+            }
+            else {
+              return Center(
+                  child: CircularProgressIndicator()
+              );
+            }
+          },
+        );
+      },
     );
   }
 }

@@ -10,20 +10,27 @@ import 'package:my_life/handlers/notification_dialog.dart';
 import 'package:my_life/models/abstract_model.dart';
 import 'package:my_life/models/desire/desire.dart';
 import 'package:my_life/models/desire_particle_model.dart';
+import 'package:quiver/core.dart';
 
 part 'particle_checkbox.g.dart';
 
 @HiveType(typeId: 1)
 class ParticleCheckbox extends HiveObject implements DesireParticleModel, AbstractModel {
 
+  @override
   @HiveField(0)
-  String title;
+  int id;
   @HiveField(1)
+  String title;
+  @HiveField(2)
   bool state;
+  @HiveField(3)
+  @override
+  DateTime dateTime;
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
-  ParticleCheckbox({this.title, this.state}) {
+  ParticleCheckbox({this.title, this.state, this.dateTime, this.id}) {
     if (state == null)
       state = false;
   }
@@ -83,6 +90,7 @@ class ParticleCheckbox extends HiveObject implements DesireParticleModel, Abstra
               onPressed: () async {
                 if (_formKey.currentState.validate()) {
                   _formKey.currentState.save();
+                  this.id = BlocProvider.of<DesirePageCubit>(context).desire.particleModels.length;
                   BlocProvider.of<DesirePageCubit>(context).add(this);
                   Navigator.pop(context);
                   Navigator.pop(context);
@@ -103,10 +111,24 @@ class ParticleCheckbox extends HiveObject implements DesireParticleModel, Abstra
 
     Future<void> _deleteDesireParticle(BuildContext context) async {
       DesirePageCubit cubit = BlocProvider.of<DesirePageCubit>(context);
+
+      List<DesireParticleModel> desireParticleModels = desire.particleModels.toSet().toList();
+
+      if (desireParticleModels.length <= 1) {
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Cant delete last desire particle model!')));
+        return null;
+      }
+
+      for(int i = 0; i < desireParticleModels.length; i++) {
+        for (var el in desire.particleModels.where((element) => this.id == element.id).toList()) {
+          await cubit.delete(el);
+        }
+      }
+
       if (cubit.desire.particleModels.length == 1) {
         cubit.desire.isExpanded = false;
       }
-      cubit.delete(this);
+
       Navigator.pop(context);
     }
 
@@ -168,6 +190,15 @@ class ParticleCheckbox extends HiveObject implements DesireParticleModel, Abstra
               onPressed: () {
                 if (_formKey.currentState.validate()) {
                   _formKey.currentState.save();
+
+                  List<DesireParticleModel> desireParticleModels = desire.particleModels.toSet().toList();
+
+                  print('desireParticleModels.length: ${desireParticleModels.length}');
+
+                  for(int i = 0; i < desireParticleModels.length - 1; i++) {
+                    desire.particleModels = desire.particleModels.where((element) => element.id == desireParticleModels[i].id).map((e) => desireParticleModels[i].clone(e.dateTime, e.state)).toList();
+                  }
+
                   BlocProvider.of<DesirePageCubit>(context).update(this);
                   Navigator.pop(context);
                 }
@@ -192,9 +223,9 @@ class ParticleCheckbox extends HiveObject implements DesireParticleModel, Abstra
             },
             title: Row(
               children: [
-                RoundedCheckbox(state: this.state, desire: desire),
+                RoundedCheckbox(state: this.state, desire: desire, dateTime: dateTime),
                 Flexible(
-                    child: Text(title)
+                    child: Text("$title")
                 ),
               ],
             ),
@@ -204,14 +235,55 @@ class ParticleCheckbox extends HiveObject implements DesireParticleModel, Abstra
     );
   }
 
+  @override
+  DesireParticleModel clone([DateTime dateTime, bool state]) {
+    return ParticleCheckbox(
+      title: this.title,
+      state: state == null ? this.state : state,
+      id: this.id,
+      dateTime: dateTime == null ? this.dateTime : dateTime
+    );
+  }
+
+  @override
+  Widget buildUnique(BuildContext context, Desire desire) {
+    return BlocProvider<ParticleCheckboxCubit>(
+      create: (_) => ParticleCheckboxCubit(this),
+      child: BlocBuilder<ParticleCheckboxCubit, ParticleCheckboxState>(
+        builder: (BuildContext context, ParticleCheckboxState state) {
+          return ListTile(
+            onTap: () {
+              Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) =>
+                  editPage(context, desire)));
+            },
+            title: Row(
+              children: [
+                RoundedCheckbox(state: this.state, desire: desire, dateTime: dateTime),
+                Flexible(
+                    child: Text("$title")
+                ),
+              ],
+            ),
+          );
+        },
+      ),
+    );
+  }
+
+  bool operator ==(o) => o is ParticleCheckbox && this.id == o.id && this.title == o.title;
+
+  @override
+  int get hashCode => hash2(id.hashCode, title.hashCode);
+
 }
 
 class RoundedCheckbox extends StatelessWidget {
 
   final bool state;
   final Desire desire;
+  final DateTime dateTime;
 
-  RoundedCheckbox({this.state, this.desire});
+  RoundedCheckbox({this.state, this.desire, this.dateTime});
 
   @override
   Widget build(BuildContext context) {
@@ -222,8 +294,8 @@ class RoundedCheckbox extends StatelessWidget {
       child: IconButton(
         icon: state ? Icon(Icons.check_circle_outline) : Icon(FontAwesomeIcons.circle),
         onPressed: () {
-          BlocProvider.of<ParticleCheckboxCubit>(context).switchParticleCheckBoxState();
           BlocProvider.of<DesiresListCubit>(context).update(desire);
+          BlocProvider.of<ParticleCheckboxCubit>(context).switchParticleCheckBoxState();
         },
       )
     );

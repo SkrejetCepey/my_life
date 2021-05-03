@@ -7,15 +7,17 @@ class DateTimePicker extends StatelessWidget {
 
   final String title;
   final Desire model;
+  final bool mode;
 
-  DateTimePicker({this.title = 'Pick DateTime!', @required this.model});
+  DateTimePicker({this.title = 'Pick DateTime!', @required this.model, this.mode = true});
 
   @override
   Widget build(BuildContext context) {
     return ElevatedButton(
+
       style: ElevatedButton.styleFrom(onPrimary: Colors.brown),
       child: BlocBuilder<DesiresListCubit, DesiresListState>(
-        builder: (context, state) {
+        builder: (BuildContext context, DesiresListState state) {
           if (model.dateTime != null)
             return Text(model.dateTime.toString());
           else
@@ -23,6 +25,11 @@ class DateTimePicker extends StatelessWidget {
         },
       ),
       onPressed: () async {
+
+        if (mode == false) {
+          return null;
+        }
+
         DateTime pickedDate = await showDatePicker(
             context: context,
             initialDate: DateTime.now(),
@@ -31,8 +38,12 @@ class DateTimePicker extends StatelessWidget {
         );
 
         if (pickedDate != null) {
+
           model.dateTime = pickedDate;
-          await BlocProvider.of<DesiresListCubit>(context).update(model);
+          BlocProvider.of<DesiresListCubit>(context).refresh();
+
+          if (model.isInBox)
+            await BlocProvider.of<DesiresListCubit>(context).update(model);
         }
 
       },

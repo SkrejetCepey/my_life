@@ -4,12 +4,12 @@ import 'package:my_life/cubits/connection/connection_page_cubit.dart';
 import 'package:meta/meta.dart';
 import 'package:my_life/cubits/user/user_cubit.dart';
 
-class SummaryButton extends StatelessWidget {
+abstract class SummaryButton extends StatelessWidget {
 
   final GlobalKey<FormState> _formKey;
   final String title;
 
-  SummaryButton({Key key, @required formKey,
+  SummaryButton({Key key, @required GlobalKey<FormState> formKey,
     @required this.title}) : _formKey = formKey, super(key: key);
 
   @override
@@ -22,13 +22,13 @@ class SummaryButton extends StatelessWidget {
             style: ElevatedButton.styleFrom(
               onPrimary: Colors.brown
             ),
-            child: (state is TryingPageConnect) ? CircularProgressIndicator(valueColor: AlwaysStoppedAnimation<Color>(Colors.deepOrangeAccent)) :
+            child: (state is ConnectionPageTryingConnect) ? CircularProgressIndicator(valueColor: AlwaysStoppedAnimation<Color>(Colors.deepOrangeAccent)) :
             Text(title),
             onPressed: () async {
-              if (!(state is TryingPageConnect)) {
+              if (!(state is ConnectionPageTryingConnect)) {
                 if (_formKey.currentState.validate()) {
                   _formKey.currentState.save();
-                  _tryToConnect(context, state);
+                  tryToConnect(context, state);
                   FocusScope.of(context).unfocus();
                 }
               }
@@ -39,11 +39,11 @@ class SummaryButton extends StatelessWidget {
     );
   }
 
-  Future<void> _tryToConnect(BuildContext context, ConnectionPageState state) async {
+  Future<void> tryToConnect(BuildContext context, ConnectionPageState state) async {
 
     final ConnectionPageCubit connectionCubit = BlocProvider.of<ConnectionPageCubit>(context);
 
-    String userData = await connectionCubit.tryConnection(context);
+    String userData = await connectionCubit.tryLogin(context);
 
     if (userData != null) {
       Navigator.of(context).pop();
@@ -52,7 +52,6 @@ class SummaryButton extends StatelessWidget {
       BlocProvider.of<UserCubit>(context).addUser(BlocProvider.of<ConnectionPageCubit>(context).user);
 
       Navigator.pushNamed(context, '/home');
-      // Future.microtask(() => ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(user.toString()))));
     }
 
 

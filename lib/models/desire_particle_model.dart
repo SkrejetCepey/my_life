@@ -8,6 +8,12 @@ abstract class DesireParticleModel {
   Scaffold editPage(BuildContext context, Desire desire);
   Widget build(BuildContext context, Desire desire);
 
+  Widget buildUnique(BuildContext context, Desire desire);
+
+  DesireParticleModel clone([DateTime dateTime, bool state]);
+
   bool state;
+  DateTime dateTime;
+  int id;
 
 }

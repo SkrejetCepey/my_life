@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:my_life/cubits/main_page/desires_list_cubit.dart';
+import 'package:my_life/cubits/user/user_cubit.dart';
+import 'package:my_life/handlers/alert_exception.dart';
 import 'package:my_life/models/user/user.dart';
 import 'package:my_life/networking/connection.dart';
 import 'package:my_life/pages/other_user_page.dart';
@@ -12,8 +16,16 @@ class FindFriendPage extends StatelessWidget {
         title: Text('FindFriendPage'),
       ),
       body: FutureBuilder(
-        future: Connection.getAllUsers(),
+        future: Connection.getAllUsers(BlocProvider.of<DesiresListCubit>(context).user, context),
         builder: (BuildContext context, AsyncSnapshot<List<User>> snapshot) {
+
+          if (snapshot.hasError) {
+            Future.microtask(() => AlertException.showAlertDialog(context, snapshot.error.toString())).then((value)
+            {
+              Future.wait([BlocProvider.of<UserCubit>(context).deleteUser()]).then((value) => Navigator.of(context).pop());
+            });
+          }
+
           if (snapshot.hasData) {
             return ListView.builder(
               itemCount: snapshot.data.length,

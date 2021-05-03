@@ -12,3 +12,5 @@ class UserCreate extends UserState {}
 class UserDelete extends UserState {}
 
 class UserInitEmpty extends UserState {}
+
+class UserUpdate extends UserState {}

@@ -44,9 +44,35 @@ class Desire extends HiveObject implements AbstractModel {
     if (particleModels.isEmpty)
       return 0;
 
+    print(particleModels
+        .where((element) => element.state != false)
+        .length / particleModels.length);
+
     return particleModels
         .where((element) => element.state != false)
         .length / particleModels.length;
+  }
+
+  int getValueCompleteParticlesInPercent() {
+
+    if (particleModels.isEmpty)
+      return 0;
+
+    return (particleModels
+        .where((element) => element.state != false)
+        .length / particleModels.length * 100).round();
+  }
+
+  int getValueCompleteCurrentParticleInPercent(DesireParticleModel desireParticleModel) {
+
+    if (particleModels.isEmpty)
+      return 0;
+
+    List<DesireParticleModel> t =  particleModels
+        .where((element) => desireParticleModel == element).toList();
+
+    return (t.where((element) => element.state != false).length / t.length * 100).round();
+
   }
 
   @override

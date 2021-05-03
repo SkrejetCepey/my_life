@@ -24,3 +24,5 @@ class DesiresListCreateUser extends DesiresListState {}
 class DesiresListInitUser extends DesiresListState {}
 
 class DesiresListUpdateUser extends DesiresListState {}
+
+class DesiresListDeleteCurrentUser extends DesiresListState {}

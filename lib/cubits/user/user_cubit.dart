@@ -15,11 +15,13 @@ class UserCubit extends Cubit<UserState> {
 
   Future<void> _initUser() async {
 
-    if ((await UserHiveRepository.db.getAll()).isEmpty) {
-      emit(UserInitEmpty());
-    } else {
-      this.user = (await UserHiveRepository.db.getAll()).last;
+    List<User> listUser = await UserHiveRepository.db.getAll();
+
+    if (listUser.length == 1) {
+      this.user = listUser.single;
       emit(UserInit());
+    } else {
+      emit(UserInitEmpty());
     }
 
   }
@@ -35,6 +37,16 @@ class UserCubit extends Cubit<UserState> {
 
     await UserHiveRepository.db.delete(this.user);
     emit(UserDelete());
+    await _initUser();
+
+  }
+
+  Future<void> updateUser() async {
+
+    emit(UserUpdate());
+    if (user.isInBox) {
+      await UserHiveRepository.db.update(user);
+    }
     await _initUser();
 
   }

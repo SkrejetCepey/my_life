@@ -5,7 +5,7 @@ abstract class ConnectionPageState {}
 
 class ConnectionPageInitial extends ConnectionPageState {}
 
-class TryingPageConnect extends ConnectionPageState {}
+class ConnectionPageTryingConnect extends ConnectionPageState {}
 
 class FailedPageConnect extends ConnectionPageState {
   final Exception exception;
