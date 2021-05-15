@@ -1,5 +1,8 @@
 import 'package:bloc/bloc.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:meta/meta.dart';
+import 'package:my_life/cubits/main_page/desires_list_cubit.dart';
 import 'package:my_life/db/user_hive_repository.dart';
 import 'package:my_life/models/user/user.dart';
 
@@ -41,11 +44,32 @@ class UserCubit extends Cubit<UserState> {
     await _initUser();
   }
 
+  Future<void> addSingletonUser(User user, BuildContext context) async {
+    print("addSingleton: ${user.login}");
+    for (User val in (await UserHiveRepository.db.database).values) {
+      if (val.login == user.login) {
+        print("User found!");
+        // await UserHiveRepository.db.create(user);
+        BlocProvider.of<DesiresListCubit>(context).updateUser(val);
+        this.user = val;
+        return;
+        // this.user = (await UserHiveRepository.db.database).get(user.key);
+      }
+    }
+    print("User not found!");
+
+    await UserHiveRepository.db.create(user);
+    BlocProvider.of<DesiresListCubit>(context).updateUser((await UserHiveRepository.db.database).get(user.key));
+
+    emit(UserCreateSingleton());
+    await _initUser();
+  }
+
   Future<void> addUser(User user) async {
 
     await UserHiveRepository.db.create(user);
     this.user = (await UserHiveRepository.db.database).get(user.key);
-    emit(UserCreate());
+    emit(UserCreateSingleton());
     await _initUser();
   }
 

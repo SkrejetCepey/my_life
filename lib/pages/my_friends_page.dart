@@ -99,6 +99,11 @@ class MyFriendsPage extends StatelessWidget {
                       ),
                     );
                   }
+                  if (state is FriendPageServerFuckUp) {
+                    return Center(
+                      child: Text('Sorry!\n\n.Net Server is wracked! (500)'),
+                    );
+                  }
                   if (state is FriendPageServerShutdown) {
                     return Center(
                       child: Text('Sorry!\n\n.Net Server is unavailable!'),
@@ -107,7 +112,9 @@ class MyFriendsPage extends StatelessWidget {
                   if (state is FriendPageSomethingInvalid) {
                     Future.microtask(() => AlertException.showAlertDialog(context, state.errorText)).then((value)
                     {
-                      Future.wait([BlocProvider.of<UserCubit>(context).deleteUser()]).then((value) => Navigator.of(context).pop());
+                      Navigator.of(context).pop();
+                      Navigator.of(context).pop();
+                      Navigator.of(context).pushNamed("/home");
                     });
                   }
                   return Center(

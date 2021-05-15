@@ -22,6 +22,8 @@ class FriendPageRemovingFriend extends FriendPageState with FriendPageOperation 
 
 class FriendPageServerShutdown extends FriendPageState {}
 
+class FriendPageServerFuckUp extends FriendPageState {}
+
 class FriendPageApplyFriendRequest extends FriendPageState with FriendPageOperation {}
 
 class FriendPageRemoveFriendInvitation extends FriendPageState with FriendPageOperation {}

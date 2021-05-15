@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:my_life/cubits/user/user_cubit.dart';
 import 'package:my_life/db/user_hive_repository.dart';
+import 'package:my_life/models/user/user.dart';
 
 class LogoutDialog {
   static showLogoutDialog(BuildContext context, String content, Function callback) async {
@@ -17,10 +18,17 @@ class LogoutDialog {
       child: Text("Clear this user data and exit!", style: TextStyle(color: Colors.red)),
       onPressed: () async {
 
-        await UserHiveRepository.db.database..compact();
+        await (await UserHiveRepository.db.database).compact();
 
-        if (BlocProvider.of<UserCubit>(context).user.isInBox)
-          await BlocProvider.of<UserCubit>(context).deleteUser();
+        User thisUser = BlocProvider.of<UserCubit>(context).user;
+
+        //TODO fix this next time
+        for (User val in (await UserHiveRepository.db.database).values) {
+          if (val.login == thisUser.login) {
+            val.delete();
+            break;
+          }
+        }
 
         Navigator.pop(context);
         Navigator.pop(context);

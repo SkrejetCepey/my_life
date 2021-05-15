@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:my_life/consts/const_strings.dart';
 import 'package:my_life/cubits/main_page/desires_list_cubit.dart';
+import 'package:my_life/cubits/user/user_cubit.dart';
 import 'package:my_life/handlers/logout_dialog.dart';
 import 'package:my_life/pages/profile_page.dart';
 import 'my_friends_page.dart';
@@ -58,8 +59,14 @@ class DrawerPage extends StatelessWidget {
           ListTile(
             title: Text('Friends'),
             onTap: () {
-              Navigator.pop(context);
-              Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => MyFriendsPage()));
+              if (BlocProvider.of<UserCubit>(context).user.role == "Guest") {
+                Navigator.pop(context);
+                ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Unavailable for guest mode!")));
+                return null;
+              } else {
+                Navigator.pop(context);
+                Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => MyFriendsPage()));
+              }
             },
           ),
           ListTile(

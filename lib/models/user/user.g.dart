@@ -26,6 +26,7 @@ class UserAdapter extends TypeAdapter<User> {
       email: fields[7] as String,
       accessToken: fields[9] as String,
       refreshToken: fields[10] as String,
+      role: fields[11] as String,
     )
       ..id = fields[0] as String
       ..desiresList = (fields[8] as List)?.cast<Desire>();
@@ -34,7 +35,7 @@ class UserAdapter extends TypeAdapter<User> {
   @override
   void write(BinaryWriter writer, User obj) {
     writer
-      ..writeByte(11)
+      ..writeByte(12)
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)
@@ -56,7 +57,9 @@ class UserAdapter extends TypeAdapter<User> {
       ..writeByte(9)
       ..write(obj.accessToken)
       ..writeByte(10)
-      ..write(obj.refreshToken);
+      ..write(obj.refreshToken)
+      ..writeByte(11)
+      ..write(obj.role);
   }
 
   @override

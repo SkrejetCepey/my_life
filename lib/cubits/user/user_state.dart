@@ -9,6 +9,8 @@ class UserInit extends UserState {}
 
 class UserCreate extends UserState {}
 
+class UserCreateSingleton extends UserState {}
+
 class UserDelete extends UserState {}
 
 class UserInitEmpty extends UserState {}

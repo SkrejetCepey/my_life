@@ -45,6 +45,8 @@ class FriendPageCubit extends Cubit<FriendPageState> {
         await _refresh();
       } else if (e.response.statusCode == 404) {
         emit(FriendPageServerShutdown());
+      } else if (e.response.statusCode == 500) {
+        emit(FriendPageServerShutdown());
       } else {
         print('CubitFriendPageError: $e');
       }

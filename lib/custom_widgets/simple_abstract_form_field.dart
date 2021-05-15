@@ -27,7 +27,7 @@ class SimpleAbstractFormField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
+    print("rebuild simple abstract $property form=======");
     return TextFormField(
       maxLines: maxLines,
       controller: _titleTextEditingController,

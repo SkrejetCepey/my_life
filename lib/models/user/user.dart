@@ -39,8 +39,12 @@ class User extends HiveObject implements AbstractModel {
   @HiveField(10)
   String refreshToken;
 
+  @HiveField(11)
+  String role;
+
   User({this.username, this.login, this.password,
-    this.firstName, this.lastName, this.city, this.email, this.accessToken, this.refreshToken});
+    this.firstName, this.lastName, this.city, this.email, this.accessToken,
+    this.refreshToken, this.role});
 
   User.fromMap(Map<String, dynamic> map) {
     properties = map;

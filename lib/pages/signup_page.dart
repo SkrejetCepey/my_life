@@ -45,9 +45,6 @@ class SignUpPage extends StatelessWidget {
                     ListTile(
                       title: DoublePasswordFormField(),
                     ),
-                    // ListTile(
-                    //     title: PasswordFormField()
-                    // ),
                   ],
                 ),
               ),

@@ -13,7 +13,11 @@ class MLNetworkError implements Exception {
     if (msg != null) {
       return 'MLNetworkError: $msg';
     } else if (response != null) {
-      return '${response.statusCode}\n${response.statusMessage}\n${response.data['errorMessage']}';
+      if (response.statusCode == 500 || response.statusCode == 404) {
+        return '${response.statusCode}\n${response.statusMessage}\n"Server is unavailable!"';
+      } else {
+        return '${response.statusCode}\n${response.statusMessage}\n${response.data['errorMessage']}';
+      }
     } else {
       return 'Silence MLNetworkError!';
     }

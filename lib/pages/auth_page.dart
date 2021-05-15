@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:my_life/consts/const_strings.dart';
 import 'package:my_life/cubits/connection/connection_page_cubit.dart';
+import 'package:my_life/cubits/user/user_cubit.dart';
 import 'package:my_life/custom_widgets/password_form_field.dart';
 import 'package:my_life/custom_widgets/summary_login_button.dart';
 import 'package:my_life/custom_widgets/login_form_field.dart';
 import 'package:my_life/handlers/notification_dialog.dart';
+import 'package:my_life/models/user/user.dart';
 
 class AuthPage extends StatelessWidget {
 
@@ -114,9 +116,8 @@ class FooterContent extends StatelessWidget {
 }
 
 Future<void> _mainPageLoader(BuildContext context) async {
-  ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("This feature is unavailable now!")));
   Navigator.pop(context);
-  // Navigator.pop(context);
-  // await BlocProvider.of<UserCubit>(context).addUser(User(login: 'Guest', password: ''));
-  // await Navigator.pushNamed(context, '/home');
+  Navigator.pop(context);
+  await BlocProvider.of<UserCubit>(context).addSingletonUser(User(login: 'Guest', password: '', role: "Guest"), context);
+  await Navigator.pushNamed(context, '/main');
 }
