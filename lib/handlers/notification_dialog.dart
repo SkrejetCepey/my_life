@@ -12,8 +12,8 @@ class NotificationDialog {
 
     Widget okButton = TextButton(
       child: Text("OK!"),
-      onPressed: () {
-        callback(context);
+      onPressed: () async {
+        await callback(context);
       },
     );
 

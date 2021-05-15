@@ -28,10 +28,10 @@ class FriendPageCubit extends Cubit<FriendPageState> {
     try {
 
       // safe init transaction
-      await Future.wait([Connection.getAllUsers(BlocProvider.of<UserCubit>(context).user, context),
-        Connection.getMyFriends(BlocProvider.of<UserCubit>(context).user),
-        Connection.getSendInvites(BlocProvider.of<UserCubit>(context).user),
-        Connection.getReceiveFriendList(BlocProvider.of<UserCubit>(context).user)
+      await Future.wait([Connection.getAllUsers(user, context),
+        Connection.getMyFriends(user),
+        Connection.getSendInvites(user),
+        Connection.getReceiveFriendList(user)
       ]).then((value)  {
         allUsers = value[0];
         myFriends = value[1];

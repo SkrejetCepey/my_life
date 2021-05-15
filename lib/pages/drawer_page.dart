@@ -2,8 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:my_life/consts/const_strings.dart';
 import 'package:my_life/cubits/main_page/desires_list_cubit.dart';
-import 'package:my_life/cubits/user/user_cubit.dart';
-import 'package:my_life/handlers/notification_dialog.dart';
+import 'package:my_life/handlers/logout_dialog.dart';
 import 'package:my_life/pages/profile_page.dart';
 import 'my_friends_page.dart';
 
@@ -73,7 +72,7 @@ class DrawerPage extends StatelessWidget {
             leading: Icon(Icons.arrow_back),
             title: Text('Logout'),
             onTap: () async {
-              await NotificationDialog.showNotificationDialog(context, ConstStrings.logoutWarning, _signUpLoader);
+              await LogoutDialog.showLogoutDialog(context, ConstStrings.logoutWarning, _signUpLoader);
             },
           )
         ],
@@ -83,7 +82,7 @@ class DrawerPage extends StatelessWidget {
 }
 
 void _signUpLoader(BuildContext context) async {
-  BlocProvider.of<UserCubit>(context).deleteUser();
+  // BlocProvider.of<UserCubit>(context).deleteUser();
 
   Navigator.pop(context);
   Navigator.pop(context);

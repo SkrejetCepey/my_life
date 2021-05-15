@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:my_life/cubits/connection/connection_page_cubit.dart';
+import 'package:my_life/custom_widgets/double_password_form_field.dart';
 import 'package:my_life/custom_widgets/email_form_field.dart';
-import 'package:my_life/custom_widgets/password_form_field.dart';
 import 'package:my_life/custom_widgets/summary_signup_button.dart';
 import 'package:my_life/custom_widgets/login_form_field.dart';
 
@@ -43,8 +43,11 @@ class SignUpPage extends StatelessWidget {
                       title: EmailFormField(),
                     ),
                     ListTile(
-                        title: PasswordFormField()
+                      title: DoublePasswordFormField(),
                     ),
+                    // ListTile(
+                    //     title: PasswordFormField()
+                    // ),
                   ],
                 ),
               ),

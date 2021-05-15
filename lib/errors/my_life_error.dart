@@ -9,6 +9,14 @@ class MLNetworkError implements Exception {
   MLNetworkError({this.msg, this.response});
 
   @override
-  String toString() => 'MLError: $msg';
+  String toString() {
+    if (msg != null) {
+      return 'MLNetworkError: $msg';
+    } else if (response != null) {
+      return '${response.statusCode}\n${response.statusMessage}\n${response.data['errorMessage']}';
+    } else {
+      return 'Silence MLNetworkError!';
+    }
+  }
 
 }

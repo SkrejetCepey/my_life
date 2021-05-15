@@ -15,20 +15,36 @@ class UserCubit extends Cubit<UserState> {
 
   Future<void> _initUser() async {
 
-    List<User> listUser = await UserHiveRepository.db.getAll();
+    // await Future.wait([UserHiveRepository.db.getAll()]).then((value) {
+    //
+    //   if (value[0].isNotEmpty) {
+    //     print("value[0].last.login: ${value[0].last.login}");
+    //     print("value[0].last.isInBox: ${value[0]?.last?.isInBox}");
+    //   } else {
+    //     print("value[0].isNotEmpty: ${value[0].isNotEmpty}");
+    //   }
+    //
+    //   if (value[0].isNotEmpty && value[0].last.login != null && value[0].last.isInBox) {
+    //     this.user = value[0].last;
+    //     emit(UserInit());
+    //   } else {
+    //     emit(UserInitEmpty());
+    //   }
+    // });
+    emit(UserInit());
 
-    if (listUser.length == 1) {
-      this.user = listUser.single;
-      emit(UserInit());
-    } else {
-      emit(UserInitEmpty());
-    }
+  }
 
+  Future<void> selectUser(User user) async {
+    this.user = user;
+    emit(UserSelect());
+    await _initUser();
   }
 
   Future<void> addUser(User user) async {
 
     await UserHiveRepository.db.create(user);
+    this.user = (await UserHiveRepository.db.database).get(user.key);
     emit(UserCreate());
     await _initUser();
   }

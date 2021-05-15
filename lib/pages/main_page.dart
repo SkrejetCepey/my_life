@@ -6,6 +6,7 @@ import 'package:my_life/cubits/appbar_builder/appbar_builder_cubit.dart';
 import 'package:my_life/cubits/main_page/desires_list_cubit.dart';
 import 'package:my_life/cubits/table_calendar/table_calendar_cubit.dart';
 import 'package:my_life/cubits/user/user_cubit.dart';
+import 'package:my_life/db/user_hive_repository.dart';
 import 'package:my_life/models/desires_list.dart';
 import 'desire_page.dart';
 import 'package:table_calendar/table_calendar.dart';
@@ -104,18 +105,18 @@ class InitialisedDesiresListPage extends StatelessWidget {
         length: 2,
         child: Column(
             children: [
-              Material(
-                color: const Color(0xffa0b50e),
-                child: TabBar(
-                  indicatorColor: const Color(0xffd5f111),
-                  unselectedLabelColor: const Color(0xffc2c19a),
-                  labelColor: const Color(0xffd5f111),
-                  tabs: [
-                    Tab(child: Text('Habits')),
-                    Tab(child: Text('Desires'))
-                  ],
-                ),
-              ),
+              // Material(
+              //   color: const Color(0xffa0b50e),
+              //   child: TabBar(
+              //     indicatorColor: const Color(0xffd5f111),
+              //     unselectedLabelColor: const Color(0xffc2c19a),
+              //     labelColor: const Color(0xffd5f111),
+              //     tabs: [
+              //       Tab(child: Text('Habits')),
+              //       Tab(child: Text('Desires'))
+              //     ],
+              //   ),
+              // ),
               SizedBox(
                 height: 30.0,
               ),
@@ -214,6 +215,7 @@ class ConnectToDatabaseLoadingBar extends StatelessWidget {
           Text('UserCubit(User): ${BlocProvider.of<UserCubit>(context).user}'),
           Text('UserCubit(state): ${BlocProvider.of<UserCubit>(context).state}'),
           Text('DesiresListCubit(state): ${BlocProvider.of<DesiresListCubit>(context).state}'),
+          Text('UserHiveRep: ${UserHiveRepository.db.getAll().then((value) => value)}'),
           Text('Connecting to local database...'),
           CircularProgressIndicator(),
         ],
@@ -247,7 +249,7 @@ class HelloNewbiePage extends StatelessWidget {
           padding: EdgeInsets.all(25.0),
           alignment: Alignment.topCenter,
           child: Text('Start by adding a new desire at the top right!', style: _textStyle),
-        )
+        ),
       ],
     );
   }

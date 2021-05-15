@@ -46,10 +46,10 @@ class DesiresListCubit extends Cubit<DesiresListState> {
     await _init();
   }
 
-  void updateUser(User user) {
+  Future<void> updateUser(User user) async {
     this.user = user;
     emit(DesiresListUpdateUser());
-    _init();
+    await _init();
   }
 
   Future<void> deleteCurrentUser() async {

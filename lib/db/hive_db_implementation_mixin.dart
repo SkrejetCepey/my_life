@@ -13,11 +13,13 @@ mixin HiveDBImplementationMixin<T extends HiveObject> implements Repository<T> {
     if (_db == null) {
       _db = await _init();
     }
-    return _db;
+    return Future.value(_db);
 
   }
 
-  Future<Box<T>> _init() async => await Hive.openBox(_databaseName);
+  Future<Box<T>> _init() async {
+    return await Hive.openBox<T>(_databaseName)..compact();
+  }
 
   @override
   Future<void> create(T entry) async {
