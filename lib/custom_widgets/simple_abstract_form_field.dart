@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:meta/meta.dart';
 import 'package:my_life/models/abstract_model.dart';
 import 'package:my_life/models/desire/desire.dart';
+import 'package:my_life/models/habits/goal.dart';
 
 class SimpleAbstractFormField extends StatelessWidget {
 
@@ -16,6 +17,10 @@ class SimpleAbstractFormField extends StatelessWidget {
     @required this.property,
     this.maxLines = 1,
     this.validate = true}) : super(key: key) {
+    if (model is Goal) {
+      if (property == 'title')
+        _titleTextEditingController.text = (model as Goal).title;
+    }
     if (model is Desire)
       if (!(model as Desire).isEmpty()) {
         if (property == 'title')

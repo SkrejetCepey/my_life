@@ -1,6 +1,8 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:my_life/errors/my_life_error.dart';
+import 'package:my_life/models/desire/desire.dart';
+import 'package:my_life/models/icon_data_structure/icon_data_structure.dart';
 import 'dart:convert';
 import 'package:my_life/models/user/user.dart';
 
@@ -46,6 +48,59 @@ class Connection {
     }
   }
 
+  static Future<Desire> addGoal(User user, Desire goal) async {
+
+    try {
+      var request = await _dio.postUri(Uri.parse('$SERVER_IP/targets'),
+          data: goal.getTargetProperties(),
+          options: Options(headers: {'content-type': 'application/json',
+            "Authorization": "Bearer ${user.accessToken}"})
+      );
+
+      goal.id = request.data["id"];
+      goal.iconWebServerEnabled = IconDataStructure(Icons.autorenew_sharp.codePoint,
+          Icons.autorenew_sharp.fontFamily);
+      print(request.data["id"]);
+      return goal;
+
+    } on DioError catch(e) {
+      print('Exception: ${e.response.statusCode} / ${e.response.data}');
+      throw getException(e.response);
+    }
+  }
+
+  static Future<void> deleteGoal(User user, String goalId) async {
+    try {
+
+      var formData = FormData.fromMap({'id': goalId});
+
+      await _dio.deleteUri(Uri.parse('$SERVER_IP/targets'),
+          data: formData,
+          options: Options(headers: {'content-type': 'application/json',
+            "Authorization": "Bearer ${user.accessToken}"})
+      );
+
+    } on DioError catch(e) {
+      print('Exception: ${e.response.statusCode} / ${e.response.data}');
+      throw getException(e.response);
+    }
+  }
+
+  static Future<void> updateGoal(User user, Desire goal) async {
+
+    try {
+      await _dio.putUri(Uri.parse('$SERVER_IP/targets'),
+          data: goal.getTargetPropertiesForUpdate(),
+          options: Options(headers: {'content-type': 'application/json',
+            "Authorization": "Bearer ${user.accessToken}"}));
+
+    } on DioError catch(e) {
+      print('Exception: ${e.response.statusCode} / ${e.response.data}');
+      throw getException(e.response);
+    }
+
+  }
+
   static Future<String> register(User user) async {
 
     try {
@@ -89,6 +144,8 @@ class Connection {
       }
     }
   }
+
+  // static Future<void>
 
   static Future<void> sentFriendRequest(User user, String friendId) async {
 
@@ -255,6 +312,32 @@ class Connection {
       print('Exception: ${e.response.statusCode} / ${e.response.data}');
       throw getException(e.response);
     }
+  }
+
+  static Future<List<Desire>> getAllUserGoals(User user) async {
+
+    if (user.role == "Guest") {
+      return <Desire>[];
+    }
+
+    try {
+      var request = await _dio.getUri(Uri.parse('$SERVER_IP/targets'),
+          options: Options(headers: {'content-type': 'application/json',
+            "Authorization": "Bearer ${user.accessToken}"})
+      );
+
+      List<Desire> goalsList = <Desire>[];
+
+      for (dynamic val in request.data) {
+        print(val as Map);
+        goalsList.add(Desire.targetDriver(val as Map));
+      }
+      return goalsList;
+    } on DioError catch(e) {
+      print('Exception: ${e.response.statusCode} / ${e.response.data}');
+      throw getException(e.response);
+    }
+
   }
 
   @deprecated

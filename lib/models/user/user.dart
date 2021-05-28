@@ -42,6 +42,9 @@ class User extends HiveObject implements AbstractModel {
   @HiveField(11)
   String role;
 
+  @HiveField(12)
+  List<Desire> goalsList = List<Desire>.empty(growable: true);
+
   User({this.username, this.login, this.password,
     this.firstName, this.lastName, this.city, this.email, this.accessToken,
     this.refreshToken, this.role});

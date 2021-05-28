@@ -39,12 +39,10 @@ class SummaryLoginButton extends SummaryButton {
           element.accessToken = decodedUserData['accessToken'];
           element.refreshToken = decodedUserData['refreshToken'];
 
-          await BlocProvider.of<UserCubit>(context).selectUser(element);
-          await BlocProvider.of<DesiresListCubit>(context).updateUser(element);
-          Navigator.of(context).pop();
-          Navigator.pushNamed(context, '/main');
           matchFound = true;
-          return;
+          BlocProvider.of<UserCubit>(context).selectUser(element).then((value) => BlocProvider.of<DesiresListCubit>(context).updateUser(element));
+
+          break;
         }
 
       }
@@ -53,11 +51,12 @@ class SummaryLoginButton extends SummaryButton {
         print("No one users was found!");
 
         await BlocProvider.of<UserCubit>(context).addUser(BlocProvider.of<ConnectionPageCubit>(context).user);
-        await BlocProvider.of<DesiresListCubit>(context).updateUser(BlocProvider.of<ConnectionPageCubit>(context).user);
-
-        Navigator.of(context).pop();
-        Navigator.pushNamed(context, '/main');
+    // .then((value) =>
+    // BlocProvider.of<DesiresListCubit>(context).updateUser(BlocProvider.of<ConnectionPageCubit>(context).user))
       }
+
+      Navigator.of(context).pop();
+      Navigator.pushNamed(context, '/main');
 
     }
   }

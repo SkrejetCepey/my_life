@@ -25,7 +25,7 @@ class LogoutDialog {
         //TODO fix this next time
         for (User val in (await UserHiveRepository.db.database).values) {
           if (val.login == thisUser.login) {
-            val.delete();
+            await val.delete();
             break;
           }
         }

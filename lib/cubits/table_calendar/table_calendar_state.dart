@@ -7,4 +7,6 @@ class TableCalendarInitial extends TableCalendarState {}
 
 class TableCalendarNewDaySelected extends TableCalendarState {}
 
+class TableCalendarNewIndexAppBarSelected extends TableCalendarState {}
+
 

@@ -15,8 +15,10 @@ import 'package:my_life/observer/global_observer.dart';
 import 'package:my_life/pages/auth_page.dart';
 import 'package:my_life/pages/main_page.dart';
 import 'package:my_life/pages/signup_page.dart';
+import 'cubits/goals_list_cubit/goals_list_cubit.dart';
 import 'desire_particles/particle_checkbox/particle_checkbox.dart';
 import 'models/desire/desire.dart';
+import 'models/habits/goal.dart';
 
 void main() async {
   Bloc.observer = GlobalObserver();
@@ -29,6 +31,7 @@ void main() async {
   Hive.registerAdapter(UserAdapter());
   Hive.registerAdapter(ParticleCheckboxAdapter());
   Hive.registerAdapter(IconDataStructureAdapter());
+  Hive.registerAdapter(GoalAdapter());
 
   await UserHiveRepository.db.database;
 
@@ -55,6 +58,9 @@ class App extends StatelessWidget {
         ),
         BlocProvider<AppBarBuilderCubit>(
           create: (_) => AppBarBuilderCubit(),
+        ),
+        BlocProvider<GoalsListCubit>(
+          create: (context) => GoalsListCubit(context),
         )
       ],
       child: MaterialApp(

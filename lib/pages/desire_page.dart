@@ -65,12 +65,12 @@ class DesirePage extends StatelessWidget {
                     children: [
                       CheckboxListTile(
                           title: Text("Цель по задаче:"),
-                          value: cubit.goalByTask,
-                          onChanged: cubit.changeGoalByTask),
+                          // onChanged: cubit.changeGoalByTask
+                          value: cubit.goalByTask),
                       CheckboxListTile(
                           title: Text("Повторять каждый день:"),
-                          value: cubit.retryEveryDay,
-                          onChanged: cubit.changeRetryEveryDay),
+                          // onChanged: cubit.changeRetryEveryDay
+                          value: cubit.retryEveryDay),
                       Container(
                         margin: EdgeInsets.symmetric(
                             horizontal: 75.0, vertical: 10.0),
@@ -101,8 +101,8 @@ class DesirePage extends StatelessWidget {
                       ),
                       CheckboxListTile(
                           title: Text("Один раз в любое время:"),
-                          value: cubit.oneTimeAnyTime,
-                          onChanged: cubit.changeOneTimeAnyTime),
+                          // onChanged: cubit.changeOneTimeAnyTime
+                          value: cubit.oneTimeAnyTime),
                       Container(
                         margin: EdgeInsets.symmetric(
                             horizontal: 45.0, vertical: 10.0),
@@ -161,8 +161,8 @@ class DesirePage extends StatelessWidget {
                                           charWeek: "Количество",
                                           width: 100.0,
                                           height: 35.0,
-                                          circularRadius: 10.0,
-                                          callback: cubit.changeChooseCount),
+                                          circularRadius: 10.0,),
+                                          // callback: cubit.changeChooseCount),
                                     ],
                                   ),
                                 ),
@@ -195,7 +195,7 @@ class DesirePage extends StatelessWidget {
                         },
                       ),
                       (!cubit.canNotification) ? CheckboxListTile(
-                          title: Text("Включить напоминание:"), value: cubit.canNotification, onChanged: cubit.changeCanNotification)
+                          title: Text("Включить напоминание:"), value: cubit.canNotification)
                           : Column(
                         children: [
                           CheckboxListTile(
@@ -340,17 +340,10 @@ class DesirePage extends StatelessWidget {
   Future<void> _addDesire(BuildContext context) async {
     final DesiresListCubit cubit = BlocProvider.of<DesiresListCubit>(context);
 
-    int lengthParticleModelsList = desire.particleModels.length;
-
-    for (int i = 0; i < lengthParticleModelsList; i++) {
-      for (int j = 0; j < 3; j++) {
-        DesireParticleModel clone = desire.particleModels[0].clone();
-        clone.dateTime = this.desire.dateTime;
-        clone.dateTime = clone.dateTime.add(Duration(days: j));
-        desire.particleModels.add(clone);
-      }
-      desire.particleModels.remove(desire.particleModels[0]);
-    }
+    desire.particleModels = desire.particleModels.map((e) {
+      e.dateTime = this.desire.dateTime;
+      return e;
+    }).toList();
 
     await cubit.add(desire);
     Navigator.pop(context);
@@ -359,21 +352,21 @@ class DesirePage extends StatelessWidget {
   Future<void> _updateDesire(BuildContext context) async {
     final DesiresListCubit cubit = BlocProvider.of<DesiresListCubit>(context);
 
-    var er = desire.particleModels.toSet().toList();
-
-    for (int i = 0; i < er.length; i++) {
-      for (int j = 0; j < 3; j++) {
-        desire.particleModels.map((e) {
-          if (er[i].id == e.id) {
-            if (er[i] == e) {
-              return e;
-            }
-          } else {
-            return er[i].clone(e.dateTime, e.state);
-          }
-        });
-      }
-    }
+    // var er = desire.particleModels.toSet().toList();
+    //
+    // for (int i = 0; i < er.length; i++) {
+    //   for (int j = 0; j < 3; j++) {
+    //     desire.particleModels.map((e) {
+    //       if (er[i].id == e.id) {
+    //         if (er[i] == e) {
+    //           return e;
+    //         }
+    //       } else {
+    //         return er[i].clone(e.dateTime, e.state);
+    //       }
+    //     });
+    //   }
+    // }
 
     await cubit.update(desire);
     Navigator.pop(context);

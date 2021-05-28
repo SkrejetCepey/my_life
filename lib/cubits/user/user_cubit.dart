@@ -4,7 +4,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:meta/meta.dart';
 import 'package:my_life/cubits/main_page/desires_list_cubit.dart';
 import 'package:my_life/db/user_hive_repository.dart';
+import 'package:my_life/errors/my_life_error.dart';
 import 'package:my_life/models/user/user.dart';
+import 'package:my_life/networking/connection.dart';
 
 part 'user_state.dart';
 
@@ -78,6 +80,22 @@ class UserCubit extends Cubit<UserState> {
     await UserHiveRepository.db.delete(this.user);
     emit(UserDelete());
     await _initUser();
+
+  }
+
+  Future<void> updateTokens() async {
+
+    try {
+      Map<String, dynamic> tokens = await Connection.refreshTokens(user);
+      user.refreshToken = tokens['refreshToken'];
+      user.accessToken = tokens['accessToken'];
+      await updateUser();
+    } on MLNetworkError catch(e) {
+      if (e.response.statusCode == 400) {
+        throw e;
+      }
+      throw e;
+    }
 
   }
 

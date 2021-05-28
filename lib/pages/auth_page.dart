@@ -39,7 +39,7 @@ class AuthPage extends StatelessWidget {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Text('AUTHORISATION', style: TextStyle(fontSize: 30.0)),
+                        Text('AUTHORIZATION', style: TextStyle(fontSize: 30.0)),
                         SizedBox(
                           height: 15.0,
                         ),

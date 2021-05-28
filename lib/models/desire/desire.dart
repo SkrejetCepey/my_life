@@ -1,6 +1,11 @@
+import 'dart:convert';
+
+import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
+import 'package:intl/intl.dart';
 import 'package:my_life/models/abstract_model.dart';
 import 'package:my_life/models/icon_data_structure/icon_data_structure.dart';
+import 'package:my_life/models/progress/progress.dart';
 import '../desire_particle_model.dart';
 
 part 'desire.g.dart';
@@ -19,9 +24,28 @@ class Desire extends HiveObject implements AbstractModel {
   @HiveField(4)
   DateTime dateTime;
 
+  @HiveField(5)
+  List<Progress> progress = List<Progress>.empty(growable: true);
+
+  @HiveField(6)
+  String id;
+
+  @HiveField(7)
+  IconDataStructure iconWebServerEnabled;
+
   bool isExpanded = false;
 
   Desire({this.title});
+
+  Desire.targetDriver(Map<String, dynamic> map) {
+    this.title = map["title"];
+    this.id = map["id"];
+    // print(map["progress"].first["date"]);
+
+    this.iconWebServerEnabled = IconDataStructure(Icons.autorenew_sharp.codePoint,
+        Icons.autorenew_sharp.fontFamily);
+    this.dateTime = DateFormat("M/d/yyyy HH:mm:s a").parse(map["progress"].first["date"]);
+  }
 
   bool isEmpty() => (title == null);
 
@@ -37,6 +61,16 @@ class Desire extends HiveObject implements AbstractModel {
       title = s['title'];
     if (s['description'] != null)
       description = s['description'];
+  }
+
+  String getTargetProperties() {
+    return json.encode(<String, dynamic>{"title": this.title,
+      "progress" : [{"date": (dateTime != null) ? DateFormat.yMd().add_jm().format(dateTime) : null, "value": {"maxValue": 1, "currentValue": 0}}]});
+  }
+
+  String getTargetPropertiesForUpdate() {
+    return json.encode(<String, dynamic>{"id": this.id, "title": this.title,
+      "progress" : [{"date": (dateTime != null) ? DateFormat.yMd().add_jm().format(dateTime) : null, "value": {"maxValue": 1, "currentValue": 0}}]});
   }
 
   double getValueCompleteParticles() {

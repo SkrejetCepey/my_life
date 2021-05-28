@@ -7,6 +7,10 @@ class DesiresListInitial extends DesiresListState {}
 
 class DesiresListInitialised extends DesiresListState {}
 
+class DesiresListRefreshTokens extends DesiresListState {}
+
+class GoalsListInitialised extends DesiresListState {}
+
 class DesiresListInitialisedEmpty extends DesiresListState {}
 
 class DesiresListAddedNewItem extends DesiresListState {}
@@ -24,5 +28,7 @@ class DesiresListCreateUser extends DesiresListState {}
 class DesiresListInitUser extends DesiresListState {}
 
 class DesiresListUpdateUser extends DesiresListState {}
+
+class DesiresSelectedNewBarIndex extends DesiresListState {}
 
 class DesiresListDeleteCurrentUser extends DesiresListState {}
