@@ -98,17 +98,6 @@ class HomePageFactory extends StatelessWidget {
         return Builder(
           builder: (BuildContext context) {
             return AuthPage();
-            // if (state is UserInitEmpty)
-            //   return AuthPage();
-            // else if (state is UserInit) {
-            //   BlocProvider.of<DesiresListCubit>(context).updateUser(BlocProvider.of<UserCubit>(context).user);
-            //   return MainPage();
-            // }
-            // else {
-            //   return Center(
-            //       child: CircularProgressIndicator()
-            //   );
-            // }
           },
         );
       },

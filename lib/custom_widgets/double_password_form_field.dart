@@ -34,14 +34,14 @@ class DoublePasswordFormField extends StatelessWidget {
                       },
                     ),
                     fillColor: Colors.white60,
-                    hintText: 'password',
+                    hintText: 'пароль',
                     border: OutlineInputBorder(
                         borderSide: BorderSide(color: Colors.blue)
                     ),
                     filled: true,
                     contentPadding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 3.0),
                   ),
-                  validator: (String s) => s.isEmpty ? "password can't be empty!" : null,
+                  validator: (String s) => s.isEmpty ? "пароль не может быть пустым!" : null,
                 ),
               );
             },
@@ -62,7 +62,7 @@ class DoublePasswordFormField extends StatelessWidget {
                     },
                   ),
                   fillColor: Colors.white60,
-                  hintText: 'repeat password',
+                  hintText: 'повторите пароль',
                   border: OutlineInputBorder(
                       borderSide: BorderSide(color: Colors.blue)
                   ),
@@ -71,9 +71,9 @@ class DoublePasswordFormField extends StatelessWidget {
                 ),
                 validator: (String s) {
                   if (s.isEmpty) {
-                    return "password can't be empty!";
+                    return "повторный пароль не может быть пустым!";
                   } else if (password1.text != password2.text) {
-                    return "passwords isn't match!";
+                    return "пароли не совпадают!";
                   } else {
                     return null;
                   }

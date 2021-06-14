@@ -81,17 +81,18 @@ class ParticleCheckbox extends HiveObject implements DesireParticleModel, Abstra
         child: Row(
           children: <Widget>[
             TextButton(
-              child: Text('Cancel'),
+              child: Text('Отмена'),
               onPressed: () => Navigator.pop(context),
             ),
             Spacer(),
             TextButton(
-              child: Text('Save'),
+              child: Text('Сохранить'),
               onPressed: () async {
                 if (_formKey.currentState.validate()) {
                   _formKey.currentState.save();
                   this.id = BlocProvider.of<DesirePageCubit>(context).desire.particleModels.length;
                   BlocProvider.of<DesirePageCubit>(context).add(this);
+                  BlocProvider.of<DesiresListCubit>(context).refresh();
                   Navigator.pop(context);
                   Navigator.pop(context);
                 }

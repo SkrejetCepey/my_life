@@ -4,21 +4,21 @@ class NotificationDialog {
   static showNotificationDialog(BuildContext context, String content, Function callback) async {
 
     Widget cancelButton = TextButton(
-      child: Text("Cancel"),
+      child: Text("Отмена"),
       onPressed: () {
         Navigator.pop(context);
       },
     );
 
     Widget okButton = TextButton(
-      child: Text("OK!"),
+      child: Text("ОК!"),
       onPressed: () async {
         await callback(context);
       },
     );
 
     AlertDialog alert = AlertDialog(
-      title: Text("Attention!"),
+      title: Text("Внимание!"),
       content: Text(content),
       actions: [
         cancelButton,

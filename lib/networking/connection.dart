@@ -82,7 +82,8 @@ class Connection {
 
     } on DioError catch(e) {
       print('Exception: ${e.response.statusCode} / ${e.response.data}');
-      throw getException(e.response);
+      // TODO: shit im sorry
+      // throw getException(e.response);
     }
   }
 
@@ -99,6 +100,31 @@ class Connection {
       throw getException(e.response);
     }
 
+  }
+
+  static Future<List<Desire>> getGoalByDate(User user, String date) async {
+    try {
+      print("dateGetGoalByDate: $date");
+      List<Desire> result = <Desire>[];
+
+      var request = await _dio.get('$SERVER_IP/targets',
+          queryParameters: {"date": date},
+          options: Options(headers: {'content-type': 'application/json',
+            "Authorization": "Bearer ${user.accessToken}"}));
+
+      print("t: ${request}");
+      print(request.data.runtimeType);
+
+      for (dynamic val in request.data) {
+        result.add(Desire.targetDriver(val as Map));
+      }
+
+      return result;
+
+    } on DioError catch (e) {
+      print('Exception: ${e.response.statusCode} / ${e.response.data}');
+      throw getException(e.response);
+    }
   }
 
   static Future<String> register(User user) async {
@@ -314,31 +340,31 @@ class Connection {
     }
   }
 
-  static Future<List<Desire>> getAllUserGoals(User user) async {
-
-    if (user.role == "Guest") {
-      return <Desire>[];
-    }
-
-    try {
-      var request = await _dio.getUri(Uri.parse('$SERVER_IP/targets'),
-          options: Options(headers: {'content-type': 'application/json',
-            "Authorization": "Bearer ${user.accessToken}"})
-      );
-
-      List<Desire> goalsList = <Desire>[];
-
-      for (dynamic val in request.data) {
-        print(val as Map);
-        goalsList.add(Desire.targetDriver(val as Map));
-      }
-      return goalsList;
-    } on DioError catch(e) {
-      print('Exception: ${e.response.statusCode} / ${e.response.data}');
-      throw getException(e.response);
-    }
-
-  }
+  // static Future<List<Desire>> getAllUserGoals(User user) async {
+  //
+  //   if (user.role == "Guest") {
+  //     return <Desire>[];
+  //   }
+  //
+  //   try {
+  //     var request = await _dio.getUri(Uri.parse('$SERVER_IP/targets'),
+  //         options: Options(headers: {'content-type': 'application/json',
+  //           "Authorization": "Bearer ${user.accessToken}"})
+  //     );
+  //
+  //     List<Desire> goalsList = <Desire>[];
+  //
+  //     for (dynamic val in request.data) {
+  //       print(val as Map);
+  //       goalsList.add(Desire.targetDriver(val as Map));
+  //     }
+  //     return goalsList;
+  //   } on DioError catch(e) {
+  //     print('Exception: ${e.response.statusCode} / ${e.response.data}');
+  //     throw getException(e.response);
+  //   }
+  //
+  // }
 
   @deprecated
   static Future<User> getUser(User user, String id) async {

@@ -16,7 +16,7 @@ class AppBarBuilderCubit extends Cubit<AppBarBuilderState> {
 
   Widget getCurrentDateWidget(BuildContext context) {
     if (_pickedDateTime.toString().substring(0, 10) == _today.toString().substring(0, 10)) {
-      return Text('Today',
+      return Text('Сегодня',
           style: TextStyle(
               color: Colors.brown[600]
           ));
@@ -32,7 +32,7 @@ class AppBarBuilderCubit extends Cubit<AppBarBuilderState> {
               _pickedDateTime = DateTime.now();
               BlocProvider.of<TableCalendarCubit>(context).selectNewDay(DateTime.now());
             },
-              child: Text('Today',
+              child: Text('Сегодня',
               style: TextStyle(
                 color: Colors.brown[600]
               ))

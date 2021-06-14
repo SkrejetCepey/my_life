@@ -18,14 +18,14 @@ class IconPicker extends StatelessWidget {
       IconData icon = await FlutterIconPicker.showIconPicker(context,
         iconSize: 50,
         iconPickerShape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
-        title: Text('Pick an icon',
+        title: Text('Выберите иконку:',
             style: TextStyle(fontWeight: FontWeight.bold)),
         closeChild: Text(
-          'Close',
+          'Закрыть',
           textScaleFactor: 1.25,
         ),
-        searchHintText: 'Search icon...',
-        noResultsText: 'No results for:',
+        searchHintText: 'Найти иконку...',
+        noResultsText: 'Ничего не найдено по запросу:',
       );
 
 

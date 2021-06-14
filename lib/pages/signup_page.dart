@@ -35,7 +35,7 @@ class SignUpPage extends StatelessWidget {
                 ),
                 child: Column(
                   children: <Widget>[
-                    Text('REGISTRATION', style: TextStyle(fontSize: 30.0)),
+                    Text('РЕГИСТРАЦИЯ', style: TextStyle(fontSize: 30.0)),
                     ListTile(
                       title: LoginFormField(),
                     ),
@@ -48,7 +48,7 @@ class SignUpPage extends StatelessWidget {
                   ],
                 ),
               ),
-              SummarySignUpButton(formKey: _formKey, title: 'Sign Up!'),
+              SummarySignUpButton(formKey: _formKey, title: 'Зарегистрироваться!'),
             ],
           ),
         ),

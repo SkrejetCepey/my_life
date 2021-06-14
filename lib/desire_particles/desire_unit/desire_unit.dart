@@ -67,19 +67,8 @@ class DesireUnit extends StatelessWidget {
     return Column(
       children: <Widget>[
         for (DesireParticleModel entry in desire.particleModels
-            .where((element) {
-          if (element.dateTime.day == actualDate.day &&
-              element.dateTime.month == actualDate.month &&
-              element.dateTime.year == actualDate.year) {
-            return true;
-          } else {
-            return false;
-          }
-        })
-        )
-        // for (DesireParticleModel entry in desire.particleModels
         //     .where((element) {
-        //   if (element.dateTime.day == actualDate.day &&
+        //   if (element.dateTime?.day == actualDate.day &&
         //       element.dateTime.month == actualDate.month &&
         //       element.dateTime.year == actualDate.year) {
         //     return true;
@@ -87,7 +76,7 @@ class DesireUnit extends StatelessWidget {
         //     return false;
         //   }
         // })
-        // )
+        )
           Column(
           children: [
             Divider(),

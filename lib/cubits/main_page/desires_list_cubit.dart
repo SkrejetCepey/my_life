@@ -8,7 +8,6 @@ import 'package:my_life/db/user_hive_repository.dart';
 import 'package:my_life/errors/my_life_error.dart';
 import 'package:my_life/models/desire/desire.dart';
 import 'package:my_life/models/user/user.dart';
-import 'package:my_life/networking/connection.dart';
 
 part 'desires_list_state.dart';
 
@@ -33,26 +32,19 @@ class DesiresListCubit extends Cubit<DesiresListState> {
   }
 
   List<Desire> actualDesires(DateTime dateTime) {
-    return this.desireList.where((element) {
-      return element.particleModels.where((el) {
-        if (el.dateTime.day == dateTime.day &&
-               el.dateTime.month == dateTime.month &&
-               el.dateTime.year == dateTime.year) {
-          return true;
-        } else {
-          return false;
-        }
-      }).length > 0 || (element.dateTime?.day == dateTime.day && element.dateTime?.month == dateTime.month && element.dateTime?.year == dateTime.year);
-    }).toList();
-    // return this.desireList.where((element) =>
-    //   element.particleModels.where((el) {
-    //    if (el.dateTime.day == dateTime.day &&
-    //        el.dateTime.month == dateTime.month &&
-    //        el.dateTime.year == dateTime.year) {
-    //      return true;
-    //   } else {
-    //     return false;
-    //   }}).length > 0).toList();
+    // return this.desireList.where((element) {
+    //   return element.particleModels.where((el) {
+    //     if (el.dateTime.day == dateTime.day &&
+    //            el.dateTime.month == dateTime.month &&
+    //            el.dateTime.year == dateTime.year) {
+    //       return true;
+    //     } else {
+    //       return false;
+    //     }
+    //   }).length > 0 || (element.dateTime?.day == dateTime.day && element.dateTime?.month == dateTime.month && element.dateTime?.year == dateTime.year);
+    // }).toList();
+
+    return this.desireList;
   }
 
   void tapOnAppBar(int index) {
@@ -165,12 +157,13 @@ class DesiresListCubit extends Cubit<DesiresListState> {
       emit(DesiresListInitialised());
     else if (goalList.isEmpty && chooseIndexAppBar == 1) {
       try {
-        if ((await Connection.getAllUserGoals(user)).length > 0) {
-          emit(DesiresListInitialised());
-        } else {
-          emit(DesiresListInitialisedEmpty());
-        }
-      } on MLNetworkError catch(e) {
+        emit(DesiresListInitialised());
+        // if ((await Connection.getAllUserGoals(user)).length > 0) {
+        //   emit(DesiresListInitialised());
+        // } else {
+        //   emit(DesiresListInitialisedEmpty());
+        // }
+      } on MLNetworkError catch(_) {
         emit(DesiresListRefreshTokens());
       }
 

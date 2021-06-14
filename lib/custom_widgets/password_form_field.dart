@@ -26,7 +26,7 @@ class PasswordFormField extends StatelessWidget {
                 },
               ),
               fillColor: Colors.white60,
-              hintText: 'password',
+              hintText: 'пароль',
               border: OutlineInputBorder(
                   borderSide: BorderSide(color: Colors.blue)
               ),

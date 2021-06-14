@@ -39,7 +39,7 @@ class AuthPage extends StatelessWidget {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Text('AUTHORIZATION', style: TextStyle(fontSize: 30.0)),
+                        Text('ВХОД', style: TextStyle(fontSize: 30.0)),
                         SizedBox(
                           height: 15.0,
                         ),
@@ -51,7 +51,7 @@ class AuthPage extends StatelessWidget {
                           contentPadding: EdgeInsets.symmetric(horizontal: 50.0),
                           title: PasswordFormField(),
                         ),
-                        SummaryLoginButton(formKey: _formKey, title: 'Sign In!'),
+                        SummaryLoginButton(formKey: _formKey, title: 'Войти!'),
                       ],
                     ),
                   ),
@@ -86,7 +86,7 @@ class FooterContent extends StatelessWidget {
           children: <Widget>[
             ElevatedButton(
               style: (state is ConnectionPageTryingConnect) ? disabledStyle : enabledStyle,
-              child: Text('Sign up!', style: TextStyle(color: Colors.brown)),
+              child: Text('Зарегистрироваться!', style: TextStyle(color: Colors.brown)),
               onPressed: () {
                 if (state is ConnectionPageTryingConnect)
                   return null;
@@ -100,7 +100,7 @@ class FooterContent extends StatelessWidget {
         Container(
           child: TextButton(
             style: (state is ConnectionPageTryingConnect) ? disabledStyle : enabledStyle,
-            child: Text('Continue as guest', style: TextStyle(color: Colors.brown)),
+            child: Text('Продолжить как гость', style: TextStyle(color: Colors.brown)),
             onPressed: () async {
               if (state is ConnectionPageTryingConnect)
                 return null;

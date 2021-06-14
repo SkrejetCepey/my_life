@@ -44,7 +44,13 @@ class Desire extends HiveObject implements AbstractModel {
 
     this.iconWebServerEnabled = IconDataStructure(Icons.autorenew_sharp.codePoint,
         Icons.autorenew_sharp.fontFamily);
-    this.dateTime = DateFormat("M/d/yyyy HH:mm:s a").parse(map["progress"].first["date"]);
+
+    try {
+      this.dateTime = DateFormat("M/d/yyyy HH:mm:s a").parse(map["progress"].first["date"]);
+    } on FormatException catch(e) {
+      this.dateTime = null;
+    }
+
   }
 
   bool isEmpty() => (title == null);
@@ -85,6 +91,16 @@ class Desire extends HiveObject implements AbstractModel {
     return particleModels
         .where((element) => element.state != false)
         .length / particleModels.length;
+  }
+
+  int getValueCompleteParticlesInCount() {
+
+    if (particleModels.isEmpty)
+      return 0;
+
+    return particleModels
+        .where((element) => element.state != false)
+        .length;
   }
 
   int getValueCompleteParticlesInPercent() {

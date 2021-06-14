@@ -9,8 +9,6 @@ import 'package:my_life/custom_widgets/rounded_days_week_checkbox.dart';
 import 'package:my_life/custom_widgets/simple_abstract_form_field.dart';
 import 'package:my_life/handlers/notification_dialog.dart';
 import 'package:my_life/models/desire/desire.dart';
-import 'package:my_life/models/desire_particle_model.dart';
-import 'package:my_life/pages/particles_desire_page.dart';
 
 enum _variantsDesirePage { add, edit }
 
@@ -22,12 +20,12 @@ class DesirePage extends StatelessWidget {
 
   DesirePage.add({Key key})
       : desire = Desire(),
-        pageTitle = 'AddDesirePage',
+        pageTitle = 'Добавление привычки',
         selectedPage = _variantsDesirePage.add,
         super(key: key);
 
   DesirePage.edit({Key key, @required this.desire})
-      : pageTitle = 'EditDesirePage',
+      : pageTitle = 'Изменение привычки',
         selectedPage = _variantsDesirePage.edit,
         super(key: key);
 
@@ -58,123 +56,131 @@ class DesirePage extends StatelessWidget {
                   ),
                 ],
               ),
+              ListTile(
+                title: SimpleAbstractFormField(
+                  model: desire,
+                  property: 'description',
+                  maxLines: 3,
+                  validate: true,
+                ),
+              ),
               BlocBuilder<LocalDesirePageCubit, LocalDesirePageState>(
                 builder: (context, state) {
                   var cubit = BlocProvider.of<LocalDesirePageCubit>(context);
                   return Column(
                     children: [
-                      CheckboxListTile(
-                          title: Text("Цель по задаче:"),
-                          // onChanged: cubit.changeGoalByTask
-                          value: cubit.goalByTask),
-                      CheckboxListTile(
-                          title: Text("Повторять каждый день:"),
-                          // onChanged: cubit.changeRetryEveryDay
-                          value: cubit.retryEveryDay),
-                      Container(
-                        margin: EdgeInsets.symmetric(
-                            horizontal: 75.0, vertical: 10.0),
-                        child: Row(
-                          children: [
-                            RoundedDaysWeekCheckbox(
-                                state: false, charWeek: "П"),
-                            Spacer(),
-                            RoundedDaysWeekCheckbox(
-                                state: false, charWeek: "В"),
-                            Spacer(),
-                            RoundedDaysWeekCheckbox(
-                                state: false, charWeek: "С"),
-                            Spacer(),
-                            RoundedDaysWeekCheckbox(
-                                state: false, charWeek: "Ч"),
-                            Spacer(),
-                            RoundedDaysWeekCheckbox(
-                                state: false, charWeek: "П"),
-                            Spacer(),
-                            RoundedDaysWeekCheckbox(
-                                state: false, charWeek: "С"),
-                            Spacer(),
-                            RoundedDaysWeekCheckbox(
-                                state: false, charWeek: "В"),
-                          ],
-                        ),
-                      ),
-                      CheckboxListTile(
-                          title: Text("Один раз в любое время:"),
-                          // onChanged: cubit.changeOneTimeAnyTime
-                          value: cubit.oneTimeAnyTime),
-                      Container(
-                        margin: EdgeInsets.symmetric(
-                            horizontal: 45.0, vertical: 10.0),
-                        child: Row(
-                          children: [
-                            RoundedDaysWeekCheckbox(
-                                state: false,
-                                charWeek: "Утро",
-                                width: 65.0,
-                                height: 35.0,
-                                circularRadius: 10.0),
-                            Spacer(),
-                            RoundedDaysWeekCheckbox(
-                                state: false,
-                                charWeek: "День",
-                                width: 65.0,
-                                height: 35.0,
-                                circularRadius: 10.0),
-                            Spacer(),
-                            RoundedDaysWeekCheckbox(
-                                state: false,
-                                charWeek: "Вечер",
-                                width: 65.0,
-                                height: 35.0,
-                                circularRadius: 10.0),
-                          ],
-                        ),
-                      ),
-                      (!cubit.dateEndOrCount)
-                          ? CheckboxListTile(
-                              title: Text("Дата окончания или количество:"),
-                              value: cubit.dateEndOrCount,
-                              onChanged: cubit.changeDateEndOrCount)
-                          : Column(
+                      ExpansionTile(
+                        title: Text("Настройки"),
+                        children: [
+                          CheckboxListTile(
+                              title: Text("Повторять каждый день:"),
+                              // onChanged: cubit.changeRetryEveryDay
+                              value: cubit.retryEveryDay),
+                          Container(
+                            margin: EdgeInsets.symmetric(
+                                horizontal: 75.0, vertical: 10.0),
+                            child: Row(
                               children: [
-                                CheckboxListTile(
-                                    title:
-                                        Text("Дата окончания или количество:"),
-                                    value: cubit.dateEndOrCount,
-                                    onChanged: cubit.changeDateEndOrCount),
-                                Container(
-                                  margin: EdgeInsets.symmetric(
-                                      horizontal: 45.0, vertical: 10.0),
-                                  child: Row(
-                                    children: [
-                                      RoundedDaysWeekCheckbox(
-                                          state: cubit.chooseDate,
-                                          charWeek: "Дата",
-                                          width: 80.0,
-                                          height: 35.0,
-                                          circularRadius: 10.0,
-                                          callback: cubit.changeChooseDate),
-                                      Spacer(),
-                                      RoundedDaysWeekCheckbox(
-                                          state: cubit.chooseCount,
-                                          charWeek: "Количество",
-                                          width: 100.0,
-                                          height: 35.0,
-                                          circularRadius: 10.0,),
-                                          // callback: cubit.changeChooseCount),
-                                    ],
-                                  ),
-                                ),
+                                RoundedDaysWeekCheckbox(
+                                    state: false, charWeek: "П"),
+                                Spacer(),
+                                RoundedDaysWeekCheckbox(
+                                    state: false, charWeek: "В"),
+                                Spacer(),
+                                RoundedDaysWeekCheckbox(
+                                    state: false, charWeek: "С"),
+                                Spacer(),
+                                RoundedDaysWeekCheckbox(
+                                    state: false, charWeek: "Ч"),
+                                Spacer(),
+                                RoundedDaysWeekCheckbox(
+                                    state: false, charWeek: "П"),
+                                Spacer(),
+                                RoundedDaysWeekCheckbox(
+                                    state: false, charWeek: "С"),
+                                Spacer(),
+                                RoundedDaysWeekCheckbox(
+                                    state: false, charWeek: "В"),
                               ],
                             ),
-                      Builder(
-                        builder: (BuildContext context) {
-                          if (cubit.dateEndOrCount) {
-                            if (cubit.chooseDate) {
-                              return ListTile(
-                                title:
-                                    (selectedPage == _variantsDesirePage.edit)
+                          ),
+                          CheckboxListTile(
+                              title: Text("Один раз в любое время:"),
+                              // onChanged: cubit.changeOneTimeAnyTime
+                              value: cubit.oneTimeAnyTime),
+                          Container(
+                            margin: EdgeInsets.symmetric(
+                                horizontal: 45.0, vertical: 10.0),
+                            child: Row(
+                              children: [
+                                RoundedDaysWeekCheckbox(
+                                    state: false,
+                                    charWeek: "Утро",
+                                    width: 65.0,
+                                    height: 35.0,
+                                    circularRadius: 10.0),
+                                Spacer(),
+                                RoundedDaysWeekCheckbox(
+                                    state: false,
+                                    charWeek: "День",
+                                    width: 65.0,
+                                    height: 35.0,
+                                    circularRadius: 10.0),
+                                Spacer(),
+                                RoundedDaysWeekCheckbox(
+                                    state: false,
+                                    charWeek: "Вечер",
+                                    width: 65.0,
+                                    height: 35.0,
+                                    circularRadius: 10.0),
+                              ],
+                            ),
+                          ),
+                          (!cubit.dateEndOrCount)
+                              ? CheckboxListTile(
+                                  title: Text("Дата окончания или количество:"),
+                                  value: cubit.dateEndOrCount,
+                                  onChanged: cubit.changeDateEndOrCount)
+                              : Column(
+                                  children: [
+                                    CheckboxListTile(
+                                        title: Text(
+                                            "Дата окончания или количество:"),
+                                        value: cubit.dateEndOrCount,
+                                        onChanged: cubit.changeDateEndOrCount),
+                                    Container(
+                                      margin: EdgeInsets.symmetric(
+                                          horizontal: 45.0, vertical: 10.0),
+                                      child: Row(
+                                        children: [
+                                          RoundedDaysWeekCheckbox(
+                                              state: cubit.chooseDate,
+                                              charWeek: "Дата",
+                                              width: 80.0,
+                                              height: 35.0,
+                                              circularRadius: 10.0,
+                                              callback: cubit.changeChooseDate),
+                                          Spacer(),
+                                          RoundedDaysWeekCheckbox(
+                                            state: cubit.chooseCount,
+                                            charWeek: "Количество",
+                                            width: 100.0,
+                                            height: 35.0,
+                                            circularRadius: 10.0,
+                                          ),
+                                          // callback: cubit.changeChooseCount),
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                          Builder(
+                            builder: (BuildContext context) {
+                              if (cubit.dateEndOrCount) {
+                                if (cubit.chooseDate) {
+                                  return ListTile(
+                                    title: (selectedPage ==
+                                            _variantsDesirePage.edit)
                                         ? DateTimePicker(
                                             model: desire,
                                             title: 'Выбрать дату',
@@ -182,72 +188,84 @@ class DesirePage extends StatelessWidget {
                                         : DateTimePicker(
                                             model: desire,
                                             title: 'Выбрать дату'),
-                              );
-                            } else {
-                              return Container(
-                                  margin: EdgeInsets.all(15.0),
-                                  height: 30.0,
-                                  child: SimpleAbstractFormField());
-                            }
-                          } else {
-                            return Container();
-                          }
-                        },
-                      ),
-                      (!cubit.canNotification) ? CheckboxListTile(
-                          title: Text("Включить напоминание:"), value: cubit.canNotification)
-                          : Column(
-                        children: [
-                          CheckboxListTile(
-                              title: Text("Включить напоминание:"), value: cubit.canNotification, onChanged: cubit.changeCanNotification),
-                          ListTile(
-                            title: DateTimePicker(
-                                model: desire, title: 'Выбрать время', mode: false),
-                          ),
-                        ],
-                      ),
-                    ],
-                  );
-                },
-              ),
-              BlocBuilder<DesirePageCubit, DesirePageState>(
-                builder: (context, state) {
-                  return Column(
-                    children: [
-                      Column(
-                        children: <Widget>[
-                          for (DesireParticleModel entry
-                              in desire.particleModels.toSet())
-                            Column(
-                              children: [
-                                Divider(),
-                                entry.buildUnique(context, desire)
-                              ],
-                            ),
-                        ],
-                      ),
-                      ListTile(
-                        title: ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                                onPrimary: Colors.brown),
-                            child: Text('+'),
-                            onPressed: () {
-                              if (selectedPage == _variantsDesirePage.edit) {
-                                return null;
+                                  );
+                                } else {
+                                  return Container(
+                                      margin: EdgeInsets.all(15.0),
+                                      height: 30.0,
+                                      child: SimpleAbstractFormField());
+                                }
+                              } else {
+                                return Container();
                               }
-                              BlocProvider.of<DesirePageCubit>(context).desire =
-                                  desire;
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (BuildContext context) =>
-                                          ParticlesDesirePage()));
-                            }),
+                            },
+                          ),
+                          (!cubit.canNotification)
+                              ? CheckboxListTile(
+                                  title: Text("Включить напоминание:"),
+                                  value: cubit.canNotification)
+                              : Column(
+                                  children: [
+                                    CheckboxListTile(
+                                        title: Text("Включить напоминание:"),
+                                        value: cubit.canNotification,
+                                        onChanged: cubit.changeCanNotification),
+                                    ListTile(
+                                      title: DateTimePicker(
+                                          model: desire,
+                                          title: 'Выбрать время',
+                                          mode: false),
+                                    ),
+                                  ],
+                                ),
+                        ],
+                      ),
+                      ExpansionTile(
+                        title: Text("Дополнительные настройки"),
+                        children: [Text("В разработке")],
                       )
                     ],
                   );
                 },
               ),
+              // BlocBuilder<DesirePageCubit, DesirePageState>(
+              //   builder: (context, state) {
+              //     return Column(
+              //       children: [
+              //         Column(
+              //           children: <Widget>[
+              //             for (DesireParticleModel entry
+              //                 in desire.particleModels.toSet())
+              //               Column(
+              //                 children: [
+              //                   Divider(),
+              //                   entry.buildUnique(context, desire)
+              //                 ],
+              //               ),
+              //           ],
+              //         ),
+              //         // ListTile(
+              //         //   title: ElevatedButton(
+              //         //       style: ElevatedButton.styleFrom(
+              //         //           onPrimary: Colors.brown),
+              //         //       child: Text('+'),
+              //         //       onPressed: () {
+              //         //         if (selectedPage == _variantsDesirePage.edit) {
+              //         //           return null;
+              //         //         }
+              //         //         BlocProvider.of<DesirePageCubit>(context).desire =
+              //         //             desire;
+              //         //         Navigator.push(
+              //         //             context,
+              //         //             MaterialPageRoute(
+              //         //                 builder: (BuildContext context) =>
+              //         //                     ParticlesDesirePage()));
+              //         //       }),
+              //         // )
+              //       ],
+              //     );
+              //   },
+              // ),
             ],
           ),
         ),
@@ -256,7 +274,7 @@ class DesirePage extends StatelessWidget {
           child: Row(
             children: <Widget>[
               TextButton(
-                child: Text('Cancel'),
+                child: Text('Отмена'),
                 onPressed: () => Navigator.pop(context),
               ),
               Builder(
@@ -266,7 +284,7 @@ class DesirePage extends StatelessWidget {
                   } else if (selectedPage == _variantsDesirePage.edit) {
                     return _editUniqueBottomStaff(context);
                   } else {
-                    return Text('Something goes wrong :C');
+                    return Text('Что-то пошло не так :C');
                   }
                 },
               )
@@ -284,12 +302,12 @@ class DesirePage extends StatelessWidget {
         children: <Widget>[
           Spacer(),
           TextButton(
-            child: Text('Save'),
+            child: Text('Сохранить'),
             onPressed: () async {
               if (desire.dateTime == null) {
                 Future.microtask(() => ScaffoldMessenger.of(context)
-                    .showSnackBar(
-                        SnackBar(content: Text('The date cannot be null!'))));
+                    .showSnackBar(SnackBar(
+                        content: Text('Дата не может быть не выбрана!'))));
                 return null;
               }
               if (_formKey.currentState.validate() && desire.dateTime != null) {
@@ -313,18 +331,18 @@ class DesirePage extends StatelessWidget {
         children: [
           Spacer(),
           TextButton(
-            child: Text('Delete'),
+            child: Text('Удалить'),
             style: deleteButtonStyle,
             onPressed: () async {
               await NotificationDialog.showNotificationDialog(
                   context,
-                  'Are you sure about deleting ${desire.title} ?',
+                  'Вы уверены, что хотие удалить: ${desire.title} ?',
                   _deleteDesire);
             },
           ),
           Spacer(),
           TextButton(
-            child: Text('Update'),
+            child: Text('Обновить'),
             onPressed: () async {
               if (_formKey.currentState.validate()) {
                 _formKey.currentState.save();
@@ -351,22 +369,6 @@ class DesirePage extends StatelessWidget {
 
   Future<void> _updateDesire(BuildContext context) async {
     final DesiresListCubit cubit = BlocProvider.of<DesiresListCubit>(context);
-
-    // var er = desire.particleModels.toSet().toList();
-    //
-    // for (int i = 0; i < er.length; i++) {
-    //   for (int j = 0; j < 3; j++) {
-    //     desire.particleModels.map((e) {
-    //       if (er[i].id == e.id) {
-    //         if (er[i] == e) {
-    //           return e;
-    //         }
-    //       } else {
-    //         return er[i].clone(e.dateTime, e.state);
-    //       }
-    //     });
-    //   }
-    // }
 
     await cubit.update(desire);
     Navigator.pop(context);

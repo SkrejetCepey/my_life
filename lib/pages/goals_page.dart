@@ -20,12 +20,12 @@ class GoalsPage extends StatelessWidget {
 
   GoalsPage.add({Key key})
       : goal = Desire(),
-        pageTitle = 'AddGoalPage',
+        pageTitle = 'Добавление цели',
         selectedPage = _variantsGoalPage.add,
         super(key: key);
 
   GoalsPage.edit({Key key, @required this.goal})
-      : pageTitle = 'EditGoalPage',
+      : pageTitle = 'Изменение цели',
         selectedPage = _variantsGoalPage.edit,
         super(key: key);
 
@@ -75,7 +75,7 @@ class GoalsPage extends StatelessWidget {
       bottomNavigationBar: Row(
         children: <Widget>[
           TextButton(
-            child: Text('Cancel'),
+            child: Text('Отмена'),
             onPressed: () => Navigator.pop(context),
           ),
           Builder(
@@ -85,7 +85,7 @@ class GoalsPage extends StatelessWidget {
               } else if (selectedPage == _variantsGoalPage.edit) {
                 return _editUniqueBottomStaff(context);
               } else {
-                return Text('Something goes wrong :C');
+                return Text('Что-то пошло не так :C');
               }
             },
           )
@@ -101,8 +101,12 @@ class GoalsPage extends StatelessWidget {
         children: <Widget>[
           Spacer(),
           TextButton(
-            child: Text('Save'),
+            child: Text('Сохранить'),
             onPressed: () async {
+              if (goal.dateTime == null) {
+                ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Время обязательно должно выбрано!")));
+                return;
+              }
               if (_formKey.currentState.validate()) {
                 _formKey.currentState.save();
                 _addGoal(context);
@@ -124,18 +128,18 @@ class GoalsPage extends StatelessWidget {
         children: [
           Spacer(),
           TextButton(
-            child: Text('Delete'),
+            child: Text('Удалить'),
             style: deleteButtonStyle,
             onPressed: () async {
               await NotificationDialog.showNotificationDialog(
                   context,
-                  'Are you sure about deleting ${goal.title} ?',
+                  'Вы уверены, что хотите удалить: ${goal.title} ?',
                   _deleteGoal);
             },
           ),
           Spacer(),
           TextButton(
-            child: Text('Update'),
+            child: Text('Обновить'),
             onPressed: () async {
               if (_formKey.currentState.validate()) {
                 _formKey.currentState.save();
@@ -178,9 +182,9 @@ class GoalsPage extends StatelessWidget {
     await cubit.refresh();
 
     if (BlocProvider.of<UserCubit>(context).user.role == "Guest")
-      await cubit.add(goal);
+      await cubit.addGoal(goal);
     else
-      await cubit.add(await Connection.addGoal(BlocProvider.of<UserCubit>(context).user, goal));
+      await cubit.addGoal(await Connection.addGoal(BlocProvider.of<UserCubit>(context).user, goal));
 
     Navigator.pop(context);
   }

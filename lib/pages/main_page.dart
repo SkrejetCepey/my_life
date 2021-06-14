@@ -8,8 +8,7 @@ import 'package:my_life/cubits/table_calendar/table_calendar_cubit.dart';
 import 'package:my_life/cubits/user/user_cubit.dart';
 import 'package:my_life/models/desires_list.dart';
 import 'package:my_life/models/goals_list.dart';
-import 'package:my_life/pages/goals_page.dart';
-import 'desire_page.dart';
+import 'chooser_page.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
@@ -57,14 +56,7 @@ class MainPage extends StatelessWidget {
                       ],
                     ),
                     onPressed: () {
-                      if (BlocProvider.of<DesiresListCubit>(context).chooseIndexAppBar == 0) {
-                        Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) =>
-                            DesirePage.add()));
-                      } else {
-                        Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) =>
-                            GoalsPage.add()));
-                      }
-
+                      Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => ChooserPage()));
                     }
                 ),
               ],
@@ -92,8 +84,8 @@ class MainPage extends StatelessWidget {
                             unselectedLabelColor: const Color(0xffc2c19a),
                             labelColor: const Color(0xffd5f111),
                             tabs: [
-                              Tab(child: Text('Habits')),
-                              Tab(child: Text('Goals'))
+                              Tab(child: Text('Привычки')),
+                              Tab(child: Text('Цели'))
                             ],
                             onTap: (value) {
                               BlocProvider.of<DesiresListCubit>(context).tapOnAppBar(value);
@@ -131,25 +123,6 @@ class MainPage extends StatelessWidget {
                     }
                     else
                       return ConnectToDatabaseLoadingBar();
-                    // return BlocBuilder<GoalsListCubit, GoalsListState>(
-                    //   builder: (context, stateGoal) {
-                    //     print('stateGoal: $stateGoal');
-                    //     print(BlocProvider.of<TableCalendarCubit>(context).chooseIndexAppBar);
-                    //     if (stateDesire is DesiresListInitialisedEmpty && BlocProvider.of<TableCalendarCubit>(context).chooseIndexAppBar == 0) {
-                    //       return HelloNewbiePage();
-                    //     }
-                    //     else if (stateGoal is GoalsListInitialEmpty && BlocProvider.of<TableCalendarCubit>(context).chooseIndexAppBar == 1)
-                    //       return HelloNewbiePage();
-                    //     else if (stateDesire is DesiresListInitialised && BlocProvider.of<TableCalendarCubit>(context).chooseIndexAppBar == 0)
-                    //       return Expanded(child: InitialisedDesiresListPage());
-                    //     else if (stateGoal is GoalsListInitialised && BlocProvider.of<TableCalendarCubit>(context).chooseIndexAppBar == 1)
-                    //       return InitialisedDesiresListPage();
-                    //     else {
-                    //       return ConnectToDatabaseLoadingBar();
-                    //     }
-                    //   },
-                    // );
-
                   },
                 ),
               ],
@@ -171,10 +144,91 @@ class InitialisedDesiresListPage extends StatelessWidget {
     final DesiresListCubit _cubit = BlocProvider.of<DesiresListCubit>(context);
     final GlobalKey<RefreshIndicatorState> _refreshKey = GlobalKey<RefreshIndicatorState>();
 
+    final CalendarController calendarController = CalendarController();
+
     return  RefreshIndicator(
       key: _refreshKey,
       onRefresh: _cubit.refresh,
-      child: (BlocProvider.of<DesiresListCubit>(context).chooseIndexAppBar == 0) ? DesireView():  GoalsList()
+      child: Column(
+        children: [
+          TableCalendar(
+            locale: 'ru_RU',
+            headerVisible: false,
+            builders: CalendarBuilders(
+              todayDayBuilder: (context, date, events) {
+                return Container(
+                  child: Center(child: Text('${date.day}',
+                      style: TextStyle(
+                          color: (date.weekday == 6 || date.weekday == 7) ? Colors.red : Colors.black
+                      )),),
+                  decoration: BoxDecoration(
+                      border: Border.all(
+                          color: Color(0xffd5f111),
+                          width: 2
+                      ),
+                      shape: BoxShape.circle
+                  ),
+                  margin: EdgeInsets.symmetric(vertical: 8.0),
+                );
+              },
+              selectedDayBuilder: (context, date, events) {
+
+                BlocProvider.of<AppBarBuilderCubit>(context).dateTime = date;
+
+                print(date.weekday);
+                return Container(
+                  child: Stack(
+                    alignment: Alignment.bottomCenter,
+                    children: [
+                      Center(
+                        child: Text('${date.day}',
+                          style: TextStyle(
+                              color: (date.weekday == 6 || date.weekday == 7) ? Colors.red : Colors.black
+                          ),
+                        ),
+                      ),
+                      Container(
+                        height: 4.0,
+                        decoration: BoxDecoration(
+                            color: Colors.deepOrange,
+                            shape: BoxShape.circle
+                        ),
+                        margin: EdgeInsets.symmetric(vertical: 15.0),
+                      ),
+                    ],
+                  ),
+                );
+              },
+            ),
+            calendarStyle: CalendarStyle(
+                selectedColor: Color(0xffb4baba)
+            ),
+            onDaySelected: (day, events, holidays) {
+              BlocProvider.of<TableCalendarCubit>(context).selectNewDay(day);
+              calendarController.setFocusedDay(day);
+
+              //TODO WTF THIS SHIT
+              BlocProvider.of<DesiresListCubit>(context).refresh();
+            },
+            initialSelectedDay: BlocProvider.of<TableCalendarCubit>(context).actualDay,
+            startingDayOfWeek: StartingDayOfWeek.monday,
+            initialCalendarFormat: CalendarFormat.week,
+            calendarController: calendarController,
+            headerStyle: HeaderStyle(
+              leftChevronVisible: false,
+              rightChevronVisible: false,
+              titleTextBuilder: (date, locale) {
+                BlocProvider.of<AppBarBuilderCubit>(context).dateTime = date;
+                return '';
+              },
+            ),
+            availableCalendarFormats: {CalendarFormat.week : 'Week'},
+          ),
+          Expanded(
+            child: (BlocProvider.of<DesiresListCubit>(context).chooseIndexAppBar == 0) ? DesireView():  GoalsList(),
+          )
+        ],
+      ),
     );
   }
 
@@ -188,79 +242,6 @@ class DesireView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        TableCalendar(
-          locale: 'ru_RU',
-          headerVisible: false,
-          builders: CalendarBuilders(
-            todayDayBuilder: (context, date, events) {
-              return Container(
-                child: Center(child: Text('${date.day}',
-                    style: TextStyle(
-                        color: (date.weekday == 6 || date.weekday == 7) ? Colors.red : Colors.black
-                    )),),
-                decoration: BoxDecoration(
-                    border: Border.all(
-                        color: Color(0xffd5f111),
-                        width: 2
-                    ),
-                    shape: BoxShape.circle
-                ),
-                margin: EdgeInsets.symmetric(vertical: 8.0),
-              );
-            },
-            selectedDayBuilder: (context, date, events) {
-
-              BlocProvider.of<AppBarBuilderCubit>(context).dateTime = date;
-
-              print(date.weekday);
-              return Container(
-                child: Stack(
-                  alignment: Alignment.bottomCenter,
-                  children: [
-                    Center(
-                      child: Text('${date.day}',
-                        style: TextStyle(
-                            color: (date.weekday == 6 || date.weekday == 7) ? Colors.red : Colors.black
-                        ),
-                      ),
-                    ),
-                    Container(
-                      height: 4.0,
-                      decoration: BoxDecoration(
-                          color: Colors.deepOrange,
-                          shape: BoxShape.circle
-                      ),
-                      margin: EdgeInsets.symmetric(vertical: 15.0),
-                    ),
-                  ],
-                ),
-              );
-            },
-          ),
-          calendarStyle: CalendarStyle(
-              selectedColor: Color(0xffb4baba)
-          ),
-          onDaySelected: (day, events, holidays) {
-            BlocProvider.of<TableCalendarCubit>(context).selectNewDay(day);
-            calendarController.setFocusedDay(day);
-
-            //TODO WTF THIS SHIT
-            BlocProvider.of<DesiresListCubit>(context).refresh();
-          },
-          initialSelectedDay: BlocProvider.of<TableCalendarCubit>(context).actualDay,
-          startingDayOfWeek: StartingDayOfWeek.monday,
-          initialCalendarFormat: CalendarFormat.week,
-          calendarController: calendarController,
-          headerStyle: HeaderStyle(
-            leftChevronVisible: false,
-            rightChevronVisible: false,
-            titleTextBuilder: (date, locale) {
-              BlocProvider.of<AppBarBuilderCubit>(context).dateTime = date;
-              return '';
-            },
-          ),
-          availableCalendarFormats: {CalendarFormat.week : 'Week'},
-        ),
         Expanded(
             child: DesiresList()
         ),
@@ -297,17 +278,17 @@ class HelloNewbiePage extends StatelessWidget {
         Container(
           padding: EdgeInsets.all(25.0),
           alignment: Alignment.topCenter,
-          child: Text('Hello,\n${BlocProvider.of<DesiresListCubit>(context).user.login}!', style: _textStyle),
+          child: Text('Привет,\n${BlocProvider.of<DesiresListCubit>(context).user.login}!', style: _textStyle),
         ),
         Container(
           padding: EdgeInsets.all(25.0),
           alignment: Alignment.topCenter,
-          child: Text('You look like newbie here!', style: _textStyle),
+          child: Text('Ваш список задач/целей пуст, начните с их создания!', style: _textStyle),
         ),
         Container(
           padding: EdgeInsets.all(25.0),
           alignment: Alignment.topCenter,
-          child: Text('Start by adding a new habit/goal at the top right!', style: _textStyle),
+          child: Text('Добавьте новую цель/задачу с помощью "Плюс" в верхнем правом углу экрана!', style: _textStyle),
         ),
       ],
     );

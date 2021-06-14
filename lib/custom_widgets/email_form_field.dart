@@ -14,7 +14,7 @@ class EmailFormField extends StatelessWidget {
       keyboardType: TextInputType.emailAddress,
       decoration: InputDecoration(
         fillColor: Colors.white60,
-        hintText: 'youremailhere@gmail.com',
+        hintText: 'вашапочтаздесь@gmail.com',
         border: OutlineInputBorder(
             borderSide: BorderSide(color: Colors.blue)
         ),
@@ -28,7 +28,7 @@ class EmailFormField extends StatelessWidget {
             r"{0,253}[a-zA-Z0-9])?)*$";
         RegExp regex = new RegExp(pattern);
         if (!regex.hasMatch(s) || s.isEmpty)
-          return 'Enter a valid email address';
+          return 'введите корректный почтовый адрес';
         else
           return null;
       },

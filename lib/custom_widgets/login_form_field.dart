@@ -14,14 +14,14 @@ class LoginFormField extends StatelessWidget {
       onSaved: (String s) => user.login = s,
       decoration: InputDecoration(
         fillColor: Colors.white60,
-        hintText: 'login',
+        hintText: 'логин',
         border: OutlineInputBorder(
             borderSide: BorderSide(color: Colors.blue)
         ),
         filled: true,
         contentPadding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 3.0),
       ),
-      validator: (String s) => s.isEmpty ? "login can't be empty!" : null,
+      validator: (String s) => s.isEmpty ? "логин не может быть пустым!" : null,
     );
   }
 }

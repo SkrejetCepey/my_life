@@ -53,6 +53,11 @@ class User extends HiveObject implements AbstractModel {
     properties = map;
   }
 
+  List<Desire> getActualGoalsList(DateTime actualDate) {
+    return goalsList.where((element) =>
+    element.dateTime == actualDate).toList();
+  }
+
   @override
   Map<String, String> get properties => {
     'username': username,

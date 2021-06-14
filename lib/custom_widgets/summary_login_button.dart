@@ -50,7 +50,10 @@ class SummaryLoginButton extends SummaryButton {
       if (!matchFound) {
         print("No one users was found!");
 
-        await BlocProvider.of<UserCubit>(context).addUser(BlocProvider.of<ConnectionPageCubit>(context).user);
+        Future.wait([BlocProvider.of<UserCubit>(context).addUser(BlocProvider.of<ConnectionPageCubit>(context).user),
+          BlocProvider.of<DesiresListCubit>(context).updateUser(BlocProvider.of<ConnectionPageCubit>(context).user)]);
+        // await BlocProvider.of<UserCubit>(context).addUser(BlocProvider.of<ConnectionPageCubit>(context).user);
+        // await BlocProvider.of<DesiresListCubit>(context).updateUser(BlocProvider.of<ConnectionPageCubit>(context).user);
     // .then((value) =>
     // BlocProvider.of<DesiresListCubit>(context).updateUser(BlocProvider.of<ConnectionPageCubit>(context).user))
       }
